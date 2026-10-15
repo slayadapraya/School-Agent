@@ -1,0 +1,66 @@
+{
+  "square": {
+    "pattern": "\\bsquar(?:e|ed|ing)\\b|\\^\\s*2\\b|²",
+    "responses": [
+      "“Squared” means multiplying a number by itself. The small 2 tells you to use the same number twice as factors; it does not mean multiply by 2.\n\n{square_setup}Try writing the multiplication first, then work out its value.",
+      "Picture dots arranged in a square: the number of rows is the same as the number of dots in each row. To count all the dots, multiply rows by dots per row. That is why multiplying a number by itself is called squaring.\n\n{square_setup}Which part would help next: understanding equal groups, or doing the multiplication?",
+      "Let’s focus on the wording. “By itself” means the number appears on both sides of the multiplication sign. Squaring and doubling are different: squaring uses number × same number; doubling uses number × 2.\n\n{square_setup}If the multiplication is the difficult part, tell me and we can break that into smaller steps."
+    ]
+  },
+  "power": {
+    "pattern": "\\b(?:exponent|powers?|indices|index notation)\\b|\\^\\s*[3-9]\\b",
+    "responses": [
+      "A power is a compact way to write repeated multiplication. The base is the number being multiplied; a positive whole-number exponent tells you how many copies of the base are factors.\n\nFor example, a³ means a × a × a. It does not mean a × 3. In your expression, which number is the base and which is the exponent?",
+      "Read the exponent as a count of factors. Write the base that many times, putting multiplication signs between the copies. An exponent of 2 gives two copies; an exponent of 3 gives three.\n\nTry expanding your expression before calculating anything."
+    ]
+  },
+  "cube": {
+    "pattern": "\\bcub(?:e|ed|ing)\\b|³",
+    "responses": [
+      "Cubing means using the same number three times as factors: number × number × number. The small 3 counts the factors; it does not mean multiply the number by 3.\n\nA cube has equal length, width and height, so multiplying those three dimensions gives the same repeated-multiplication pattern. Can you write your number three times with multiplication signs?",
+      "Start by expanding the notation rather than calculating. If the number is a, its cube is a × a × a. Multiply the first two factors, then multiply that result by the remaining factor. What would that expansion look like for your number?"
+    ]
+  },
+  "root": {
+    "pattern": "\\bsquare root\\b|√",
+    "responses": [
+      "A square root reverses squaring. The principal square root of a non-negative number is the non-negative number that, multiplied by itself, gives the number under the root sign.\n\nThink of it as a missing-number question: which number × itself would make the given number? Start by writing that relationship without guessing a final answer.",
+      "Picture a square with a known area. Its side length is the square root of that area, because side × side gives area.\n\nThe √ symbol asks for the principal, non-negative root. That differs from solving an equation such as x² = a, which can also involve a negative value. Which of those two tasks are you working on?"
+    ]
+  },
+  "fraction": {
+    "pattern": "\\b(?:fractions?|numerator|denominator)\\b",
+    "responses": [
+      "A fraction describes equal-sized parts of a whole. The denominator, below the line, tells you how many equal parts make one whole. The numerator, above it, tells you how many of those parts you have.\n\nThe parts must be equal-sized. In your fraction, which number describes the size of each part, and which counts the parts?",
+      "Think of a whole divided into equal pieces. Changing the denominator changes how large one piece is; changing the numerator changes how many pieces you count.\n\nAre you trying to interpret a fraction, compare two fractions, or carry out an operation with them? Those need different next steps."
+    ]
+  },
+  "percentage": {
+    "pattern": "\\b(?:percent(?:age)?s?|per cent)\\b|%",
+    "responses": [
+      "Percent means “per hundred”. A percentage compares an amount with a whole using a scale of 100. First identify what counts as the whole; otherwise the percentage can describe the wrong comparison.\n\nFor finding a percentage of an amount, the setup is (percentage ÷ 100) × whole amount. Which value in your question is the whole?",
+      "Separate the question into a part, a whole and a percentage. To express a part as a percentage of its whole, the setup is (part ÷ whole) × 100. To find an amount from a percentage, use (percentage ÷ 100) × whole.\n\nWhich quantity are you being asked to find?"
+    ]
+  },
+  "multiplication": {
+    "pattern": "\\b(?:multiply|multiplying|multiplication|times tables?|equal groups)\\b",
+    "responses": [
+      "Multiplication can count equal groups. One factor describes the number of groups; the other describes how many items are in each group. Repeated addition gives the same total when the group count is a positive whole number.\n\n{multiply_setup}Tell me whether the equal-groups idea or the calculation itself is the part you want to practise.",
+      "You can split a difficult whole-number multiplication into smaller groups. Break one factor into two parts, multiply the other factor by each part, then add the two subtotals. Keep every original group accounted for.\n\n{multiply_setup}What split would use multiplication facts you already know?"
+    ]
+  },
+  "negative": {
+    "pattern": "\\b(?:negative numbers?|minus numbers?|below zero)\\b",
+    "responses": [
+      "A negative number is less than zero. On a number line, negative values sit to the left of zero. The minus sign can indicate a negative value, or it can be an instruction to subtract; its position matters.\n\nAre you asking about where a negative number sits, or how to calculate with one?",
+      "Think of zero as a reference point, such as no debt or a chosen temperature. A negative value describes the direction below that reference point.\n\nShow the expression you are reading so we can distinguish the sign of a number from a subtraction operation."
+    ]
+  },
+  "shape-square": {
+    "pattern": "what(?: is|'s) (?:a )?square(?:\\s+shape|[?.!]|$)|square shape|geometry.{0,25}square",
+    "responses": [
+      "A square is a flat shape with four equal-length sides and four right angles. Its area is side length × side length. That is related to the operation called squaring: multiplying a number by itself.\n\nAre you asking about the shape, or a number written with a small 2?",
+      "For the shape, check both properties: all four sides are equal, and every corner is a right angle. A slanted four-sided shape with equal sides is not necessarily a square.\n\nWhich property are you trying to use in your question?"
+    ]
+  }
+}

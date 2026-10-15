@@ -1,0 +1,17 @@
+{
+  "institution": "School Agent \u00b7 Under development",
+  "model_url": "http://127.0.0.1:1234/v1",
+  "model": "school-agent-9b-q5",
+  "allow_experimental": false,
+  "max_message_chars": 4000,
+  "retention_days": null,
+  "transport": "qwen_chatml",
+  "model_key": "qwen3.5-9b",
+  "model_quantization": "Q5_K_M",
+  "context_length": 8192,
+  "allow_research": true,
+  "allow_research_overviews": true,
+  "public_listener_enabled": true,
+  "public_listener_port": 8138,
+  "conversation_reasoning": false
+}

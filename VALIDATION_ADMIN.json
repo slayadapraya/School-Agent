@@ -1,0 +1,33 @@
+{
+  "date": "2026-10-15",
+  "automated_tests_passed": 94,
+  "subject_categories": 12,
+  "year_levels_per_category": 4,
+  "general_workspace": true,
+  "server_enforcement": [
+    "student ownership checks for conversations and images",
+    "teacher scope limited to current assigned student roster",
+    "staff private history protected after demotion",
+    "admin-only role changes and system telemetry",
+    "database counts scoped before analytics results",
+    "legacy course IDs migrated while retaining records"
+  ],
+  "browser_verified": [
+    "subject selection highlights and opens unsaved blank chat",
+    "first message creates thread",
+    "New thread keeps selected subject",
+    "bulk assignment subject-year picker",
+    "activity filters and saved-record counts",
+    "one-second telemetry with usage/temperature graphs",
+    "hotspot and fan tiles removed",
+    "admin text verified at 17px for tabs, labels, descriptions and dropdowns"
+  ],
+  "live_model_test": {
+    "role": "admin",
+    "question": "What is 12 times 9? Explain briefly.",
+    "route": "configured_tutoring",
+    "answer_includes": "108"
+  },
+  "telemetry_history": "up to two minutes in browser memory; no disk retention",
+  "student_subject_refresh_seconds": 15
+}

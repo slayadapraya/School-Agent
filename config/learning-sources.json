@@ -1,0 +1,122 @@
+[
+  {
+    "id": "learning-waves",
+    "pattern": "\\b(waves?|wavelength|frequency|amplitude|ripples?|hertz)\\b",
+    "title": "Traveling waves — OpenStax University Physics",
+    "url": "https://openstax.org/books/university-physics-volume-1/pages/16-summary",
+    "text": "A traveling disturbance transfers energy. Mechanical waves need a medium; electromagnetic waves do not. Amplitude is maximum displacement from equilibrium. Wavelength λ is the spatial distance between adjacent equal-phase points; frequency f counts cycles per second (Hz = 1/s), and period T is seconds per cycle. For a periodic traveling wave, v = fλ = λ/T. The units multiply as (1/s) × m = m/s: no seconds are multiplied or cancelled. At constant speed, doubling frequency halves wavelength. Amplitude is not a term in this speed equation. In a linear string model speed depends on tension and linear mass density, not how far the hand moves.",
+    "provider": "Textbook context",
+    "locator": "Concise teaching summary; source checked 15 October 2026",
+    "verified_on": "2026-10-15",
+    "bibliography": {
+      "type": "webpage",
+      "authors": [
+        {
+          "family": "OpenStax"
+        }
+      ],
+      "date": [],
+      "site": "OpenStax"
+    }
+  },
+  {
+    "id": "learning-water-waves",
+    "pattern": "\\b(water waves?|pond|ripples?|leaf|leaves|ocean waves?)\\b",
+    "title": "Types of waves — OpenStax Physics",
+    "url": "https://openstax.org/books/physics/pages/13-1-types-of-waves",
+    "text": "Water-surface waves combine transverse and longitudinal motion. In the simplified model particles move in approximately circular or elliptical orbits, instead of travelling outward with the crests. A floating object mostly moves locally as the disturbance passes. This describes the basic wave motion, rather than claiming that real oceans and ponds can never have currents or net transport. Avoid calling water-surface waves purely transverse.",
+    "provider": "Textbook context",
+    "locator": "Concise teaching summary; source checked 15 October 2026",
+    "verified_on": "2026-10-15",
+    "bibliography": {
+      "type": "webpage",
+      "authors": [
+        {
+          "family": "OpenStax"
+        }
+      ],
+      "date": [],
+      "site": "OpenStax"
+    }
+  },
+  {
+    "id": "learning-powers",
+    "pattern": "\\b(squared|squaring|square roots?|exponents?|doubling)\\b",
+    "title": "Exponents — OpenStax Prealgebra",
+    "url": "https://openstax.org/books/prealgebra-2e/pages/2-1-use-the-language-of-algebra",
+    "text": "For a positive whole-number exponent, a^n uses n copies of a as factors. In particular a² = a × a, whereas doubling is 2a = a + a. A square grid with n rows and n columns has n² cells total, not n² cells per side. Check that the row and column counts in every example match the stated total. A principal square root is nonnegative and reverses squaring of a nonnegative number; √(a²) = |a| for real a.",
+    "provider": "Textbook context",
+    "locator": "Concise teaching summary; source checked 15 October 2026",
+    "verified_on": "2026-10-15",
+    "bibliography": {
+      "type": "webpage",
+      "authors": [
+        {
+          "family": "OpenStax"
+        }
+      ],
+      "date": [],
+      "site": "OpenStax"
+    }
+  },
+  {
+    "id": "learning-demand",
+    "pattern": "\\b(demand curve|demand and supply|normal good|inferior good|substitutes?|complements?)\\b",
+    "title": "Shifts in demand and supply — OpenStax",
+    "url": "https://openstax.org/books/principles-macroeconomics-3e/pages/3-2-shifts-in-demand-and-supply-for-goods-and-services",
+    "text": "A change in a good’s own price changes quantity demanded along its demand curve, other things equal. A shift means a different quantity demanded at each given price. Higher income shifts demand right for a normal good, but left for an inferior good. If two goods are substitutes, a rise in the price of one tends to increase demand for the other; complements have the opposite relationship. State these assumptions rather than claiming the goods must be substitutes or normal. Ceteris paribus means analysing one change while holding other relevant factors constant.",
+    "provider": "Textbook context",
+    "locator": "Concise teaching summary; source checked 15 October 2026",
+    "verified_on": "2026-10-15",
+    "bibliography": {
+      "type": "webpage",
+      "authors": [
+        {
+          "family": "OpenStax"
+        }
+      ],
+      "date": [],
+      "site": "OpenStax"
+    }
+  },
+  {
+    "id": "learning-photosynthesis",
+    "pattern": "\\b(photosynthesis|plant.{0,25}(?:mass|respir)|(?:mass|respir).{0,25}plants?|carbon dioxide)\\b",
+    "title": "Organic molecules and photosynthesis — OpenStax Biology",
+    "url": "https://openstax.org/books/biology-2e/pages/8-3-using-light-energy-to-make-organic-molecules",
+    "text": "Plants use energy captured from light to incorporate carbon from atmospheric carbon dioxide into organic molecules. Their carbon does not mainly come from soil. Distinguish dry organic matter from fresh mass, which includes much water. Photosynthesis stores captured energy in organic molecules; cellular respiration releases usable energy from those molecules. Living plant cells respire both during the day and at night. Photosynthesis requires light-dependent reactions; respiration is not the only metabolic activity at night. A plant’s net gas exchange depends on the balance of photosynthesis and respiration. Carbon atoms in organic molecules originate from CO₂; do not say that every atom or almost all dry biomass comes exclusively from CO₂, because water and mineral nutrients also supply atoms. Net carbon gain over a day is conditional on photosynthesis exceeding respiratory losses, not guaranteed.",
+    "provider": "Textbook context",
+    "locator": "Concise teaching summary; source checked 15 October 2026",
+    "verified_on": "2026-10-15",
+    "bibliography": {
+      "type": "webpage",
+      "authors": [
+        {
+          "family": "OpenStax"
+        }
+      ],
+      "date": [],
+      "site": "OpenStax"
+    }
+  },
+  {
+    "id": "learning-beams",
+    "pattern": "\\b(beams?|bending moment|second moment|flexural rigidity)\\b",
+    "title": "Structures: rectangular sections — MIT OpenCourseWare",
+    "url": "https://ocw.mit.edu/courses/1-101-introduction-to-civil-and-environmental-engineering-design-i-fall-2006/805ecbc0023c3ab7fb404b9d0c1aeaf1_exp3b.pdf",
+    "text": "For elastic beam bending, flexural rigidity is E × I, where E is Young’s modulus and I is the second moment of cross-sectional area about the relevant bending axis. For a rectangle I = b h³ / 12. Holding width, material and other conditions fixed, doubling depth increases I and elastic bending rigidity eightfold. This is a stiffness relationship, not an eightfold increase in every measure of strength. A second moment of area describes geometry; Young’s modulus describes elastic material response. Stiffness concerns deflection; strength concerns allowable stress, yielding or failure. Simple beam models require appropriate linear elastic and geometric assumptions.",
+    "provider": "Textbook context",
+    "locator": "Concise teaching summary; source checked 15 October 2026",
+    "verified_on": "2026-10-15",
+    "bibliography": {
+      "type": "webpage",
+      "authors": [
+        {
+          "family": "MIT OpenCourseWare"
+        }
+      ],
+      "date": [],
+      "site": "MIT OpenCourseWare"
+    }
+  }
+]

@@ -1,0 +1,39 @@
+{
+  "date": "2026-10-15",
+  "automated_tests_passed": 100,
+  "viewport_checks": [
+    320,
+    390,
+    1440
+  ],
+  "no_horizontal_overflow": true,
+  "mobile_navigation": {
+    "position": "top left",
+    "label_font_px": 18,
+    "category_tap_height_px": 52,
+    "subject_arrow_width_px": 44,
+    "closes_on_outside_tap": true,
+    "recent_chats_in_drawer": true
+  },
+  "mobile_composer": {
+    "placeholder": "Type here\u2026",
+    "photo_button": "separate on left",
+    "photo_touch_size_px": 48,
+    "send_touch_size_px": 48,
+    "grows_for_multiline_input": true,
+    "research_sources_layout_hidden": true,
+    "live_message_send_verified": true
+  },
+  "home": "recent chats first; compact subject/year selector on phones",
+  "themes": {
+    "default": "Research Studio",
+    "header_toggle_removed": true,
+    "settings_picker_retained": true
+  },
+  "storage": {
+    "automatic_expiry": false,
+    "retention_days": null,
+    "year_old_records_preserved_in_test": true,
+    "expired_sessions_still_cleaned": true
+  }
+}

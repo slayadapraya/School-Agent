@@ -1,0 +1,30 @@
+{
+  "tests": {
+    "total": 119,
+    "result": "passed",
+    "terminal_tests": 6,
+    "concept_tests": 13
+  },
+  "terminal": {
+    "host": "charlie-pc",
+    "user": "charlie",
+    "transport": "Authenticated HTTPS API to local Bash PTY",
+    "reauthentication": true,
+    "admin_only": true,
+    "login_session_bound": true,
+    "idle_timeout_seconds": 300,
+    "maximum_lifetime_seconds": 1800,
+    "ui_verified": "Isolated test account, same host and application code; hostname returned charlie-pc at desktop and 390px width",
+    "mobile_overflow": false
+  },
+  "mobile_chat": {
+    "viewport_width": 390,
+    "speaker_gap_px": 24,
+    "assistant_line_height_px": 27,
+    "short_bubble_width_px": 83.5,
+    "composer_background": "transparent",
+    "horizontal_overflow": false
+  },
+  "logo": "Existing S favicon reused on sidebar and sign-in",
+  "student_tutoring": "Approved concept explanations with contextual followups and final-value restrictions; five-turn HTTP test passed"
+}

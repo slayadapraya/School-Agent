@@ -1,0 +1,26 @@
+{
+  "date": "2026-10-15",
+  "url": "https://charlie-pc.taild1ff30.ts.net:8443/",
+  "funnel_enabled": true,
+  "public_listener": "127.0.0.1:8138",
+  "local_listener": "127.0.0.1:8137",
+  "public_dns_verified": [
+    "Google Public DNS",
+    "Cloudflare DNS"
+  ],
+  "public_relay_verified": "43.245.48.174",
+  "public_http_checks": {
+    "/": 200,
+    "/api/health": 200,
+    "/api/bootstrap": 401,
+    "/api/admin/system": 401
+  },
+  "automated_tests_passed": 98,
+  "public_password_minimum": 12,
+  "local_password_unchanged": true,
+  "user_linger_enabled": true,
+  "school_agent_service_enabled": true,
+  "tailscaled_service_enabled": true,
+  "reboot_tested": false,
+  "unrelated_private_port_443_preserved": true
+}

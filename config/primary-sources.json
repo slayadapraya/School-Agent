@@ -1,0 +1,85 @@
+[
+  {
+    "id": "primary-undp-timor-bamboo-2019",
+    "title": "Floods, droughts and lives in between: Dili-Ainaro project closes for 2019",
+    "url": "https://www.undp.org/timor-leste/stories/floods-droughts-and-lives-between-dili-ainaro-project-closes-2019",
+    "provider": "Verified primary-source reading",
+    "required_terms": [
+      "timorleste",
+      "bamboo"
+    ],
+    "search_context": "Timor-Leste bamboo supply production water nursery processing value chain",
+    "text": "However, Timor’s fledgling bamboo industry is being held back by unreliable water supply.",
+    "locator": "UNDP · December 9, 2019 · historical report; verify current conditions",
+    "verified_on": "2026-10-15",
+    "bibliography": {
+      "type": "webpage",
+      "authors": [
+        {
+          "family": "Ray",
+          "given": "Alex"
+        }
+      ],
+      "date": [
+        2019,
+        12,
+        9
+      ],
+      "site": "United Nations Development Programme"
+    }
+  },
+  {
+    "id": "primary-eeas-timor-bamboo-2021",
+    "title": "Bamboo toothpicks production begins, and production capacity increases as Ai ba Futuru – PSAF hands over new machines to the Bamboo Institute",
+    "url": "https://www.eeas.europa.eu/delegations/timor-leste/bamboo-toothpicks-production-begins-and-production-capacity-increases-ai-ba-futuru-%E2%80%93-psaf-hands-over_und_en",
+    "provider": "Verified primary-source reading",
+    "required_terms": [
+      "timorleste",
+      "bamboo"
+    ],
+    "search_context": "Timor-Leste bamboo production processing machines training value chain supply nurseries",
+    "text": "four bamboo pre-processing centres and accompanying bamboo nurseries were established",
+    "locator": "European External Action Service · August 13, 2021 · historical project update; verify current conditions",
+    "verified_on": "2026-10-15",
+    "bibliography": {
+      "type": "webpage",
+      "authors": [
+        {
+          "name": "European External Action Service"
+        }
+      ],
+      "date": [
+        2021,
+        8,
+        13
+      ],
+      "site": "European External Action Service"
+    }
+  },
+  {
+    "id": "primary-nzhistory-wwi-origins",
+    "title": "Origins of the war — NZHistory",
+    "url": "https://nzhistory.govt.nz/war/first-world-war-overview/origins",
+    "provider": "Manatū Taonga — Ministry for Culture and Heritage",
+    "required_terms": [
+      "firstworldwar"
+    ],
+    "text": "First World War chronology: Franz Ferdinand was assassinated on 28 June 1914. Austria-Hungary declared war on Serbia on 28 July. Russia ordered partial mobilisation the following day. Germany declared war on Russia on 1 August and France on 3 August. Germany’s invasion of Belgium prompted Britain’s declaration of war on 4 August. Nationalism, imperial rivalries, alliances and military planning contributed to escalation. The Triple Entente was an informal coalition, established in 1907, not a single automatic mutual-defence treaty.",
+    "locator": "NZHistory, Origins of the war, updated 17 May 2017; concise paraphrase checked 15 October 2026",
+    "verified_on": "2026-10-15",
+    "bibliography": {
+      "type": "webpage",
+      "authors": [
+        {
+          "family": "Manatū Taonga — Ministry for Culture and Heritage"
+        }
+      ],
+      "date": [
+        2017,
+        5,
+        17
+      ],
+      "site": "NZHistory"
+    }
+  }
+]
