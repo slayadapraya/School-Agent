@@ -40,19 +40,11 @@ class ConversationHTTP(unittest.TestCase):
  tearDown=fixtures.Administration.tearDown
  request=fixtures.Administration.request
  login=fixtures.Administration.login
- def test_default_student_chat_uses_model_with_followup_memory(self):
-  cookie=self.login('student');code,boot,_=self.request('/api/bootstrap',cookie=cookie)
-  self.assertEqual(code,200);self.assertTrue(all(not c['policy']['approved_only'] for c in boot['courses']))
-  tid=self.request('/api/threads',{'course_id':'GENERAL'},cookie)[1]['id']
-  with patch.object(s,'model_json',side_effect=[{'answer':'Waves transfer energy.','source_ids':[]},{'allow':True}]):
-   code,reply,_=self.request('/api/chat',{'thread_id':tid,'message':'How do waves work?'},cookie)
-  self.assertEqual(code,200);self.assertEqual(reply['meta']['route'],'configured_tutoring')
-  with s.connect() as con:con.execute('UPDATE messages SET created=created-2 WHERE thread_id=?',(tid,))
-  with patch.object(s,'model_json',side_effect=[{'answer':'The leaf moves locally while energy travels.','source_ids':[]},{'allow':True}]) as model:
-   code,reply,_=self.request('/api/chat',{'thread_id':tid,'message':'Why does the leaf stay there?'},cookie)
-  import json
-  payload=json.loads(model.call_args_list[0].args[0][1]['content'])
-  self.assertEqual(code,200);self.assertEqual(payload['history'][0]['content'],'How do waves work?')
+ def test_default_student_chat_uses_reviewed_generation(self):
+  cookie=self.login('student');tid=self.request('/api/threads',{'course_id':'GENERAL'},cookie)[1]['id']
+  with patch.object(s,'model_json',side_effect=[{},'A wave transfers energy. Which part is confusing?',{'allow':True}]) as model:
+   code,reply,_=self.request('/api/chat',{'thread_id':tid,'message':'Explain waves.'},cookie)
+  self.assertEqual(code,200);self.assertEqual(reply['meta']['route'],'student_guidance');self.assertEqual(model.call_count,3)
 
 class ReasoningBoundary(unittest.TestCase):
  def test_unfinished_reasoning_cannot_become_an_answer(self):

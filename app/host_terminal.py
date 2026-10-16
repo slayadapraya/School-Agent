@@ -25,7 +25,7 @@ class Terminals:
             time.sleep(10)
             with self.lock:
                 for key,item in list(self.sessions.items()):
-                    if time.time()-item['input_at']>300 or time.time()-item['created']>1800 or not item['authorized']():self._close(key)
+                    if time.time()-item['input_at']>300 or not item['authorized']():self._close(key)
     def open(self,owner,cookie,cwd,authorized=lambda:True):
         with self.lock:
             if sum(s['owner']==owner for s in self.sessions.values())>=2:raise ValueError('Close an existing terminal first (maximum two).')
@@ -38,12 +38,12 @@ class Terminals:
             finally:os.close(slave)
             os.set_blocking(master,False);key=secrets.token_urlsafe(32);now=time.time()
             self.sessions[key]={'owner':owner,'cookie':cookie,'fd':master,'process':process,'created':now,'input_at':now,'authorized':authorized}
-            return {'id':key,'host':socket.gethostname(),'user':env.get('USER','server user'),'idle_seconds':300,'max_seconds':1800}
+            return {'id':key,'host':socket.gethostname(),'user':env.get('USER','server user'),'idle_seconds':300,'max_seconds':None}
     def operate(self,owner,cookie,data):
         with self.lock:
             key=data.get('id');item=self.sessions.get(key) if isinstance(key,str) else None
             if not item or item['owner']!=owner or item['cookie']!=cookie:raise KeyError('Terminal not found or expired')
-            if time.time()-item['input_at']>300 or time.time()-item['created']>1800:
+            if time.time()-item['input_at']>300:
                 self._close(key);raise KeyError('Terminal expired; connect again')
             if data.get('action')=='close':self._close(key);return {'closed':True}
             text=data.get('input','')
@@ -136,7 +136,7 @@ def stream(app,handler,user):
                 if time.time()-last_auth>1:
                     if not item['authorized']():break
                     last_auth=time.time()
-                if time.time()-item['input_at']>300 or time.time()-item['created']>1800:break
+                if time.time()-item['input_at']>300:break
             if time.time()-last_ping>25:send(9);last_ping=time.time()
             ready,_,_=select.select([sock,item['fd']],[],[],.5)
             if item['fd'] in ready:

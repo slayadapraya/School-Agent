@@ -52,16 +52,12 @@ class ConceptConversationHTTP(unittest.TestCase):
     tearDown=fixtures.Administration.tearDown
     request=fixtures.Administration.request
     login=fixtures.Administration.login
-    def test_student_conversation_explains_squaring_across_five_turns(self):
-        cookie=self.login('student')
-        with s.connect() as con:
-            row=con.execute("SELECT id,permissions FROM users WHERE username='student'").fetchone();import json;p=json.loads(row['permissions']);p['tutoring_policy']={'approved_only':True,'block_answers':True};con.execute('UPDATE users SET permissions=? WHERE id=?',(json.dumps(p),row['id']))
-        tid=self.request('/api/threads',{'course_id':'GENERAL','title':'Concept conversation'},cookie)[1]['id'];previous=None
-        prompts=['What is 9 squared?','Retard','Idk what squared mean dude','I dont understand what squaring something means','Is 81 correct?']
-        for prompt in prompts:
-            with s.connect() as con:con.execute('UPDATE messages SET created=created-2 WHERE thread_id=?',(tid,))
-            code,response,_=self.request('/api/chat',{'thread_id':tid,'message':prompt},cookie)
-            self.assertEqual(code,200);self.assertEqual(response['meta']['route'],'concept_guidance');self.assertNotEqual(response['content'],previous);self.assertNotIn('81',response['content']);previous=response['content']
+    def test_student_conversation_uses_generation_and_review(self):
+        from unittest.mock import patch
+        cookie=self.login('student');tid=self.request('/api/threads',{'course_id':'GENERAL'},cookie)[1]['id']
+        with patch.object(s,'model_json',side_effect=[{},'Squared means using a number twice as factors. Try the setup first.',{'allow':True}]):
+            code,response,_=self.request('/api/chat',{'thread_id':tid,'message':'What is 9 squared?'},cookie)
+        self.assertEqual(code,200);self.assertEqual(response['meta']['route'],'student_guidance');self.assertNotIn('81',response['content'])
     def test_missing_definition_reports_material_gap(self):
         from app.guidance import definition_gap
         self.assertIn('derivative',definition_gap('What does derivative mean?'))

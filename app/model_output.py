@@ -32,7 +32,7 @@ def parse_overview(raw,source_ids):
 def readable_math(text):
     """Display common model maths as Unicode when no LaTeX renderer is present."""
     text=text.replace('\times','×').replace('\text{','\\text{').replace('\x0crac{','\\frac{')
-    names={'lambda':'λ','times':'×','cdot':'·','div':'÷','pi':'π','theta':'θ','omega':'ω','mu':'μ','Delta':'Δ','approx':'≈','leq':'≤','geq':'≥'}
+    names={'delta':'δ','lambda':'λ','times':'×','cdot':'·','div':'÷','pi':'π','theta':'θ','omega':'ω','mu':'μ','Delta':'Δ','approx':'≈','leq':'≤','geq':'≥'}
     text=re.sub(r'\\('+'|'.join(names)+r')\b',lambda m:names[m[1]],text)
     text=re.sub(r'\\(?:text|mathrm)\{([^{}]*)\}',r'\1',text)
     text=re.sub(r'\\frac\{([^{}]*)\}\{([^{}]*)\}',r'(\1)/(\2)',text)

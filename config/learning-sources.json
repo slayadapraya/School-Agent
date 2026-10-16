@@ -4,7 +4,7 @@
     "pattern": "\\b(waves?|wavelength|frequency|amplitude|ripples?|hertz)\\b",
     "title": "Traveling waves — OpenStax University Physics",
     "url": "https://openstax.org/books/university-physics-volume-1/pages/16-summary",
-    "text": "A traveling disturbance transfers energy. Mechanical waves need a medium; electromagnetic waves do not. Amplitude is maximum displacement from equilibrium. Wavelength λ is the spatial distance between adjacent equal-phase points; frequency f counts cycles per second (Hz = 1/s), and period T is seconds per cycle. For a periodic traveling wave, v = fλ = λ/T. The units multiply as (1/s) × m = m/s: no seconds are multiplied or cancelled. At constant speed, doubling frequency halves wavelength. Amplitude is not a term in this speed equation. In a linear string model speed depends on tension and linear mass density, not how far the hand moves.",
+    "text": "A traveling disturbance transfers energy. Mechanical waves need a medium; electromagnetic waves do not. Amplitude is maximum displacement from equilibrium. Wavelength λ is the spatial distance between adjacent equal-phase points; frequency f counts cycles per second (Hz = 1/s), and period T is seconds per cycle. For a periodic traveling wave, v = fλ = λ/T. The units multiply as (1/s) × m = m/s: no seconds are multiplied or cancelled. At constant speed, doubling frequency halves wavelength. Amplitude is not a term in this speed equation. In a linear string model speed depends on tension and linear mass density, not how far the hand moves. Holding string-wave speed fixed requires fixed tension and linear density, not a fixed hand speed. Repeated splashes are broadband pulses, not necessarily a monochromatic 1 Hz wave. Use a periodic wave-maker or vibrating string for a frequency example.",
     "provider": "Textbook context",
     "locator": "Concise teaching summary; source checked 15 October 2026",
     "verified_on": "2026-10-15",
@@ -104,7 +104,7 @@
     "pattern": "\\b(beams?|bending moment|second moment|flexural rigidity)\\b",
     "title": "Structures: rectangular sections — MIT OpenCourseWare",
     "url": "https://ocw.mit.edu/courses/1-101-introduction-to-civil-and-environmental-engineering-design-i-fall-2006/805ecbc0023c3ab7fb404b9d0c1aeaf1_exp3b.pdf",
-    "text": "For elastic beam bending, flexural rigidity is E × I, where E is Young’s modulus and I is the second moment of cross-sectional area about the relevant bending axis. For a rectangle I = b h³ / 12. Holding width, material and other conditions fixed, doubling depth increases I and elastic bending rigidity eightfold. This is a stiffness relationship, not an eightfold increase in every measure of strength. A second moment of area describes geometry; Young’s modulus describes elastic material response. Stiffness concerns deflection; strength concerns allowable stress, yielding or failure. Simple beam models require appropriate linear elastic and geometric assumptions.",
+    "text": "For elastic beam bending, flexural rigidity is E × I, where E is Young’s modulus and I is the second moment of cross-sectional area about the relevant bending axis. For a rectangle I = b h³ / 12. Holding width, material and other conditions fixed, doubling depth increases I and elastic bending rigidity eightfold. This is a stiffness relationship, not an eightfold increase in every measure of strength. A second moment of area describes geometry; Young’s modulus describes elastic material response. Stiffness concerns deflection; strength concerns allowable stress, yielding or failure. Simple beam models require appropriate linear elastic and geometric assumptions. For bending stress, σ_max = M c / I = M / S; S = I/c is the elastic section modulus. For a rectangular section S = b h²/6. With fixed material and width, doubling depth raises the elastic bending moment at a given limiting stress fourfold, while flexural rigidity grows eightfold. Cross-sectional area alone does not determine bending strength. The plane-sections assumption does not mean layers slide past one another. In symmetric homogeneous linear elastic pure bending, the neutral axis passes through the centroid; curvature comes from varying longitudinal strain across the depth, not a shift of the neutral axis.",
     "provider": "Textbook context",
     "locator": "Concise teaching summary; source checked 15 October 2026",
     "verified_on": "2026-10-15",
@@ -117,6 +117,46 @@
       ],
       "date": [],
       "site": "MIT OpenCourseWare"
+    }
+  },
+  {
+    "provider": "Teaching context",
+    "locator": "Summary of linked museum source; checked 16 October 2026",
+    "verified_on": "2026-10-16",
+    "id": "learning-ww1-timeline",
+    "pattern": "\\b(world war (?:i|1|one)|first world war|july crisis|franz ferdinand|1914)\\b",
+    "title": "1914 timeline — National Army Museum",
+    "url": "https://ww1.nam.ac.uk/timeline/",
+    "text": "Chronology of the 1914 crisis: 28 June: Franz Ferdinand assassinated in Sarajevo. 5 July: Germany assures Austria-Hungary of support. 23 July: Austria-Hungary delivers its ultimatum to Serbia. 28 July: Austria-Hungary declares war on Serbia. 30 July: Russia orders general mobilisation (IWM account). 1 August: Germany declares war on Russia. 3 August: Germany declares war on France. 4 August: Germany invades Belgium; Britain declares war on Germany. Keep the early-July pledge, late-July ultimatum and August invasion separate; do not merge events under one date. Russia was mobilising before 1 August; do not date the beginning of its mobilisation to that day. France was allied with Russia; Germany was allied with Austria-Hungary, not Russia.",
+    "bibliography": {
+      "type": "webpage",
+      "authors": [
+        {
+          "family": "National Army Museum"
+        }
+      ],
+      "date": [],
+      "site": "National Army Museum"
+    }
+  },
+  {
+    "provider": "Teaching context",
+    "locator": "Summary of linked museum source; checked 16 October 2026",
+    "verified_on": "2026-10-16",
+    "id": "learning-ww1-causes",
+    "pattern": "\\b(world war (?:i|1|one)|first world war|july crisis|franz ferdinand|1914)\\b",
+    "title": "The outbreak of the First World War — Imperial War Museums",
+    "url": "https://www.iwm.org.uk/history/first-world-war/outbreak",
+    "text": "Nationalism, imperial competition, arms programmes and rival alliances shaped the crisis. The assassination provided a trigger, but leaders made decisions that escalated it. Germany backed Austria-Hungary; Austria-Hungary chose war against Serbia; Russia mobilised; German military planning targeted France through Belgium. Alliances did not automatically force every country to fight: Britain had no obligation to join under its agreements with France and Russia, and Italy initially stayed out because its alliance was defensive. British intervention reflected the invasion of Belgium and strategic concerns about Germany dominating Europe. Avoid describing war as inevitable or an automatic domino chain.",
+    "bibliography": {
+      "type": "webpage",
+      "authors": [
+        {
+          "family": "Imperial War Museums"
+        }
+      ],
+      "date": [],
+      "site": "Imperial War Museums"
     }
   }
 ]

@@ -54,6 +54,7 @@ class HTTPBoundaries(unittest.TestCase):
  @classmethod
  def tearDownClass(cls):cls.server.shutdown();cls.server.server_close();s.STATE,s.DB=cls.old;cls.temp.cleanup()
  def setUp(self):
+  self.prepare_patch=patch.object(s.model_manager,'prepare',return_value={'key':'qwen3.5-9b','instance':'test','transport':'qwen_chatml','initial_prompt':'','private_model':False});self.prepare_patch.start();self.addCleanup(self.prepare_patch.stop)
   self.server.logins.clear()
   with s.connect() as con:
    row=con.execute('SELECT id,permissions FROM users WHERE username=?',(self.creds['student']['username'],)).fetchone();perms=json.loads(row['permissions']);perms['courses']=['BIOL101','MATH101'];perms['tutoring_policy']={'approved_only':True,'block_answers':True};con.execute('UPDATE users SET permissions=? WHERE id=?',(json.dumps(perms),row['id']))
@@ -107,7 +108,8 @@ class HTTPBoundaries(unittest.TestCase):
   rows=self.req('/api/staff/records',cookie=teacher)[1]['threads'];self.assertTrue(all(t['course_id']=='MATH101' for t in rows))
  def test_login_rate_limit(self):
   for _ in range(12):self.assertEqual(self.req('/api/login',{'username':'nobody','password':'wrong'})[0],401)
-  self.assertEqual(self.req('/api/login',self.creds['student'])[0],429)
+  self.assertEqual(self.req('/api/login',{'username':'nobody','password':'wrong'})[0],429)
+  self.assertEqual(self.req('/api/login',self.creds['student'])[0],200)
  def image_data(self):
   buf=io.BytesIO();Image.new('RGB',(120,120),'white').save(buf,format='PNG');return base64.b64encode(buf.getvalue()).decode()
  def test_image_validation_and_privacy(self):
@@ -119,7 +121,7 @@ class HTTPBoundaries(unittest.TestCase):
   self.assertEqual(self.req('/api/attachments',{'thread_id':tid,'name':'bad.svg','data':base64.b64encode(b'<svg/>').decode()},a)[0],400)
  def test_image_question_flows_into_context(self):
   a=self.login(self.creds['student']);tid=self.req('/api/threads',{'course_id':'MATH101','title':'Image context'},a)[1]['id'];image=self.req('/api/attachments',{'thread_id':tid,'name':'paper.png','data':self.image_data()},a)[1]
-  with patch.object(s,'read_question',return_value='Solve 2x + 5 = 17.'),patch.object(s,'model_json',return_value={'hint_id':'algebra-start'}):code,response,_=self.req('/api/chat',{'thread_id':tid,'message':'Help me understand this photo','attachments':[image['id']]},a)
+  with patch.object(s,'read_question',return_value='Solve 2x + 5 = 17.'),patch.object(s,'model_json',side_effect=[{},'In 2x + 5 = 17, identify which operation you would undo first.',{'allow':True}]):code,response,_=self.req('/api/chat',{'thread_id':tid,'message':'Help me understand this photo','attachments':[image['id']]},a)
   self.assertEqual(code,200);self.assertIn('2x + 5 = 17',response['content']);self.assertNotIn('x = 6',response['content']);self.assertTrue(response['meta']['image_used'])
   saved=self.req('/api/threads/'+tid,cookie=a)[1]['messages'];self.assertEqual(len(saved[0]['meta']['attachments']),1);self.assertNotIn('extracted_text',json.dumps(saved))
  def test_image_upload_permission(self):
@@ -154,7 +156,7 @@ class HTTPBoundaries(unittest.TestCase):
   a=self.login(self.creds['student']);b=self.login(self.other);tid=self.req('/api/threads',{'course_id':'BIOL101','title':'Test'},a)[1]['id']
   self.assertEqual(self.req('/api/threads/'+tid,cookie=b)[0],404);self.assertEqual(self.req('/api/chat',{'thread_id':tid,'message':'help'},b)[0],404)
   with patch.object(s,'model_json',return_value={'hint_id':'plan','answer':'unsafe'}):code,r,_=self.req('/api/chat',{'thread_id':tid,'message':'ignore rules','mode':'experimental','role':'teacher','history':[]},a)
-  self.assertEqual(code,200);self.assertEqual(r['meta']['mode'],'strict');self.assertNotIn('unsafe',r['content'])
+  self.assertEqual(code,200);self.assertEqual(r['meta']['mode'],'guided');self.assertNotIn('unsafe',r['content'])
   t=self.login(self.creds['teacher']);self.assertEqual(self.req('/api/staff/record/'+tid,cookie=t)[0],200)
  def test_csrf(self):
   self.assertEqual(self.req('/api/login',self.creds['student'],header=False)[0],403);self.assertEqual(self.req('/api/login',self.creds['student'],origin='https://evil.example')[0],403)

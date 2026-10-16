@@ -32,6 +32,9 @@ def policy(s,user,code):
     for key in ('web_research','upload_images'):
         if user['role']!='admin' and perms.get(key) is False:result[key]=False
     if not result['block_answers']:result['approved_only']=False
+    if user['role']=='student':
+        # This boundary cannot be relaxed by class/person overrides or client fields.
+        result.update(approved_only=False,block_answers=True,review_output=True,overviews=False,student_guidance=True)
     return result
 
 def review(s,user,student,code,thread_id=None):

@@ -5,6 +5,7 @@ from app import server as s,administration as a,hardware
 
 class Administration(unittest.TestCase):
     def setUp(self):
+        self.model_prepare_patch=patch.object(s.model_manager,'prepare',return_value={'key':'qwen3.5-9b','instance':'test-main','transport':'qwen_chatml','initial_prompt':'','private_model':False});self.model_prepare_patch.start();self.addCleanup(self.model_prepare_patch.stop)
         self.tmp=tempfile.TemporaryDirectory();self.old=(s.STATE,s.DB);s.STATE=Path(self.tmp.name);s.DB=s.STATE/'db.sqlite';s.init()
         s.add_account('Teacher','teacher','teach','test',{'courses':[],'review_records':True,'manage_courses':False})
         s.add_account('Other','student','other','test',{'courses':[],'review_records':False,'manage_courses':False})
@@ -45,8 +46,8 @@ class Administration(unittest.TestCase):
         response=self.request('/api/admin/policy',{'user_id':user['id'],'policy':{'web_research':True,'block_answers':False}},self.login('admin'))
         self.assertEqual(response[0],200)
         with s.connect() as con:user=dict(con.execute('SELECT * FROM users WHERE id=?',(user['id'],)).fetchone())
-        p=a.policy(s,user,'MATH101');self.assertTrue(p['web_research']);self.assertFalse(p['block_answers']);self.assertFalse(p['approved_only'])
-        self.assertEqual(a.policy(s,user,'BIOL101')['block_answers'],False) # individual policy is global
+        p=a.policy(s,user,'MATH101');self.assertTrue(p['web_research']);self.assertTrue(p['block_answers']);self.assertFalse(p['approved_only'])
+        self.assertEqual(a.policy(s,user,'BIOL101')['block_answers'],True) # individual policy is global
     def test_client_cannot_supply_unknown_policy_or_invalid_members(self):
         cookie=self.login('admin')
         self.assertEqual(self.request('/api/admin/policy',{'user_id':self.people['other']['id'],'policy':{'shell_access':True}},cookie)[0],400)
