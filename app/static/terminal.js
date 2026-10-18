@@ -183,6 +183,7 @@ document.addEventListener('click', async (e) => {
   }
   if (b.dataset.terminalRestore && hostTerminal) {
     hostTerminal.windowEl.classList.remove('minimised');
+    focusFloatingWindow(hostTerminal.windowEl);
     hostTerminal.terminal.focus();
   }
   if (b.dataset.action === 'logout' || b.dataset.action === 'student-view')
@@ -208,6 +209,7 @@ window.addEventListener('pagehide', () => {
 });
 
 function makeTerminalDraggable(el) {
+  focusFloatingWindow(el);
   const bar = el.querySelector('.terminal-window-bar');
   bar.addEventListener('pointerdown', (e) => {
     if (e.target.closest('button') || e.button !== 0) return;

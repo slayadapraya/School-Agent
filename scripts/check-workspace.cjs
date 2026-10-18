@@ -168,6 +168,160 @@ async function settled(page, name) {
       await page.screenshot({ path: path.join(shotDir, 'workspace-files.png') });
     }
 
+    // Account tabs must retain their form controls and save a person's policies atomically.
+    await page.getByRole('button', { name: 'Open admin panel', exact: true }).click();
+    await page.locator('.account-row').filter({ hasText: 'Test second student' }).click();
+    await page.getByRole('tab', { name: 'Policies', exact: true }).click();
+    await page.locator('[name=account-policy-overviews]').selectOption('on');
+    await page.getByRole('tab', { name: 'Tools', exact: true }).click();
+    await page.locator('#account-images').uncheck();
+    await page.getByRole('tab', { name: 'Policies', exact: true }).click();
+    assert.equal(await page.locator('[name=account-policy-overviews]').inputValue(), 'on');
+    await page.getByRole('button', { name: 'Save changes', exact: true }).click();
+    await page.waitForFunction(() => !document.querySelector('#modal').open);
+    await page.locator('[data-admin-tab=people]').click();
+    await page.locator('.account-row').filter({ hasText: 'Test second student' }).click();
+    await page.getByRole('tab', { name: 'Policies', exact: true }).click();
+    assert.equal(await page.locator('[name=account-policy-overviews]').inputValue(), 'on');
+    await page.getByRole('tab', { name: 'Tools', exact: true }).click();
+    assert.equal(await page.locator('#account-images').isChecked(), false);
+    await page.locator('#modal .close').click();
+    await page.locator('[data-admin-tab=policies]').click();
+    const secondID = await page.evaluate(
+      () => management.users.find((u) => u.username === 'second').id,
+    );
+    await page.locator('#policy-person [name=user]').selectOption(String(secondID));
+    for (const setting of ['off', 'on', 'inherit']) {
+      await page.locator('[name=policy-overviews]').selectOption(setting);
+      const oldForm = await page.locator('#policy-person').elementHandle();
+      await page.getByRole('button', { name: 'Save individual overrides', exact: true }).click();
+      await page.waitForFunction((form) => !form.isConnected, oldForm);
+      await page.waitForFunction(
+        ({ id, setting }) => {
+          const f = document.querySelector('#policy-person');
+          return f?.elements.user.value === id && f.elements['policy-overviews'].value === setting;
+        },
+        { id: String(secondID), setting },
+      );
+    }
+    const unchanged = await page.evaluate(async () =>
+      (await api('/api/admin/management')).users.find((u) => u.username === 'student'),
+    );
+    assert.equal(unchanged.permissions.tutoring_policy?.overviews, undefined);
+    // A synthetic terminal exercises focus ordering without opening an operating-system shell.
+    await page.evaluate(() => {
+      const el = document.createElement('section');
+      el.id = 'stack-test-terminal';
+      el.className = 'terminal-window';
+      el.style.cssText = 'left:1000px;top:600px;width:300px;height:180px';
+      el.innerHTML =
+        '<header class="terminal-window-bar">Focus test terminal</header><input aria-label="Focus test input">';
+      document.body.append(el);
+      makeTerminalDraggable(el);
+    });
+    const topWindow = () =>
+      page.evaluate(
+        () =>
+          [...document.querySelectorAll('.terminal-window,.note-window')].sort(
+            (a, b) => Number(b.style.zIndex) - Number(a.style.zIndex),
+          )[0].id,
+      );
+    assert.equal(await topWindow(), 'stack-test-terminal');
+    await page.locator('#admin-window .terminal-window-bar b').click();
+    assert.equal(await topWindow(), 'admin-window');
+    await page.getByLabel('Focus test input', { exact: true }).focus();
+    assert.equal(await topWindow(), 'stack-test-terminal');
+    await page.getByRole('button', { name: 'Open admin panel', exact: true }).click();
+    assert.equal(await topWindow(), 'admin-window');
+    await page.getByRole('button', { name: 'Close admin panel', exact: true }).click();
+    await page.evaluate(() => document.querySelector('#stack-test-terminal').remove());
+
+    // Exercise the actual note Pop out control and its minimise/restore/close lifecycle.
+    await page.getByRole('button', { name: 'Notes', exact: true }).click();
+    await settled(page, 'notes');
+    await page.locator('#note-dock-content [data-note-pop]').click();
+    await page.locator('.note-window').waitFor();
+    const floatingNote = page.locator('.note-window').first();
+    await floatingNote.locator('.note-body').fill('Edited in the pop-out');
+    assert.equal(
+      await page.locator('#note-dock-content .note-body').innerText(),
+      'Edited in the pop-out',
+    );
+    await floatingNote.getByRole('button', { name: 'Minimise note', exact: true }).click();
+    assert(await floatingNote.evaluate((el) => el.classList.contains('is-minimised')));
+    await floatingNote.getByRole('button', { name: 'Expand note', exact: true }).click();
+    assert(!(await floatingNote.evaluate((el) => el.classList.contains('is-minimised'))));
+    await page.getByRole('button', { name: 'Open admin panel', exact: true }).click();
+    assert.equal(await topWindow(), 'admin-window');
+    await floatingNote.evaluate((el) => {
+      el.id = 'stack-test-note';
+      el.style.left = '5px';
+      el.style.top = '650px';
+    });
+    await floatingNote.locator('.note-origin').click({ position: { x: 3, y: 3 } });
+    assert.equal(await topWindow(), 'stack-test-note');
+    await floatingNote.getByRole('button', { name: 'Close note', exact: true }).click();
+    await floatingNote.waitFor({ state: 'detached' });
+    await page.getByRole('button', { name: 'Close admin panel', exact: true }).click();
+
+    // Clear attached files at dispatch, preserve the sent copy and restore on rejection.
+    await page.evaluate(() => newThread('GENERAL', 'Attachment send check'));
+    const image = await page.evaluate(() => {
+      const c = document.createElement('canvas');
+      c.width = c.height = 32;
+      c.getContext('2d').fillRect(0, 0, 32, 32);
+      return c.toDataURL('image/png').split(',')[1];
+    });
+    await page.locator('#image-upload').setInputFiles({
+      name: 'sample.png',
+      mimeType: 'image/png',
+      buffer: Buffer.from(image, 'base64'),
+    });
+    await page.waitForSelector('.attachment-chip');
+    await page.locator('#message').fill('Explain this picture');
+    const sent = [];
+    let unblock;
+    const gate = new Promise((resolve) => (unblock = resolve));
+    await page.route('**/api/chat', async (route) => {
+      sent.push(route.request().postDataJSON());
+      await gate;
+      await route.continue();
+    });
+    await page.getByRole('button', { name: 'Send message', exact: true }).click();
+    await page.waitForFunction(() => busy);
+    assert.equal(await page.locator('.attachment-tray .attachment-chip').count(), 0);
+    assert.equal(await page.locator('.message.user .message-image').count(), 1);
+    unblock();
+    await page.waitForFunction(() => !busy);
+    assert.equal(await page.locator('.attachment-tray .attachment-chip').count(), 0);
+    await delay(1100); // Respect the application's one-second per-thread message limit.
+    await page.locator('#message').fill('Another question');
+    await page.getByRole('button', { name: 'Send message', exact: true }).click();
+    await page.waitForFunction(() => !busy);
+    assert.equal(sent[0].attachments.length, 1);
+    assert.deepEqual(sent[1].attachments, []);
+    await page.unroute('**/api/chat');
+    await page.locator('#image-upload').setInputFiles({
+      name: 'retry.png',
+      mimeType: 'image/png',
+      buffer: Buffer.from(image, 'base64'),
+    });
+    await page.waitForSelector('.attachment-chip');
+    await page.locator('#message').fill('Keep this failed draft');
+    await page.route('**/api/chat', (route) =>
+      route.fulfill({
+        status: 503,
+        contentType: 'application/json',
+        body: JSON.stringify({ error: 'Synthetic rejected request' }),
+      }),
+    );
+    await page.getByRole('button', { name: 'Send message', exact: true }).click();
+    await page.waitForFunction(
+      () => !busy && document.querySelector('#message').value === 'Keep this failed draft',
+    );
+    assert.equal(await page.locator('.attachment-tray .attachment-chip').count(), 1);
+    await page.unroute('**/api/chat');
+
     const phone = await browser.newContext({
       viewport: { width: 390, height: 844 },
       isMobile: true,
@@ -209,6 +363,9 @@ async function settled(page, name) {
     console.log(
       JSON.stringify(
         {
+          individualPoliciesSaved: true,
+          floatingWindowFocus: true,
+          attachmentSendAndRetry: true,
           notesSaved: true,
           composerDraftPreserved: true,
           persistentEditors: true,

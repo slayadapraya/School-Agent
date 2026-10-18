@@ -4,3 +4,6 @@ node_modules/
 *.zip
 *.sqlite*
 VALIDATION*.json
+
+# Isolated demonstration runtime data
+.demo/

@@ -296,6 +296,7 @@ async function openAdminWindow() {
   let win = document.getElementById('admin-window');
   if (win) {
     win.classList.remove('minimised');
+    focusFloatingWindow(win);
     return;
   }
   if (screen === 'admin') {

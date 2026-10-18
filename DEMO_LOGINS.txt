@@ -1,0 +1,26 @@
+SCHOOL AGENT — DEMO LOGINS
+
+Start: python3 scripts/start-demo.py
+Open:  http://127.0.0.1:8140
+
+Role            Username        Password
+Administrator   demo.admin      DemoAdmin-2026!
+Teacher         demo.teacher    DemoTeacher-2026!
+Student Alex    demo.student1   DemoStudent1-2026!
+Student Sam     demo.student2   DemoStudent2-2026!
+Student Morgan  demo.student3   DemoStudent3-2026!
+
+These public passwords work only in the separately created demo installation.
+They are not passwords for the project's live website or ordinary server setup.
+
+The demo includes synthetic chats, notes, classes and a teaching file. Alex and
+Sam belong to the demo teacher's maths/physics class. Morgan is in a separate
+history class, demonstrating the teacher's limited student access.
+
+Demo mode stores data and a configuration copy in .demo/ and leaves .local/
+and normal configuration untouched. It binds to this
+computer's loopback address, needs no model download, and clearly labels its
+sample replies. The operating-system terminal is disabled in demo mode.
+
+Regular server startup keeps its own accounts and configured model. It does not
+install these public demo credentials. Existing demo edits persist between runs.

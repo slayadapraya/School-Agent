@@ -39,6 +39,7 @@ def main():
             admin = dict(
                 con.execute("SELECT * FROM users WHERE username='admin'").fetchone()
             )
+        s.add_account("Test second student", "student", "second", password)
         # Publish a source fixture directly using the same authenticated module path.
         s.course_materials.upload(
             s,
@@ -57,7 +58,20 @@ def main():
             "initial_prompt": "",
             "private_model": False,
         }
-        with patch.object(s.model_manager, "prepare", return_value=model):
+        with (
+            patch.object(s.model_manager, "prepare", return_value=model),
+            patch.object(
+                s,
+                "answer",
+                return_value=(
+                    "A synthetic UI-test reply.",
+                    {"mode": "guided", "route": "configured_tutoring", "sources": []},
+                ),
+            ),
+            patch.object(
+                s, "read_question", return_value="A synthetic image transcription."
+            ),
+        ):
             http = s.Server(("127.0.0.1", 0))
 
             def stop(*_):

@@ -6,6 +6,7 @@
 let management = null,
   adminTab = 'people',
   monitorTimer = null;
+let policySelectedPerson = null;
 const originalLoadAdmin = loadAdmin;
 loadAdmin = async function () {
   clearTimeout(monitorTimer);
@@ -42,14 +43,16 @@ function policyFields(values = {}, prefix = 'policy', studentLock = false) {
   return Object.entries(management.policy_labels)
     .map(
       ([key, label]) =>
-        `<label class="policy-field"><span>${esc(label)}</span><select name="${prefix}-${key}" ${studentLock && ['approved_only', 'block_answers'].includes(key) ? 'disabled aria-label="Student safeguard: ' + esc(label) + '"' : ''}><option value="inherit" ${values[key] === undefined ? 'selected' : ''}>Inherit</option><option value="on" ${values[key] === true ? 'selected' : ''}>On</option><option value="off" ${values[key] === false ? 'selected' : ''}>Off</option></select></label>`,
+        `<label class="policy-field"><span>${esc(label)}</span><select name="${prefix}-${key}" ${studentLock && ['approved_only', 'block_answers', 'review_output'].includes(key) ? 'disabled aria-label="Student safeguard: ' + esc(label) + '"' : ''}><option value="inherit" ${values[key] === undefined ? 'selected' : ''}>Inherit</option><option value="on" ${values[key] === true ? 'selected' : ''}>On</option><option value="off" ${values[key] === false ? 'selected' : ''}>Off</option></select></label>`,
     )
     .join('');
 }
 function readPolicy(form, prefix = 'policy') {
   const values = {};
   for (const key of Object.keys(management.policy_labels)) {
-    const v = form.elements[prefix + '-' + key].value;
+    const field = form.elements[prefix + '-' + key];
+    if (!field || field.matches(':disabled')) continue;
+    const v = field.value;
     if (v !== 'inherit') values[key] = v === 'on';
   }
   return values;
@@ -74,7 +77,10 @@ async function renderAdminPanel() {
   if (adminTab === 'policies') {
     panel.innerHTML = `<h1>Tutoring policies</h1><p class="muted">Administrators have an unrestricted personal assistant. Students receive context-aware model tutoring with a separate response check; completed answers remain restricted. AI-generated factual overviews can be enabled or disabled per class or person; the student default is Off. For other teaching settings: default → class policy → individual override. Conflicting classes use the more restrictive setting. Student answer restrictions cannot be turned off by class or individual overrides. For teachers, turning off answer restriction also turns off approved-only tutoring. Generated tutoring can make mistakes or reveal answers; model review is not a guarantee.</p><form id="policy-person" class="account-form"><label>Person<select name="user">${management.users
       .filter((u) => u.role !== 'admin')
-      .map((u) => `<option value="${u.id}">${esc(u.name)} · ${esc(u.role)}</option>`)
+      .map(
+        (u) =>
+          `<option value="${u.id}" ${u.id === policySelectedPerson ? 'selected' : ''}>${esc(u.name)} · ${esc(u.role)}</option>`,
+      )
       .join(
         '',
       )}</select></label><div id="person-policy"></div><button class="primary">Save individual overrides</button><p class="muted">Inherit removes that individual override. For students, factual overviews default to Off unless a class or individual override enables them. Image/research account permissions remain upper limits.</p></form><details><summary>Installation defaults</summary>${Object.entries(
@@ -87,7 +93,13 @@ async function renderAdminPanel() {
       .join('')}</details>`;
     const form = $('#policy-person');
     const show = () => {
-      const person = management.users.find((u) => u.id === Number(form.elements.user.value));
+      policySelectedPerson = Number(form.elements.user.value);
+      const person = management.users.find((u) => u.id === policySelectedPerson);
+      if (!person) {
+        $('#person-policy').textContent = 'Create a student or teacher account first.';
+        form.querySelector('button').disabled = true;
+        return;
+      }
       $('#person-policy').innerHTML = policyFields(
         person.permissions.tutoring_policy || {},
         'policy',
@@ -143,8 +155,9 @@ function classForm(id) {
         members: [...f.querySelectorAll('[name=members]:checked')].map((x) => Number(x.value)),
         policy: readPolicy(f),
       });
-      $('#modal').close();
       await bootstrap();
+      await loadAdmin();
+      $('#modal').close();
       toast('Class saved.');
     } catch (err) {
       $('#class-error').textContent = err.message;

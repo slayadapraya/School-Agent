@@ -9,6 +9,7 @@ import unittest
 import urllib.error
 import urllib.request
 from pathlib import Path
+from unittest.mock import patch
 
 import test_administration as fixtures
 from app import server as s
@@ -131,3 +132,48 @@ class WorkspacePanels(unittest.TestCase):
             self.assertIn(
                 "frame-ancestors 'none'", response.headers["Content-Security-Policy"]
             )
+
+    def test_document_send_saves_attachment_metadata_without_reattaching_next_message(
+        self,
+    ):
+        owner = self.login("student")
+        tid = self.new_thread(owner)
+        code, file, _ = self.request(
+            "/api/files",
+            {
+                "thread_id": tid,
+                "name": "study.txt",
+                "data": base64.b64encode(b"Wave notes").decode(),
+            },
+            owner,
+        )
+        self.assertEqual(code, 201)
+        with patch.object(
+            s,
+            "answer",
+            return_value=(
+                "A sample explanation.",
+                {"mode": "guided", "route": "configured_tutoring", "sources": []},
+            ),
+        ):
+            code, data, _ = self.request(
+                "/api/chat",
+                {
+                    "thread_id": tid,
+                    "message": "Explain this file",
+                    "file_ids": [file["id"]],
+                },
+                owner,
+            )
+            self.assertEqual(code, 200, data)
+            with s.connect() as con:
+                con.execute(
+                    "UPDATE messages SET created=created-2 WHERE thread_id=?", (tid,)
+                )
+            code, data, _ = self.request(
+                "/api/chat", {"thread_id": tid, "message": "Another question"}, owner
+            )
+            self.assertEqual(code, 200, data)
+        messages = self.request("/api/threads/" + tid, cookie=owner)[1]["messages"]
+        self.assertEqual(messages[0]["meta"]["attachments"][0]["mime"], "text/plain")
+        self.assertEqual(messages[2]["meta"]["attachments"], [])

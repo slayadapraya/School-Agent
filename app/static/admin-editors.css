@@ -235,3 +235,27 @@ body .subject-choice-row[hidden],
     padding-top: 16px;
   }
 }
+
+/* Individual policy switches stay aligned and reachable in the account's Policies tab. */
+.admin-editor-dialog .policy-field {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-height: 64px;
+}
+.admin-editor-dialog .policy-field > span {
+  flex: 1;
+}
+.admin-editor-dialog .policy-field select {
+  flex: 0 0 140px;
+  width: 140px;
+}
+@media (max-width: 550px) {
+  .admin-editor-dialog .policy-field {
+    gap: 10px;
+  }
+  .admin-editor-dialog .policy-field select {
+    flex-basis: 100px;
+    width: 100px;
+  }
+}

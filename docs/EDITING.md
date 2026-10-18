@@ -18,6 +18,7 @@ kept as supplied, with its licences.
 | Larger class/account editors and subject filters                           | `app/static/admin-editors.js`, `app/static/admin-editors.css`               |
 | Memories, prompt settings, personal categories, uploads, workspace restore | `app/static/preferences.js`                                                 |
 | Teaching-file upload/library and standalone passage readers                | `app/static/materials.js`, `app/static/materials.css`                       |
+| Shared floating-window focus and stacking                                  | `app/static/floating-windows.js`                                            |
 | Host terminal rendering and input                                          | `app/static/terminal.js`, `app/static/terminal.css`                         |
 | HTML entry point and exact script/style load order                         | `app/static/index.html`                                                     |
 | HTTP routes, authentication, database startup and chat orchestration       | `app/server.py`                                                             |
@@ -31,6 +32,7 @@ kept as supplied, with its licences.
 | Saved preferences, memories, chat recovery and categories                  | `app/preferences.py`, `app/chat_archive.py`, `app/personal_categories.py`   |
 | Hardware readings and application diagnostics                              | `app/hardware.py`, `app/error_logging.py`                                   |
 | Base model instructions and subject catalogues                             | `config/`                                                                   |
+| Isolated public demo and seed data                                         | `app/demo.py`, `scripts/start-demo.py`, `DEMO_LOGINS.txt`                   |
 | Startup, services, evaluations and releases                                | `scripts/`, `deploy/`, `.github/workflows/`                                 |
 | Isolated behaviour and access-control checks                               | `tests/`                                                                    |
 

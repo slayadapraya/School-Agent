@@ -786,11 +786,7 @@ login = function () {
 
 // Change stacking without moving a pressed button in the DOM (which cancels clicks).
 function bringNoteToFront(win) {
-  const others = [...document.querySelectorAll('.note-window')]
-    .filter((el) => el !== win)
-    .sort((a, b) => (Number(a.style.zIndex) || 500) - (Number(b.style.zIndex) || 500));
-  others.forEach((el, i) => (el.style.zIndex = String(500 + i)));
-  win.style.zIndex = String(500 + others.length);
+  focusFloatingWindow(win);
 }
 
 function closeNoteWindow(win) {

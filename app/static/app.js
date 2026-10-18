@@ -384,7 +384,7 @@ function messageHTML(m) {
   if (m.role === 'user')
     return `<div class="message user">${esc(m.content)}${(m.meta?.attachments || []).map((a) => `<button class="message-image" data-view-file="${esc(a.url)}" data-file-name="${esc(a.name)}" data-document="${a.document ? 1 : 0}">${a.document ? '▤' : `<img src="${esc(a.url)}" alt="${esc(a.name)}">`}<span>${esc(a.name)}</span></button>`).join('')}</div>`;
   const meta = m.meta || {};
-  return `<div class="message assistant">${agentAvatar()}<div class="message-body"><div class="message-name">School Agent</div><div class="message-copy">${meta.references ? referenceHTML(meta) : replyTextHTML(meta.route === 'research' ? m.content.split('\n\nSources:\n')[0].trim() : m.content)}</div>${(meta.records || []).map((r) => `<button class="source-chip" data-record="${esc(r.id)}">${esc(r.student)} · ${esc(r.title)} ↗</button>`).join('')}${meta.disclaimer ? `<small class="research-disclaimer">${esc(meta.disclaimer)}</small>` : ''}${(meta.sources || []).map((s) => (/^material-[a-f0-9]{32}$/.test(s.id || '') ? `<button class="source-chip" data-course-passage="${esc(s.id.slice(9))}">[${(meta.sources || []).indexOf(s) + 1}] ${esc(s.title)} · ${esc(s.page_label || s.locator)} ↗</button>` : s.url && /^https:\/\//i.test(s.url) ? `<a class="source-chip" href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">[${(meta.sources || []).indexOf(s) + 1}] ${esc(s.title)} ↗</a>` : `<button class="source-chip" data-source="${esc(s.id)}">▧ ${esc(s.title)} ↗</button>`)).join('')}<small class="route-note">${meta.stopped ? 'Stopped · ' : ''}${meta.image_used ? 'Image read · ' : ''}${meta.route === 'teaching_gap' ? 'Specific teaching material needed' : meta.route === 'concept_guidance' ? 'Concept explanation' : meta.route === 'student_guidance' ? 'Guided tutoring · response checked' : meta.route === 'guidance_unavailable' ? 'Tutoring response unavailable' : meta.route === 'activity_analytics' ? 'Activity analytics · saved records' : meta.route === 'access_denied' ? 'Access restricted' : meta.route === 'research_overview' ? 'Research overview' : meta.route === 'planning' ? 'Planning guidance · no local figures assumed' : meta.route === 'research' ? (meta.references ? 'References · ' + meta.reference_style : 'Live research · source excerpt') : meta.route === 'generation_error' ? 'Response unavailable' : meta.route === 'configured_tutoring' ? 'Learning assistant' : meta.route === 'experimental_checked' ? 'Experimental response · checked, not guaranteed' : meta.route === 'fallback' ? 'General reflection prompt · no generated answer displayed' : meta.route === 'layout' ? 'Blank planning scaffold' : 'Approved course hint'}</small></div></div>`;
+  return `<div class="message assistant">${agentAvatar()}<div class="message-body"><div class="message-name">School Agent</div><div class="message-copy">${meta.references ? referenceHTML(meta) : replyTextHTML(meta.route === 'research' ? m.content.split('\n\nSources:\n')[0].trim() : m.content)}</div>${(meta.records || []).map((r) => `<button class="source-chip" data-record="${esc(r.id)}">${esc(r.student)} · ${esc(r.title)} ↗</button>`).join('')}${meta.disclaimer ? `<small class="research-disclaimer">${esc(meta.disclaimer)}</small>` : ''}${(meta.sources || []).map((s) => (/^material-[a-f0-9]{32}$/.test(s.id || '') ? `<button class="source-chip" data-course-passage="${esc(s.id.slice(9))}">[${(meta.sources || []).indexOf(s) + 1}] ${esc(s.title)} · ${esc(s.page_label || s.locator)} ↗</button>` : s.url && /^https:\/\//i.test(s.url) ? `<a class="source-chip" href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">[${(meta.sources || []).indexOf(s) + 1}] ${esc(s.title)} ↗</a>` : `<button class="source-chip" data-source="${esc(s.id)}">▧ ${esc(s.title)} ↗</button>`)).join('')}<small class="route-note">${meta.stopped ? 'Stopped · ' : ''}${meta.image_used ? 'Image read · ' : ''}${meta.route === 'demo' ? 'Demo · sample reply' : meta.route === 'teaching_gap' ? 'Specific teaching material needed' : meta.route === 'concept_guidance' ? 'Concept explanation' : meta.route === 'student_guidance' ? 'Guided tutoring · response checked' : meta.route === 'guidance_unavailable' ? 'Tutoring response unavailable' : meta.route === 'activity_analytics' ? 'Activity analytics · saved records' : meta.route === 'access_denied' ? 'Access restricted' : meta.route === 'research_overview' ? 'Research overview' : meta.route === 'planning' ? 'Planning guidance · no local figures assumed' : meta.route === 'research' ? (meta.references ? 'References · ' + meta.reference_style : 'Live research · source excerpt') : meta.route === 'generation_error' ? 'Response unavailable' : meta.route === 'configured_tutoring' ? 'Learning assistant' : meta.route === 'experimental_checked' ? 'Experimental response · checked, not guaranteed' : meta.route === 'fallback' ? 'General reflection prompt · no generated answer displayed' : meta.route === 'layout' ? 'Blank planning scaffold' : 'Approved course hint'}</small></div></div>`;
 }
 function chat() {
   const c = course();
@@ -488,7 +488,7 @@ function scrollChat(anchor = 'end') {
 // Message submission and response lifecycle
 // -----------------------------------------------------------------------------
 async function send(text, action = 'chat') {
-  if (busy || creatingThread) return;
+  if (busy || creatingThread || uploadBusy) return;
   if (typeof ensureDraftNoteThread === 'function' && active?.draft) {
     try {
       await ensureDraftNoteThread();
@@ -528,7 +528,9 @@ async function send(text, action = 'chat') {
       creatingThread = false;
     }
   }
-  const images = pendingImages[active.id] || [];
+  const threadId = active.id,
+    owner = state.user.id;
+  const images = [...(pendingImages[threadId] || [])];
   if (!text && images.length) text = 'Help me understand the attached file.';
   if (!text) return;
   try {
@@ -537,11 +539,16 @@ async function send(text, action = 'chat') {
     toast(err.message);
     return;
   }
+  if (busy || creatingThread || active?.id !== threadId || state.user?.id !== owner) return;
   const draft = text;
+  let submitted = false;
   let receivedReply = false;
   replyStopRequested = false;
   busy = true;
-  messages.push({ role: 'user', content: text, meta: { attachments: images } });
+  // Attachments belong to this send, not to the next composer draft.
+  pendingImages[threadId] = [];
+  const sentMessage = { role: 'user', content: text, meta: { attachments: images } };
+  messages.push(sentMessage);
   render();
   scrollChat('latest-user');
   requestAnimationFrame(() => {
@@ -549,7 +556,7 @@ async function send(text, action = 'chat') {
   });
   try {
     await api('/api/chat', {
-      thread_id: active.id,
+      thread_id: threadId,
       message: text,
       action,
       selected_note_id:
@@ -558,8 +565,8 @@ async function send(text, action = 'chat') {
       attachments: images.filter((a) => !a.document).map((a) => a.id),
       file_ids: images.filter((a) => a.document).map((a) => a.id),
     });
-    pendingImages[active.id] = [];
-    const r = await api('/api/threads/' + active.id);
+    submitted = true;
+    const r = await api('/api/threads/' + threadId);
     messages = r.messages;
     if (replyStopRequested && messages.at(-1)?.role === 'assistant') {
       await api('/api/chat/stop', { thread_id: active.id, visible_text: '' });
@@ -570,7 +577,16 @@ async function send(text, action = 'chat') {
     const saved = state.threads.find((t) => t.id === active.id);
     if (saved) saved.updated = Date.now() / 1000;
   } catch (e) {
-    messages.pop();
+    if (!submitted && state.user?.id === owner) {
+      // Rejected/failed sends keep the draft retryable without duplicating attachments.
+      pendingImages[threadId] = [
+        ...new Map(
+          [...images, ...(pendingImages[threadId] || [])].map((file) => [file.id, file]),
+        ).values(),
+      ];
+      const index = messages.indexOf(sentMessage);
+      if (index >= 0) messages.splice(index, 1);
+    }
     toast(e.message);
   } finally {
     const previous = $('#content');
@@ -583,7 +599,8 @@ async function send(text, action = 'chat') {
     else if (follow) scrollChat();
     if ($('#message')) {
       $('#message').focus({ preventScroll: true });
-      if (messages.at(-1)?.role !== 'assistant') $('#message').value = draft;
+      if (!submitted) $('#message').value = draft;
+      resizeComposerInput();
     }
   }
 }
@@ -803,7 +820,27 @@ async function accountForm(id) {
     u ? 'Manage ' + u.name : 'Create an account',
     `<form id="account-form" class="account-form"><div class="form-grid"><label>Display name<input id="account-name" required maxlength="120" value="${esc(u?.name || '')}" autocomplete="off"></label><label>Username<input id="account-username" required maxlength="64" pattern="[a-zA-Z0-9_.-]+" value="${esc(u?.username || '')}" autocomplete="off"></label><label>Role<select id="account-role">${['student', 'teacher', 'admin'].map((r) => `<option value="${r}" ${u?.role === r ? 'selected' : ''}>${r === 'admin' ? 'Administrator' : r === 'teacher' ? 'Teacher' : 'Student'}</option>`).join('')}</select></label><label>${u ? 'Reset password' : 'Initial password'}<input id="account-password" type="password" maxlength="256" ${u ? '' : 'required'} autocomplete="new-password" placeholder="${u ? 'Leave blank to keep current password' : 'Set a password'}"></label></div><label class="check-row"><input type="checkbox" id="account-enabled" ${!u || u.enabled ? 'checked' : ''}> Account enabled</label><fieldset><legend>Course access</legend><div class="course-checks">${adminData.courses.map((c) => `<label class="check-row"><input type="checkbox" name="account-course" value="${esc(c.id)}" ${perms.courses.includes(c.id) ? 'checked' : ''}>${esc(c.id)} · ${esc(c.name)}</label>`).join('')}</div></fieldset><fieldset><legend>Student tools</legend><label class="check-row"><input type="checkbox" id="account-images" ${perms.upload_images !== false ? 'checked' : ''}> Upload photos and paper images</label><label class="check-row"><input type="checkbox" id="account-research" ${perms.web_research !== false ? 'checked' : ''}> Research public sources online</label></fieldset><fieldset><legend>Staff permissions</legend><label class="check-row"><input type="checkbox" id="account-review" ${perms.review_records ? 'checked' : ''}> Review records for assigned courses</label><label class="check-row"><input type="checkbox" id="account-edit" ${perms.manage_courses ? 'checked' : ''}> Edit rules, sources and hints for assigned courses</label><small>Student accounts have no staff permissions. Administrators have full access.</small></fieldset><p id="account-error" class="error" role="alert"></p><div class="staff-controls"><button class="primary" type="submit">${u ? 'Save changes' : 'Create account'}</button>${u ? `<button class="secondary" type="button" data-account-history="${u.id}">View account history</button>` : ''}${u ? '<button class="secondary" type="button" id="revoke-sessions">Sign out all sessions</button>' : ''}</div></form>`,
   );
-  $('#account-form').addEventListener('submit', async (e) => {
+  const accountForm = $('#account-form');
+  const policySection = document.createElement('fieldset');
+  policySection.dataset.editorSection = 'policies';
+  policySection.innerHTML =
+    '<legend>Individual tutoring policies</legend><p class="muted">Override inherited class settings for this person. Upload and research permissions in Tools remain upper limits. Student answer restrictions and response review remain enforced.</p><div id="account-policy-fields"></div>';
+  accountForm.insertBefore(policySection, $('#account-error'));
+  const showAccountPolicies = () => {
+    const current = policySection.querySelector('select')
+      ? readPolicy(accountForm, 'account-policy')
+      : perms.tutoring_policy || {};
+    const role = $('#account-role').value;
+    $('#account-policy-fields').innerHTML = policyFields(
+      current,
+      'account-policy',
+      role === 'student',
+    );
+    policySection.disabled = role === 'admin';
+  };
+  showAccountPolicies();
+  $('#account-role').addEventListener('change', showAccountPolicies);
+  accountForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const role = $('#account-role').value;
     const payload = {
@@ -816,6 +853,7 @@ async function accountForm(id) {
       password: $('#account-password').value,
       permissions: {
         ...perms,
+        tutoring_policy: readPolicy(accountForm, 'account-policy'),
         web_research: $('#account-research').checked,
         upload_images: $('#account-images').checked,
         courses: Array.from(document.querySelectorAll('[name="account-course"]:checked')).map(
@@ -829,8 +867,9 @@ async function accountForm(id) {
     submit.disabled = true;
     try {
       await api('/api/admin/users', payload);
-      $('#modal').close();
       await bootstrap();
+      await loadAdmin();
+      $('#modal').close();
       toast(u ? 'Account updated.' : 'Account created.');
     } catch (err) {
       if ($('#account-error')) $('#account-error').textContent = err.message;
@@ -1066,6 +1105,8 @@ window.matchMedia('(max-width:750px)').addEventListener('change', (e) => {
 });
 
 function policyBannerHTML(c) {
+  if (state.demo)
+    return '<div class="policy"><span>Demo workspace · synthetic data and sample replies · host terminal disabled</span></div>';
   if (!state.user) return '';
   try {
     if (localStorage.getItem('school-notice-dismissed-' + state.user.id) === '1') return '';

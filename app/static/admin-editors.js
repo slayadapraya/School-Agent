@@ -144,7 +144,8 @@ function enhanceAdminDialog(form) {
           children.filter((c) => c.classList.contains('form-grid') || c.tagName === 'LABEL'),
         ],
         ['Subjects', [fields[0]]],
-        ['Tools', fields.slice(1)],
+        ['Tools', fields.slice(1).filter((field) => field.dataset.editorSection !== 'policies')],
+        ['Policies', fields.filter((field) => field.dataset.editorSection === 'policies')],
       ];
   const tabs = document.createElement('div');
   tabs.className = 'editor-section-tabs';

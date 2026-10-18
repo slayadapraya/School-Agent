@@ -2,7 +2,29 @@
 
 School Agent is a self-hosted AI workspace for students, teachers and administrators. It combines subject-based chat, shared teaching files, personal notes and class management in one browser interface. Replies run through locally downloaded models served by LM Studio; accounts and workspace data are stored in SQLite on the host.
 
-**Current release:** [v0.2.0](https://github.com/slayadapraya/School-Agent/releases/tag/v0.2.0). This is a pilot application, with reviewed student tutoring and explicit role-based access.
+**Current release:** [v0.2.1](https://github.com/slayadapraya/School-Agent/releases/tag/v0.2.1). This is a pilot application, with reviewed student tutoring and explicit role-based access.
+
+## Try the demo
+
+```bash
+python3 -m pip install -r requirements.txt
+python3 scripts/start-demo.py
+```
+
+Open **http://127.0.0.1:8140**. All five demo usernames and passwords are listed in
+[DEMO_LOGINS.txt](DEMO_LOGINS.txt): an administrator, a teacher and three students.
+The demo includes sample conversations, editable notes, two classes and a teaching file.
+Two students belong to the teacher's class; the third demonstrates the separate class
+access boundary. Administrator controls, account settings and policy changes are usable.
+
+Demo mode creates its own **`.demo/`** workspace with a separate configuration copy and keeps edits between runs. It runs
+on loopback, uses clearly labelled sample replies without a model download, and disables
+the operating-system terminal. It leaves the normal **`.local/`** installation alone.
+The public demo passwords do not apply to an ordinary installation or the live website.
+
+For real model responses and the host terminal, use the normal installation below with
+its separately generated credentials and configured local model. The demo needs Python
+and Pillow; its sample text file does not require PDF extraction tools.
 
 ## What you can do
 
@@ -29,7 +51,7 @@ Student tutoring is designed to teach concepts and guide the next step rather th
 
 - Create accounts, change Student/Teacher/Administrator roles, reset passwords, disable accounts and invalidate sessions.
 - Create classes, assign teachers and students, add subjects, organise subject categories and assign course access.
-- Edit classes and accounts in larger tabbed windows, with category tags, subject search, year filters, larger checkboxes and a persistent Save area.
+- Edit classes and accounts in larger tabbed windows, with category tags, subject search, year filters, larger checkboxes and a persistent Save area. Individual account policies are available in **People → account → Policies**, alongside Details, Subjects and Tools.
 - Configure tutoring policies at installation, class and individual levels. Factual overviews support On, Off and Inherit; the student default is Off. General factual background can be enabled without disabling exercise-answer restrictions or response review. Administrators have a separate personal assistant path.
 - Search student activity, filter history and ask supported aggregate activity questions within the administrator's review scope.
 - Select downloaded models, set personal instructions for each model and manage available model access. Models load when a new conversation first sends a message.
@@ -42,7 +64,8 @@ Student tutoring is designed to teach concepts and guide the next step rather th
 
 - Responsive desktop and mobile layouts, a left-side navigation drawer on phones, and a compact mobile composer.
 - Dark green Research Studio styling plus alternative themes and theme typography in Settings.
-- Streaming-style reply presentation, syntax-highlighted code, file downloads and a Stop control for active generation.
+- Streaming-style reply presentation, syntax-highlighted code, file downloads and a Stop control for active generation. Sent attachments leave the composer immediately; rejected sends restore the draft for retry.
+- Click or keyboard-focus an admin, terminal or floating note window to bring it to the front.
 - Subject conversations, recent chats, editable titles, personal files, account memories and permanent notes in the same workspace.
 - Staff research routes can retrieve online sources and return linked references. Requested reference lists default to APA 7 unless another style is requested. Research depends on network access, available sources and the applicable role/policy path; the reviewed student tutor is not an unrestricted research assistant.
 
@@ -136,7 +159,7 @@ Staff prompt edits are stored in runtime data and can override file defaults. Re
 
 ## Tests and evaluation
 
-The release snapshot passed **188 automated tests**, including file access, class isolation, retained page/slide locations, archived references, student output boundaries and workspace ownership. The release workflow reruns the suite, formatting checks and JavaScript syntax checks before publishing.
+The release snapshot passed **196 automated tests**, including file access, class isolation, retained page/slide locations, archived references, student output boundaries and workspace ownership. The release workflow reruns the suite, formatting checks and JavaScript syntax checks before publishing.
 
 ```bash
 python3 -m unittest discover -s tests

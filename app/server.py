@@ -45,6 +45,8 @@ from urllib.parse import urlsplit
 
 # --- Application paths, process locks and safe fallback text ---
 ROOT = Path(__file__).resolve().parents[1]
+# Assets are read-only application files; demo configuration can use a separate root.
+STATIC_ROOT = ROOT / "app/static"
 STATE = Path(os.environ.get("SCHOOL_AGENT_STATE", ROOT / ".local"))
 DB = STATE / "school.sqlite3"
 LOGGER = logging.getLogger("school_agent")
@@ -247,7 +249,7 @@ def init():
     os.chmod(DB, 0o600)
     if empty:
         migrated = {
-            "teacher": add_account("Charlie", "admin", "admin"),
+            "teacher": add_account("Administrator", "admin", "admin"),
             "student": add_account("Demo student", "student", "student"),
         }
     if migrated:
@@ -1443,6 +1445,7 @@ class Handler(BaseHTTPRequestHandler):
                 return self.respond(200, {"thread": dict(t), "messages": msgs})
             raise APIError(404, "Not found")
         static_files = {
+            "/floating-windows.js": "floating-windows.js",
             "/workspace-panels.js": "workspace-panels.js",
             "/workspace-panels.css": "workspace-panels.css",
             "/admin-editors.js": "admin-editors.js",
@@ -1472,7 +1475,7 @@ class Handler(BaseHTTPRequestHandler):
         }
         if path not in static_files:
             raise APIError(404, "Not found")
-        file = ROOT / "app/static" / static_files[path]
+        file = STATIC_ROOT / static_files[path]
         data = file.read_bytes()
         self.send_response(200)
         self.send_header(
@@ -2111,7 +2114,7 @@ class Handler(BaseHTTPRequestHandler):
                         raise APIError(400, "Attach up to three documents")
                     for fid in file_ids:
                         doc = con.execute(
-                            "SELECT id,name FROM documents WHERE id=? AND thread_id=? AND user_id=?",
+                            "SELECT id,name,mime FROM documents WHERE id=? AND thread_id=? AND user_id=?",
                             (fid, tid, user["id"]),
                         ).fetchone()
                         if not doc:
@@ -2122,7 +2125,7 @@ class Handler(BaseHTTPRequestHandler):
                                 "name": doc["name"],
                                 "url": "/api/files/" + doc["id"],
                                 "document": True,
-                                "mime": r["mime"],
+                                "mime": doc["mime"],
                             }
                         )
                     file_context = files.context(con, tid)

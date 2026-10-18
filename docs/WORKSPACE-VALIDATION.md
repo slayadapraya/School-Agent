@@ -1,6 +1,6 @@
 # Workspace panel validation
 
-The v0.2.0 checks use synthetic accounts and temporary databases. They do not open or
+The v0.2.1 checks use synthetic accounts and temporary databases. They do not open or
 edit any installed account's history, files or notes.
 
 ## Automated HTTP regression tests
@@ -48,6 +48,11 @@ The browser check covers:
 - Theme switching while a source remains open.
 - Mobile touch targets, typing in the overlay, backdrop/minimise/Escape dismissal.
 - Reduced motion and no horizontal page overflow.
+- Individual policy and Tools changes survive account tabs, save and reopening.
+- The separate policy editor retains the selected person through On/Off/Inherit saves.
+- Sent images leave the composer during generation, remain in the sent message, and are not
+  attached to the next message; rejected sends recover one copy with the draft.
+- Admin/terminal/note window focus order, including keyboard focus and note pop-out lifecycle.
 - No uncaught browser errors during these interactions.
 
 During visual review, also inspect card alignment, bookmark hover label spacing and the
@@ -60,3 +65,10 @@ They check UI behaviour, persistence and access boundaries. They do not establis
 all generated answers are factually correct, and they do not replace the real-model
 teaching evaluation described in the README. The source cleanup keeps existing CSS rule
 order and script dependency order; vendor libraries are excluded from formatting.
+
+## Demo isolation checks
+
+`tests/test_demo.py` checks all documented logins, the five synthetic accounts, seeded
+classes and roster boundaries, preserved demo edits, refusal to initialise an occupied
+non-demo directory, disabled demo terminals, and absence of demo passwords in normal
+server startup. Demo mode is separate from real-model evaluation.

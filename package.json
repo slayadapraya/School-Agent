@@ -1,7 +1,7 @@
 {
   "name": "school-agent-development",
   "private": true,
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Optional formatting and browser-check tools; no frontend build required.",
   "scripts": {
     "check:workspace": "node scripts/check-workspace.cjs",
