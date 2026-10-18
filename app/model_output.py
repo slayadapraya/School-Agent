@@ -39,5 +39,5 @@ def readable_math(text):
     text=re.sub(r'\^\{?([23])\}?',lambda m:'²' if m[1]=='2' else '³',text)
     def unwrap(m):
         body=m[1]
-        return body if re.fullmatch(r'[A-Za-zλμωπθΔ]{1,3}',body) or re.search(r'[=λ×²³/\\{}]',body) else m[0]
+        return body if re.fullmatch(r'[A-Za-zλμωπθΔ]{1,3}',body) or re.search(r'[=λ×²³/\\{}+*]',body) else m[0]
     return re.sub(r'\$([^$\n]{1,180})\$',unwrap,text)

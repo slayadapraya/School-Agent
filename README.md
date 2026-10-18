@@ -1,58 +1,155 @@
 # School Agent
 
-A local chat and tutoring application built with Python, SQLite and a browser interface. It connects to downloaded models through LM Studio.
+School Agent is a self-hosted AI workspace for students, teachers and administrators. It combines subject-based chat, shared teaching files, personal notes and class management in one browser interface. Replies run through locally downloaded models served by LM Studio; accounts and workspace data are stored in SQLite on the host.
 
-## Features
+**Current release:** [v0.1.0](https://github.com/slayadapraya/School-Agent/releases/tag/v0.1.0). This is a pilot application, with reviewed student tutoring and explicit role-based access.
 
-- Student tutoring with conversation context, course material and restrictions on completed exercise answers.
-- Teacher tools for assigned students, weekly activity, conversation review and read-only student notes.
-- Administrator controls for accounts, classes, model access, prompts, diagnostics and an authenticated host terminal.
-- Personal admin chat categories with drag-and-drop ordering and recoverable chat deletion.
-- Downloaded-model selection, per-model admin instructions and server-enforced Teacher view.
-- Account memories, saved conversation files, syntax-highlighted code and cancellable replies.
-- Experimental autosaving notes with colour, formatting, floating windows and staff review.
-- Server telemetry and rolling graphs on the admin home page.
+## What you can do
 
-Student restrictions are enforced by server-side policy and reviewed model responses. Model output can still be incorrect or disclose answers; evaluate the intended subjects and prompts before using this with real students. Image generation is not connected.
+### Students
 
-## Run locally
+- Open an assigned subject, send a message to create a conversation, and rename or revisit that thread later.
+- Ask for explanations, examples, definitions and help working through a problem. The tutor receives conversation context so follow-up questions can build on earlier messages.
+- Upload a photo of a question or a supported document when account policy permits. Images use the configured vision model; extracted document text can inform the conversation.
+- Read teaching files shared with your subject or class. Supported replies include clickable references that open the relevant passage and link to the original file.
+- Keep experimental chat notes with titles, colours, text sizing and basic formatting. Notes autosave and can open in a floating window. Relevant personal notes can provide context to the assistant.
+- Manage account memories and preferences, choose an interface theme, and recover deleted chats from Settings.
 
-Requires Python 3.11+, the packages in `requirements.txt`, and LM Studio with a compatible local model. PDF text extraction also uses `pdftotext` when available.
+Student tutoring is designed to teach concepts and guide the next step rather than supply completed exercise answers. Context interpretation, response generation, model review and bounded numeric checks support that behaviour. Student restrictions still apply to additional models granted by a teacher. Review can fail, and model output can contain errors or disclose answers; it is not a guarantee.
+
+### Teachers
+
+- Work with assigned classes and their students, including subject assignment and permitted student history review.
+- Review activity over a selected time period, filter records, inspect conversations and read student notes within the assigned roster.
+- Publish teaching files to an assigned class through **Course library → Share a teaching file** or **Staff studio → Teaching files**.
+- Archive or restore files they uploaded while they remain assigned to that class.
+- Use available staff prompt and model-access controls. Actual permissions and class assignments are checked by the server.
+
+### Administrators
+
+- Create accounts, change Student/Teacher/Administrator roles, reset passwords, disable accounts and invalidate sessions.
+- Create classes, assign teachers and students, add subjects, organise subject categories and assign course access.
+- Configure tutoring policies at installation, class and individual levels. Some student restrictions are enforced regardless of a relaxed saved policy; administrators have a separate personal assistant path.
+- Search student activity, filter history and ask supported aggregate activity questions within the administrator's review scope.
+- Select downloaded models, set personal instructions for each model and manage available model access. Models load when a new conversation first sends a message.
+- Organise personal chats into custom categories with drag-and-drop ordering and recover deleted conversations.
+- Switch to **Teacher view**, which changes the authenticated session role and blocks admin-only APIs, or use the student tutor preview. These previews do not impersonate a named student's account.
+- Inspect application diagnostics and live CPU, RAM, GPU/VRAM, temperature and GPU power readings where the host exposes sensors, with recent-history graphs.
+- Open an authenticated embedded host terminal. This is a shell on the server's operating system under its service account, not an SSH connection to another machine.
+
+### Chat and interface
+
+- Responsive desktop and mobile layouts, a left-side navigation drawer on phones, and a compact mobile composer.
+- Dark green Research Studio styling plus alternative themes and theme typography in Settings.
+- Streaming-style reply presentation, syntax-highlighted code, file downloads and a Stop control for active generation.
+- Subject conversations, recent chats, editable titles, personal files, account memories and optional notes in the same workspace.
+- Staff research routes can retrieve online sources and return linked references. Requested reference lists default to APA 7 unless another style is requested. Research depends on network access, available sources and the applicable role/policy path; the reviewed student tutor is not an unrestricted research assistant.
+
+## Shared teaching files
+
+1. A teacher opens **Course library → Share a teaching file** and selects a subject and an assigned class. An administrator may instead share with everyone enrolled in the subject.
+2. The server extracts text, retains its location and indexes passages for retrieval within that subject.
+3. A student asks a question in that subject's chat. Relevant accessible passages can be supplied to the main tutor as source material.
+4. A source button below a supported reply opens the cited passage, with a link to the original document.
+
+| Format | Displayed location | Limits and behaviour |
+| --- | --- | --- |
+| PDF | Physical page number | Text-based, unlocked PDFs; up to 80 pages. Blank pages retain their position. |
+| PowerPoint (`.pptx`) | Slide number | Up to 120 slides, in presentation order. |
+| Word (`.docx`) | Section number | Logical text sections; document page numbers are not invented. |
+| Text / Markdown | Section number | UTF-8 text, split into logical sections. |
+
+Each teaching file may be up to **6 MB**, with at most **40 active files per subject**. Scanned PDFs and image-only slides need text recognition before upload. PDF extraction requires `pdfinfo` and `pdftotext` from Poppler.
+
+Teachers publish to their assigned classes; students see only files available through current enrolment and class membership. Opening an original or an old citation checks access again. Archiving removes a file from new tutoring context while keeping it available to authorized readers of older citations; restoring enables retrieval again.
+
+Retrieval currently uses lexical relevance and can miss paraphrases. Source links make passages inspectable; they do not independently verify every generated claim. Private alternative administrator models retain their separate chat path.
+
+## Personal files and notes
+
+Personal conversation documents are separate from shared teaching files. Chat uploads support PDF, DOCX, TXT, Markdown, CSV and JSON, alongside supported image attachments. Documents are limited to 6 MB and 20 per conversation; text extraction is bounded, so long documents may not all reach the model.
+
+Personal notes belong to their author. Authorized staff have read-only review access within their roster scope. Disabling experimental notes hides the feature without deleting saved content. The current file UI provides previews and downloads; the proposed expanded right-side document viewer is not part of this release.
+
+## Access and data storage
+
+| Role | Personal workspace | Student records | Teaching-file publishing |
+| --- | --- | --- | --- |
+| Student | Own chats, files, notes and memories | Own records | Read accessible subject/class files |
+| Teacher | Own workspace | Assigned students, subject to review permissions | Assigned classes |
+| Administrator | Own workspace and administrator tools | Administrator review scope | Assigned classes or subject-wide |
+
+Students cannot request another person's chat, file or notes through client-supplied IDs or a claimed role. Roles, enrolment and class access are checked by the server. Teacher access does not grant access to another teacher's or administrator's personal chat history. Staff review actions are logged.
+
+Private runtime data lives under `.local/` by default: database, accounts, saved files, notes, preferences and logs. It is excluded from Git and release source archives. Set `SCHOOL_AGENT_STATE` to use another state directory. Back up that directory separately from the source code.
+
+Automatic age-based chat retention is disabled when `retention_days` is `null`. Deleted chats are recoverable through Settings. The initial `.local/credentials.json` contains generated first-run credentials; it does not track later password changes. Passwords must be reset rather than retrieved.
+
+## Install and start
+
+Requires **Python 3.11+**, **Pillow**, **Poppler** for PDF extraction, and **LM Studio** with a compatible downloaded model. The current configuration targets Qwen3.5 9B Q5; model downloads are separate from this repository. Host terminal and hardware monitoring support depends on the operating system and available tools/sensors; the service scripts target Linux.
 
 ```bash
+git clone https://github.com/slayadapraya/School-Agent.git
+cd School-Agent
 python3 -m pip install -r requirements.txt
-# Configure the model URL, identifier and transport in config/settings.json.
+# Debian/Ubuntu: sudo apt-get install poppler-utils
+# Configure config/settings.json and download the model in LM Studio.
 ./scripts/start-model.sh
 ./scripts/start.sh
 ```
 
-The private listener defaults to `http://127.0.0.1:8137`. The optional public listener and Tailscale proxy require separate host configuration. Login is required on either listener.
+Open **http://127.0.0.1:8137** and sign in using the first-run credentials generated on the host. For a project already installed as a user service:
 
-Initial login credentials are generated under `.local/credentials.json`. Password resets must be performed through account administration; that initial file does not track later password changes.
+```bash
+systemctl --user start school-agent.service
+systemctl --user status school-agent.service
+# After updating Python source:
+systemctl --user restart school-agent.service
+```
 
-## Configuration and data
+To install that service on a new Linux host, run `./scripts/install-service.sh`. It starts the application and attempts to start the configured model. Check logs with `journalctl --user -u school-agent.service`.
 
-- `config/settings.json`: local model connection, listeners and retention.
-- `config/courses.json`: course material and subject rules.
-- `config/student-*.txt`: student context, tutoring and review instructions. Staff prompt edits are stored locally and can override these defaults.
-- `.local/`: private database, account data, files, notes and diagnostic logs. This directory is excluded from Git.
+### Public access
 
-Disabling experimental notes hides the feature without deleting its saved data. Chat deletion is recoverable through Settings. Automatic age-based retention is disabled when `retention_days` is `null`.
+The optional public listener and Tailscale Funnel proxy require host configuration; cloning this repository does not create a public domain. Visitors using a configured Funnel address do not need Tailscale installed. The server PC and model service must remain available. Login is required on both listeners, and public sign-in applies stronger password requirements.
 
-Administrators can switch to Teacher view from the profile menu; admin-only APIs are denied while that session uses the teacher role. The Student view preview uses the main tutor and student restrictions. Previewing a role does not select or impersonate a particular student or teacher account.
+The repository includes `scripts/enable-public-access.sh` and `scripts/disable-public-access.sh`. Review listener and Tailscale settings for the destination host. Keep the model API local; expose the authenticated application rather than LM Studio directly.
 
-## Development
+## Configuration
+
+| Path | Purpose |
+| --- | --- |
+| `config/settings.json` | Model URL/identifier, transport, context, listeners, research flags and retention |
+| `config/courses.json` | Base subject definitions and approved course material |
+| `config/student-*.txt` | Context interpretation, student tutoring and response-review defaults |
+| `config/conversation*.txt` | General conversation and review defaults |
+| Other `config/*.json` / `*.txt` | Source catalogues, concept guidance and research/planning instructions |
+| `.local/` or `SCHOOL_AGENT_STATE` | Private runtime data and saved overrides; excluded from version control |
+
+Staff prompt edits are stored in runtime data and can override file defaults. Refresh the browser after frontend updates; restart the service after Python changes. Hardware readings may be unavailable when a driver or sensor is unsupported. Image generation is not connected.
+
+## Tests and evaluation
+
+The release snapshot passed **180 automated tests**, including file access, class isolation, retained page/slide locations, archived references, student output boundaries and workspace ownership. The release workflow reruns the suite and JavaScript syntax checks before publishing.
 
 ```bash
 python3 -m unittest discover -s tests
-node --check app/static/app.js
+for file in app/static/*.js; do node --check "$file"; done
 ```
 
-Restart the service after Python changes and refresh the browser after frontend changes:
+For a real-model evaluation, start the configured model first:
 
 ```bash
-systemctl --user restart school-agent.service
-journalctl --user -u school-agent.service
+python3 scripts/evaluate_tutor.py --output /tmp/school-agent-evaluation.json
+# Optional subset:
+python3 scripts/evaluate_tutor.py --only material-frequency,material-page --output /tmp/citation-evaluation.json
 ```
 
-This is a pilot application. Validate access rules, curriculum accuracy, answer leakage, accessibility and expected concurrent usage before an institutional deployment. Keep the host model API and operating-system credentials separate from student access.
+This harness creates a disposable database and synthetic accounts, uploads its own fixtures, and makes 30 real HTTP chat requests. It does not open production chats, notes, saved prompts or student accounts. Cases cover conversation, subject concepts, follow-ups, an uploaded question image, privacy, answer boundaries and teaching-file citations. Keyword/boundary checks screen behaviour; read the replies to assess factual accuracy and teaching quality.
+
+The October evaluation found missing file citations, which were fixed and passed a five-case retest. Manual review also found wording issues around economics terminology, claimed roles and source reliability. These remain areas for improvement; passing the software suite does not establish factual perfection.
+
+## Releases
+
+`VERSION` records the current semantic version. A push to `main` that changes this file triggers `.github/workflows/release.yml`: it runs the isolated tests and syntax checks, then publishes a GitHub release using the short notes in `docs/releases/v<VERSION>.md`. It can also be run manually from Actions. GitHub provides source ZIP and tar downloads for the version tag; model weights and runtime data are not included.
