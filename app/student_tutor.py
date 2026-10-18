@@ -151,7 +151,19 @@ def leak(reply, targets):
     return ""
 
 
-def respond(course, message, history, action="chat", model_json=None):
+def overview_instructions(enabled):
+    if enabled:
+        return ('Administrator-managed factual overviews: ON. Short general factual background and topic summaries are allowed. '
+                'Distinguish general background from the requested answer to an exercise or assignment: completed task answers, final numerical results, '
+                'answer confirmation and submission-ready work remain forbidden. This setting grants no account access and no web-search capability. '
+                'Do not invent sources or claim independent verification.')
+    return ('Administrator-managed factual overviews: OFF. Do not provide a standalone AI-generated factual topic overview or factual profile. '
+            'Concept definitions, relevant conceptual explanations, small hints and ordinary conversation remain allowed. '
+            'If a factual overview is requested, briefly explain that it is disabled and offer to help interpret supplied course material instead. '
+            'Completed task answers and answer confirmation remain forbidden.')
+
+
+def respond(course, message, history, action="chat", model_json=None, policy=None):
     meta = {"mode": "guided", "route": "student_guidance", "sources": []}
     from . import learning_context
 
@@ -171,8 +183,11 @@ def respond(course, message, history, action="chat", model_json=None):
         remaining -= len(text)
     from . import server, preferences
 
+    overview_enabled = bool(policy and policy.get('overviews'))
+    overview_policy = overview_instructions(overview_enabled)
     prompt = (
         server.prompt_text("student-tutor.txt") + "\n" + preferences.STUDENT_BOUNDARY
+        + "\n" + overview_policy
     )
     payload = {
         "current_message": message,
@@ -270,6 +285,8 @@ def respond(course, message, history, action="chat", model_json=None):
                         "content": server.prompt_text("student-review.txt")
                         + "\n"
                         + REVIEW
+                        + "\n" + overview_policy
+                        + '\nAlso return factual_overview:true only if this reply provides a standalone general factual overview; otherwise false. Reject such an overview when the setting is OFF. This classification must not relax the completed-task-answer check.'
                         + ("\nAlso return source_labels:[\"M1\",...] listing only the provided course passages actually supporting this reply. Use [] if the reply doesn't use them. Do not invent labels. Keep allow and issues as above." if material_context else ""),
                     },
                     {
@@ -288,6 +305,9 @@ def respond(course, message, history, action="chat", model_json=None):
                 ],
                 300,
             )
+            if not overview_enabled and verdict.get('factual_overview') is True:
+                feedback='Factual overviews are disabled by the saved policy. Offer help interpreting course material instead of a standalone factual summary.'
+                continue
             if verdict.get("allow") is True:
                 from .model_output import readable_math
 
@@ -300,6 +320,8 @@ def respond(course, message, history, action="chat", model_json=None):
                     continue
                 used = list(dict.fromkeys(int(i)-1 for i in ids))
                 meta["sources"] = [{k:v for k,v in material_sources[i].items() if k!='text'} for i in used]
+                if overview_enabled and verdict.get('factual_overview') is True and policy.get('show_disclaimer',True):
+                    meta['disclaimer']='AI-generated information. Not independently verified; check any linked sources.'
                 for i in used:text=text.replace('[M'+str(i+1)+']','['+str(used.index(i)+1)+']')
                 # Turn any explicit, known textbook identifier into a normal
                 # numbered source as well; never show internal IDs to students.

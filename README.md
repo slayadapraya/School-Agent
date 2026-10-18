@@ -29,7 +29,8 @@ Student tutoring is designed to teach concepts and guide the next step rather th
 
 - Create accounts, change Student/Teacher/Administrator roles, reset passwords, disable accounts and invalidate sessions.
 - Create classes, assign teachers and students, add subjects, organise subject categories and assign course access.
-- Configure tutoring policies at installation, class and individual levels. Some student restrictions are enforced regardless of a relaxed saved policy; administrators have a separate personal assistant path.
+- Edit classes and accounts in larger tabbed windows, with category tags, subject search, year filters, larger checkboxes and a persistent Save area.
+- Configure tutoring policies at installation, class and individual levels. Factual overviews support On, Off and Inherit; the student default is Off. General factual background can be enabled without disabling exercise-answer restrictions or response review. Administrators have a separate personal assistant path.
 - Search student activity, filter history and ask supported aggregate activity questions within the administrator's review scope.
 - Select downloaded models, set personal instructions for each model and manage available model access. Models load when a new conversation first sends a message.
 - Organise personal chats into custom categories with drag-and-drop ordering and recover deleted conversations.
@@ -131,7 +132,7 @@ Staff prompt edits are stored in runtime data and can override file defaults. Re
 
 ## Tests and evaluation
 
-The release snapshot passed **180 automated tests**, including file access, class isolation, retained page/slide locations, archived references, student output boundaries and workspace ownership. The release workflow reruns the suite and JavaScript syntax checks before publishing.
+The release snapshot passed **184 automated tests**, including file access, class isolation, retained page/slide locations, archived references, student output boundaries and workspace ownership. The release workflow reruns the suite and JavaScript syntax checks before publishing.
 
 ```bash
 python3 -m unittest discover -s tests
@@ -152,4 +153,4 @@ The October evaluation found missing file citations, which were fixed and passed
 
 ## Releases
 
-`VERSION` records the current semantic version. A push to `main` that changes this file triggers `.github/workflows/release.yml`: it runs the isolated tests and syntax checks, then publishes a GitHub release using the short notes in `docs/releases/v<VERSION>.md`. It can also be run manually from Actions. GitHub provides source ZIP and tar downloads for the version tag; model weights and runtime data are not included.
+`VERSION` records the current semantic version. Each push to `main` triggers `.github/workflows/release.yml`: it runs the isolated tests and syntax checks, then publishes a GitHub release if that version does not already exist using the short notes in `docs/releases/v<VERSION>.md`. It can also be run manually from Actions. GitHub provides source ZIP and tar downloads for the version tag; model weights and runtime data are not included.

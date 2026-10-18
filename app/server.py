@@ -516,7 +516,7 @@ def answer(course, message, history, action="chat", allow_research=True, policy=
     if policy and policy.get("student_guidance"):
         from .student_tutor import respond
 
-        return respond(course, message, history, action, model_json=model_json)
+        return respond(course, message, history, action, model_json=model_json, policy=policy)
     if policy and policy.get("staff_unrestricted") and action == "chat":
         return configured_answer(course, message, history, policy)
     if (
@@ -1417,6 +1417,8 @@ class Handler(BaseHTTPRequestHandler):
                 return self.respond(200, {"thread": dict(t), "messages": msgs})
             raise APIError(404, "Not found")
         static_files = {
+            "/admin-editors.js": "admin-editors.js",
+            "/admin-editors.css": "admin-editors.css",
             "/materials.js": "materials.js",
             "/materials.css": "materials.css",
             "/notes.js": "notes.js",

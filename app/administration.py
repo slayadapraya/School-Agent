@@ -24,7 +24,11 @@ def groups(s,uid=None):
 
 def policy(s,user,code):
     if user['role']=='admin':return {**DEFAULTS,'approved_only':False,'block_answers':False,'require_sources':False,'review_output':False,'staff_unrestricted':True}
-    result=dict(DEFAULTS);perms=json.loads(user['permissions']);matching=[g for g in groups(s,user['id']) if g['enabled'] and code in g['courses']]
+    result=dict(DEFAULTS)
+    # Preserve the conservative student default, while allowing trusted class
+    # and individual settings to opt into general factual background.
+    if user['role']=='student':result['overviews']=False
+    perms=json.loads(user['permissions']);matching=[g for g in groups(s,user['id']) if g['enabled'] and code in g['courses']]
     for key in DEFAULTS:
         values=[g['policy'][key] for g in matching if key in g['policy']]
         if values:result[key]=any(values) if key in PROTECTIVE else all(values)
@@ -34,7 +38,7 @@ def policy(s,user,code):
     if not result['block_answers']:result['approved_only']=False
     if user['role']=='student':
         # This boundary cannot be relaxed by class/person overrides or client fields.
-        result.update(approved_only=False,block_answers=True,review_output=True,overviews=False,student_guidance=True)
+        result.update(approved_only=False,block_answers=True,review_output=True,student_guidance=True)
     return result
 
 def review(s,user,student,code,thread_id=None):

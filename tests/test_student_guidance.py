@@ -21,7 +21,7 @@ class StudentGuidance(unittest.TestCase):
  def test_student_policy_cannot_be_disabled(self):
   with s.connect() as con:
    row=con.execute("SELECT id,permissions FROM users WHERE username='student'").fetchone();p=json.loads(row['permissions']);p['tutoring_policy']={'block_answers':False,'review_output':False,'overviews':True};con.execute('UPDATE users SET permissions=? WHERE id=?',(json.dumps(p),row['id']))
-  cookie,tid=self.open_thread();p=self.request('/api/bootstrap',cookie=cookie)[1]['courses'][0]['policy'];self.assertTrue(p['student_guidance']);self.assertTrue(p['block_answers']);self.assertTrue(p['review_output']);self.assertFalse(p['overviews'])
+  cookie,tid=self.open_thread();p=self.request('/api/bootstrap',cookie=cookie)[1]['courses'][0]['policy'];self.assertTrue(p['student_guidance']);self.assertTrue(p['block_answers']);self.assertTrue(p['review_output']);self.assertTrue(p['overviews'])
   with patch.object(s,'model_json',side_effect=[{},'Try writing two equal factors first.',{'allow':True}]):r=self.ask(cookie,tid,'9 squared',role='admin',policy={'block_answers':False})
   self.assertEqual(r['meta']['route'],'student_guidance')
  def test_numeric_leak_is_revised_before_review(self):

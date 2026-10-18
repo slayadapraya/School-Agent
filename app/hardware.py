@@ -26,10 +26,10 @@ def snapshot():
         if re.fullmatch(r'card\d+',card.name):
             total=number(card/'device/mem_info_vram_total')
             if total:cards.append((total,card))
-    gpu={}
+    gpu=dict.fromkeys(('vram_total','vram_used','utilization','temperature','hotspot','power_watts','fan_rpm','device'))
     if cards:
         total,card=max(cards,key=lambda x:x[0]);device=card/'device'
-        gpu={'vram_total':total,'vram_used':number(device/'mem_info_vram_used'),'utilization':number(device/'gpu_busy_percent'),'device':card.name}
+        gpu.update(vram_total=total,vram_used=number(device/'mem_info_vram_used'),utilization=number(device/'gpu_busy_percent'),device=card.name)
         sensors=list((device/'hwmon').glob('hwmon*'))
         if sensors:
             sensor=sensors[0]
