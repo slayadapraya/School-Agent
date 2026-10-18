@@ -3,3 +3,7 @@ __pycache__/
 .local/
 .env
 *.sqlite*
+
+# Local development tools
+.venv/
+node_modules/

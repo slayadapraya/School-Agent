@@ -1,6 +1,7 @@
 """Account-scoped admin model choices; students always use the main tutor."""
 
-import json, time
+import json
+import time
 from urllib.request import Request, urlopen
 from urllib.parse import urlsplit
 

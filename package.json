@@ -1,0 +1,15 @@
+{
+  "name": "school-agent-development",
+  "private": true,
+  "version": "0.2.0",
+  "description": "Optional formatting and browser-check tools; no frontend build required.",
+  "scripts": {
+    "check:workspace": "node scripts/check-workspace.cjs",
+    "format": "./scripts/format.sh",
+    "format:check": "./scripts/format.sh --check"
+  },
+  "devDependencies": {
+    "playwright-core": "1.64.1",
+    "prettier": "3.6.2"
+  }
+}

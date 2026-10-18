@@ -2,7 +2,7 @@
 
 School Agent is a self-hosted AI workspace for students, teachers and administrators. It combines subject-based chat, shared teaching files, personal notes and class management in one browser interface. Replies run through locally downloaded models served by LM Studio; accounts and workspace data are stored in SQLite on the host.
 
-**Current release:** [v0.1.0](https://github.com/slayadapraya/School-Agent/releases/tag/v0.1.0). This is a pilot application, with reviewed student tutoring and explicit role-based access.
+**Current release:** [v0.2.0](https://github.com/slayadapraya/School-Agent/releases/tag/v0.2.0). This is a pilot application, with reviewed student tutoring and explicit role-based access.
 
 ## What you can do
 
@@ -12,7 +12,7 @@ School Agent is a self-hosted AI workspace for students, teachers and administra
 - Ask for explanations, examples, definitions and help working through a problem. The tutor receives conversation context so follow-up questions can build on earlier messages.
 - Upload a photo of a question or a supported document when account policy permits. Images use the configured vision model; extracted document text can inform the conversation.
 - Read teaching files shared with your subject or class. Supported replies include clickable references that open the relevant passage and link to the original file.
-- Keep experimental chat notes with titles, colours, text sizing and basic formatting. Notes autosave and can open in a floating window. Relevant personal notes can provide context to the assistant.
+- Keep permanent chat notes with titles, colours, text sizing and basic formatting. Notes autosave and can open in a floating window. Relevant personal notes can provide context to the assistant.
 - Manage account memories and preferences, choose an interface theme, and recover deleted chats from Settings.
 
 Student tutoring is designed to teach concepts and guide the next step rather than supply completed exercise answers. Context interpretation, response generation, model review and bounded numeric checks support that behaviour. Student restrictions still apply to additional models granted by a teacher. Review can fail, and model output can contain errors or disclose answers; it is not a guarantee.
@@ -43,7 +43,7 @@ Student tutoring is designed to teach concepts and guide the next step rather th
 - Responsive desktop and mobile layouts, a left-side navigation drawer on phones, and a compact mobile composer.
 - Dark green Research Studio styling plus alternative themes and theme typography in Settings.
 - Streaming-style reply presentation, syntax-highlighted code, file downloads and a Stop control for active generation.
-- Subject conversations, recent chats, editable titles, personal files, account memories and optional notes in the same workspace.
+- Subject conversations, recent chats, editable titles, personal files, account memories and permanent notes in the same workspace.
 - Staff research routes can retrieve online sources and return linked references. Requested reference lists default to APA 7 unless another style is requested. Research depends on network access, available sources and the applicable role/policy path; the reviewed student tutor is not an unrestricted research assistant.
 
 ## Shared teaching files
@@ -53,12 +53,12 @@ Student tutoring is designed to teach concepts and guide the next step rather th
 3. A student asks a question in that subject's chat. Relevant accessible passages can be supplied to the main tutor as source material.
 4. A source button below a supported reply opens the cited passage, with a link to the original document.
 
-| Format | Displayed location | Limits and behaviour |
-| --- | --- | --- |
-| PDF | Physical page number | Text-based, unlocked PDFs; up to 80 pages. Blank pages retain their position. |
-| PowerPoint (`.pptx`) | Slide number | Up to 120 slides, in presentation order. |
-| Word (`.docx`) | Section number | Logical text sections; document page numbers are not invented. |
-| Text / Markdown | Section number | UTF-8 text, split into logical sections. |
+| Format               | Displayed location   | Limits and behaviour                                                          |
+| -------------------- | -------------------- | ----------------------------------------------------------------------------- |
+| PDF                  | Physical page number | Text-based, unlocked PDFs; up to 80 pages. Blank pages retain their position. |
+| PowerPoint (`.pptx`) | Slide number         | Up to 120 slides, in presentation order.                                      |
+| Word (`.docx`)       | Section number       | Logical text sections; document page numbers are not invented.                |
+| Text / Markdown      | Section number       | UTF-8 text, split into logical sections.                                      |
 
 Each teaching file may be up to **6 MB**, with at most **40 active files per subject**. Scanned PDFs and image-only slides need text recognition before upload. PDF extraction requires `pdfinfo` and `pdftotext` from Poppler.
 
@@ -70,15 +70,19 @@ Retrieval currently uses lexical relevance and can miss paraphrases. Source link
 
 Personal conversation documents are separate from shared teaching files. Chat uploads support PDF, DOCX, TXT, Markdown, CSV and JSON, alongside supported image attachments. Documents are limited to 6 MB and 20 per conversation; text extraction is bounded, so long documents may not all reach the model.
 
-Personal notes belong to their author. Authorized staff have read-only review access within their roster scope. Disabling experimental notes hides the feature without deleting saved content. The current file UI provides previews and downloads; the proposed expanded right-side document viewer is not part of this release.
+Notes and Files share a right-side pocket with two small edge buttons. Hover or keyboard-focus a button to reveal its label; tap it on mobile to open the panel. Switching folds the current card and slides the next into place. Minimise either panel to return that space to the desktop chat. Phones use a dismissible overlay.
+
+Notes is a permanent feature, with autosave, local draft recovery, colour/formatting controls and floating note windows. The Experimental features tab remains available for future options. Personal notes belong to their author; authorized staff have read-only review access within their roster scope.
+
+Files offers searchable **Chat files** and **Course files** collections. Preview images and PDFs, read extracted document text, jump to teaching-file pages/sections and open the original. Switching panels keeps the current note draft and file preview in place. File access is checked again on the server for every request.
 
 ## Access and data storage
 
-| Role | Personal workspace | Student records | Teaching-file publishing |
-| --- | --- | --- | --- |
-| Student | Own chats, files, notes and memories | Own records | Read accessible subject/class files |
-| Teacher | Own workspace | Assigned students, subject to review permissions | Assigned classes |
-| Administrator | Own workspace and administrator tools | Administrator review scope | Assigned classes or subject-wide |
+| Role          | Personal workspace                    | Student records                                  | Teaching-file publishing            |
+| ------------- | ------------------------------------- | ------------------------------------------------ | ----------------------------------- |
+| Student       | Own chats, files, notes and memories  | Own records                                      | Read accessible subject/class files |
+| Teacher       | Own workspace                         | Assigned students, subject to review permissions | Assigned classes                    |
+| Administrator | Own workspace and administrator tools | Administrator review scope                       | Assigned classes or subject-wide    |
 
 Students cannot request another person's chat, file or notes through client-supplied IDs or a claimed role. Roles, enrolment and class access are checked by the server. Teacher access does not grant access to another teacher's or administrator's personal chat history. Staff review actions are logged.
 
@@ -119,20 +123,20 @@ The repository includes `scripts/enable-public-access.sh` and `scripts/disable-p
 
 ## Configuration
 
-| Path | Purpose |
-| --- | --- |
-| `config/settings.json` | Model URL/identifier, transport, context, listeners, research flags and retention |
-| `config/courses.json` | Base subject definitions and approved course material |
-| `config/student-*.txt` | Context interpretation, student tutoring and response-review defaults |
-| `config/conversation*.txt` | General conversation and review defaults |
-| Other `config/*.json` / `*.txt` | Source catalogues, concept guidance and research/planning instructions |
-| `.local/` or `SCHOOL_AGENT_STATE` | Private runtime data and saved overrides; excluded from version control |
+| Path                              | Purpose                                                                           |
+| --------------------------------- | --------------------------------------------------------------------------------- |
+| `config/settings.json`            | Model URL/identifier, transport, context, listeners, research flags and retention |
+| `config/courses.json`             | Base subject definitions and approved course material                             |
+| `config/student-*.txt`            | Context interpretation, student tutoring and response-review defaults             |
+| `config/conversation*.txt`        | General conversation and review defaults                                          |
+| Other `config/*.json` / `*.txt`   | Source catalogues, concept guidance and research/planning instructions            |
+| `.local/` or `SCHOOL_AGENT_STATE` | Private runtime data and saved overrides; excluded from version control           |
 
 Staff prompt edits are stored in runtime data and can override file defaults. Refresh the browser after frontend updates; restart the service after Python changes. Hardware readings may be unavailable when a driver or sensor is unsupported. Image generation is not connected.
 
 ## Tests and evaluation
 
-The release snapshot passed **184 automated tests**, including file access, class isolation, retained page/slide locations, archived references, student output boundaries and workspace ownership. The release workflow reruns the suite and JavaScript syntax checks before publishing.
+The release snapshot passed **188 automated tests**, including file access, class isolation, retained page/slide locations, archived references, student output boundaries and workspace ownership. The release workflow reruns the suite, formatting checks and JavaScript syntax checks before publishing.
 
 ```bash
 python3 -m unittest discover -s tests
@@ -150,6 +154,13 @@ python3 scripts/evaluate_tutor.py --only material-frequency,material-page --outp
 This harness creates a disposable database and synthetic accounts, uploads its own fixtures, and makes 30 real HTTP chat requests. It does not open production chats, notes, saved prompts or student accounts. Cases cover conversation, subject concepts, follow-ups, an uploaded question image, privacy, answer boundaries and teaching-file citations. Keyword/boundary checks screen behaviour; read the replies to assess factual accuracy and teaching quality.
 
 The October evaluation found missing file citations, which were fixed and passed a five-case retest. Manual review also found wording issues around economics terminology, claimed roles and source reliability. These remain areas for improvement; passing the software suite does not establish factual perfection.
+
+## Editing the source
+
+See [the editing guide](docs/EDITING.md) for a feature-to-file map, CSS theme variables,
+script load order, note/panel lifecycle and formatting commands. Application source is
+formatted with Black and Prettier, with module descriptions and named feature sections.
+Vendor libraries remain in their original form. No frontend build is required.
 
 ## Releases
 

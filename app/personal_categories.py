@@ -4,12 +4,10 @@ import secrets
 
 
 def init(con):
-    con.executescript(
-        """
+    con.executescript("""
     CREATE TABLE IF NOT EXISTS personal_categories(id TEXT PRIMARY KEY,user_id INTEGER NOT NULL,name TEXT NOT NULL,position INTEGER NOT NULL);
     CREATE TABLE IF NOT EXISTS personal_thread_positions(thread_id TEXT PRIMARY KEY,user_id INTEGER NOT NULL,category_id TEXT,position INTEGER NOT NULL);
-    """
-    )
+    """)
 
 
 def require(s, user):

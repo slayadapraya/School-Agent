@@ -1,4 +1,4 @@
-"""Experimental, account-owned notes tied to their original conversation."""
+"""Permanent, account-owned notes tied to their original conversation."""
 
 import json
 import secrets
@@ -7,8 +7,7 @@ import time
 
 
 def init(con):
-    con.executescript(
-        """
+    con.executescript("""
         CREATE TABLE IF NOT EXISTS experimental_features(name TEXT PRIMARY KEY,enabled INTEGER NOT NULL);
         INSERT OR IGNORE INTO experimental_features VALUES('notes',1);
         CREATE TABLE IF NOT EXISTS chat_notes(
@@ -16,8 +15,7 @@ def init(con):
             title TEXT NOT NULL,body TEXT NOT NULL,version INTEGER NOT NULL,
             created REAL NOT NULL,updated REAL NOT NULL);
         CREATE INDEX IF NOT EXISTS notes_owner_thread ON chat_notes(user_id,thread_id,updated);
-    """
-    )
+    """)
 
     # Preserve existing notes while adding their optional organisation colour.
     if "colour" not in {row[1] for row in con.execute("PRAGMA table_info(chat_notes)")}:
@@ -37,25 +35,22 @@ def init(con):
 
 
 def features(s):
+    """Retain the legacy API shape, but never gate the standard Notes feature."""
     with s.connect() as con:
-        return {
+        flags = {
             r["name"]: bool(r["enabled"])
             for r in con.execute("SELECT * FROM experimental_features")
         }
+    # Old installations may have notes=0. Preserve the row for migration compatibility.
+    return {**flags, "notes": True}
 
 
 def feature_update(s, user, data):
     if user["role"] != "admin":
         raise s.APIError(403, "Administrator access required")
-    if data.get("name") != "notes" or type(data.get("enabled")) is not bool:
-        raise s.APIError(400, "Choose a valid experimental feature")
-    with s.connect() as con:
-        con.execute(
-            "UPDATE experimental_features SET enabled=? WHERE name=?",
-            (int(data["enabled"]), "notes"),
-        )
-    s.audit(user["id"], "experimental_feature", json.dumps({"notes": data["enabled"]}))
-    return features(s)
+    if data.get("name") == "notes":
+        raise s.APIError(400, "Notes is a permanent feature and cannot be disabled")
+    raise s.APIError(400, "No experimental options are currently available")
 
 
 def authorize(s, h, user, nid):
@@ -70,10 +65,6 @@ def authorize(s, h, user, nid):
 
 
 def get(s, h, user, nid=None):
-    if not features(s).get("notes"):
-        raise s.APIError(
-            403, "Experimental notes are switched off; saved notes have been retained"
-        )
     if nid:
         return {"note": authorize(s, h, user, nid)}
     with s.connect() as con:
@@ -103,7 +94,7 @@ def get(s, h, user, nid=None):
 
 
 def save(s, h, user, data, nid=None):
-    # Existing writes may finish after an admin hides the feature, so pending edits aren't lost.
+    # Updates use optimistic versions: concurrent edits never silently overwrite a draft.
     if nid:
         note = authorize(s, h, user, nid)
         title = data.get("title")
@@ -148,8 +139,6 @@ def save(s, h, user, data, nid=None):
                 "This note changed elsewhere. Your local draft has been kept; retry after reviewing it.",
             )
     else:
-        if not features(s).get("notes"):
-            raise s.APIError(403, "Experimental notes are switched off")
         thread = h.owned_thread(data.get("thread_id"), user)
         with s.connect() as con:
             if (
@@ -170,8 +159,6 @@ def save(s, h, user, data, nid=None):
 
 def model_context(s, user, thread_id, message, selected_id=None):
     """A bounded read-only snapshot: SQL ownership plus the same chat access checks as the UI."""
-    if not features(s).get("notes"):
-        return {"enabled": False, "notes": []}
     import re
 
     terms = set(re.findall(r"[a-z0-9]{3,}", message.lower())) - {
@@ -345,11 +332,6 @@ def staff_notes(s, user, nid=None):
 
 def create_initial(con, user, thread_id):
     """Create the first blank note in the same transaction as its new thread."""
-    flag = con.execute(
-        "SELECT enabled FROM experimental_features WHERE name='notes'"
-    ).fetchone()
-    if not flag or not flag[0]:
-        return
     if (
         con.execute(
             "SELECT COUNT(*) FROM chat_notes WHERE user_id=?", (user["id"],)

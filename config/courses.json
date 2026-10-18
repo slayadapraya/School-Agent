@@ -25,145 +25,109 @@
         "id": "algebra-start",
         "label": "Start a linear equation in plain language",
         "text": "Let’s unpack {equation} before trying to solve it. The letter {variable} stands for a number you are trying to find. {coefficient}{variable} means {coefficient} multiplied by that number.\n\nYour first aim is to simplify what happens to {variable}, while keeping the left and right sides equal. Focus first on the part that involves {operation} {offset}. What could undo that calculation?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "variable-meaning",
         "label": "Explain unknown, variable or the letter",
         "text": "“Unknown” just means a number we have not found yet. In {equation}, the letter {variable} is a placeholder for that number. It is not a special type of calculation.\n\nSolving the equation means finding a value for {variable} that makes the left side equal the right side. You do not need to guess the value yet. Can you point to the letter {variable} and tell me what is being done to it?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "variable-another-way",
         "label": "Explain the letter as an empty box",
         "text": "Think of {variable} as an empty box that will eventually hold a number. The equation {equation} describes what happens to the number in that box.\n\nThe same letter represents the same number throughout this equation. Our job is to work backwards through the calculations, one at a time. Which part feels unclear: the letter, the multiplication next to it, or the equals sign?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "operations-meaning",
         "label": "Explain operation and undo without jargon",
         "text": "An “operation” is just a calculation: adding, subtracting, multiplying or dividing. “Undo” means doing the opposite calculation. Adding is undone by subtracting; multiplying is undone by dividing.\n\nIn {equation}, separate the multiplication {coefficient}{variable} from the step of {operation} {offset}. Which of those two calculations would you tackle first?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "balance-meaning",
         "label": "Explain both sides and keeping an equation equal",
         "text": "The equals sign says the expression on the left and the expression on the right have the same value. For {equation}, think of them as the two sides of a balanced scale.\n\nIf you change just one side, you can destroy that equality. To keep it true, apply the same change to both sides. What would happen to a balanced scale if you removed weight from only one side?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "first-step-detail",
         "label": "Show the next operation without calculating the solution",
         "text": "For {equation}, start by undoing the step of {operation} {offset}. Its opposite is {reverse_operation} {offset}. Apply that change to both sides, not just the side with {variable}.\n\nLeave the arithmetic to yourself for now: write the same change under both sides. What do you think will cancel on the left?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "first-step-alternative",
         "label": "Explain the first step differently",
         "text": "Focus on the number {offset} next to the {sign_word} sign in {equation}. It is a separate part from {coefficient}{variable}.\n\nWe want to remove that separate part before dealing with the multiplication. The opposite of {operation} is {reverse_operation}. Try writing that operation on each side without evaluating it yet. Which part would disappear?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "coefficient-meaning",
         "label": "Explain a number written beside a letter",
         "text": "When a number is written directly beside a letter, it means multiplication. So {coefficient}{variable} means “{coefficient} times {variable}”; it does not mean a two-digit number.\n\nThat number is sometimes called the coefficient. Once any separate addition or subtraction has been removed, you would undo the multiplication with division. Which calculation would undo multiplying by {coefficient}?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "check-own-work",
         "label": "Help check reasoning without confirming the final answer",
         "text": "I can help you check your method without confirming a homework answer for you. Go back to {equation} and replace every {variable} with the value you found.\n\nCalculate the left and right sides separately. If they do not match, inspect the first step where you changed the equation. What did you do to each side in that step?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "smaller-step",
         "label": "Break the equation into a smaller thinking task",
         "text": "Let’s make the task smaller. Don’t try to solve {equation} yet. First identify only three things: the letter {variable}, the multiplication {coefficient}{variable}, and any separate addition or subtraction.\n\nWhich of those parts can you identify confidently, and which needs another explanation?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "missing-problem",
         "label": "Ask for a mathematical problem before choosing a method",
         "text": "Please share the exact maths question and, if you have started, your most recent working. I can then explain the terms and help you choose a next step without doing the whole problem for you.\n\nAre you stuck understanding the question, choosing a method, or carrying out a calculation?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "variable-general",
         "label": "Define unknown without needing an equation",
         "text": "An “unknown” is just a number you have not found yet. A letter such as x can stand in for that number. The letter lets you describe a relationship before you know the number.\n\nPlease paste your equation so we can identify what the letter represents in your question.",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "operations-general",
         "label": "Explain what operation and undo mean",
         "text": "An operation is simply a calculation, such as adding or multiplying. Undoing an operation means applying its opposite: subtraction undoes addition, and division undoes multiplication.\n\nShare the calculation you are looking at, and we can identify which operation is involved before choosing a next step.",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "balance-general",
         "label": "Explain what both sides of an equation means",
         "text": "An equation has an expression on each side of an equals sign. That sign says the expressions have equal values. If you apply the same operation to both sides, you can keep the equality true while simplifying the equation.\n\nCan you share your equation so we can point to its left and right sides?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       }
     ],
     "category": "Mathematics",
@@ -200,145 +164,109 @@
         "id": "algebra-start",
         "label": "Start a linear equation in plain language",
         "text": "Let’s unpack {equation} before trying to solve it. The letter {variable} stands for a number you are trying to find. {coefficient}{variable} means {coefficient} multiplied by that number.\n\nYour first aim is to simplify what happens to {variable}, while keeping the left and right sides equal. Focus first on the part that involves {operation} {offset}. What could undo that calculation?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "variable-meaning",
         "label": "Explain unknown, variable or the letter",
         "text": "“Unknown” just means a number we have not found yet. In {equation}, the letter {variable} is a placeholder for that number. It is not a special type of calculation.\n\nSolving the equation means finding a value for {variable} that makes the left side equal the right side. You do not need to guess the value yet. Can you point to the letter {variable} and tell me what is being done to it?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "variable-another-way",
         "label": "Explain the letter as an empty box",
         "text": "Think of {variable} as an empty box that will eventually hold a number. The equation {equation} describes what happens to the number in that box.\n\nThe same letter represents the same number throughout this equation. Our job is to work backwards through the calculations, one at a time. Which part feels unclear: the letter, the multiplication next to it, or the equals sign?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "operations-meaning",
         "label": "Explain operation and undo without jargon",
         "text": "An “operation” is just a calculation: adding, subtracting, multiplying or dividing. “Undo” means doing the opposite calculation. Adding is undone by subtracting; multiplying is undone by dividing.\n\nIn {equation}, separate the multiplication {coefficient}{variable} from the step of {operation} {offset}. Which of those two calculations would you tackle first?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "balance-meaning",
         "label": "Explain both sides and keeping an equation equal",
         "text": "The equals sign says the expression on the left and the expression on the right have the same value. For {equation}, think of them as the two sides of a balanced scale.\n\nIf you change just one side, you can destroy that equality. To keep it true, apply the same change to both sides. What would happen to a balanced scale if you removed weight from only one side?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "first-step-detail",
         "label": "Show the next operation without calculating the solution",
         "text": "For {equation}, start by undoing the step of {operation} {offset}. Its opposite is {reverse_operation} {offset}. Apply that change to both sides, not just the side with {variable}.\n\nLeave the arithmetic to yourself for now: write the same change under both sides. What do you think will cancel on the left?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "first-step-alternative",
         "label": "Explain the first step differently",
         "text": "Focus on the number {offset} next to the {sign_word} sign in {equation}. It is a separate part from {coefficient}{variable}.\n\nWe want to remove that separate part before dealing with the multiplication. The opposite of {operation} is {reverse_operation}. Try writing that operation on each side without evaluating it yet. Which part would disappear?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "coefficient-meaning",
         "label": "Explain a number written beside a letter",
         "text": "When a number is written directly beside a letter, it means multiplication. So {coefficient}{variable} means “{coefficient} times {variable}”; it does not mean a two-digit number.\n\nThat number is sometimes called the coefficient. Once any separate addition or subtraction has been removed, you would undo the multiplication with division. Which calculation would undo multiplying by {coefficient}?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "check-own-work",
         "label": "Help check reasoning without confirming the final answer",
         "text": "I can help you check your method without confirming a homework answer for you. Go back to {equation} and replace every {variable} with the value you found.\n\nCalculate the left and right sides separately. If they do not match, inspect the first step where you changed the equation. What did you do to each side in that step?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "smaller-step",
         "label": "Break the equation into a smaller thinking task",
         "text": "Let’s make the task smaller. Don’t try to solve {equation} yet. First identify only three things: the letter {variable}, the multiplication {coefficient}{variable}, and any separate addition or subtraction.\n\nWhich of those parts can you identify confidently, and which needs another explanation?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "missing-problem",
         "label": "Ask for a mathematical problem before choosing a method",
         "text": "Please share the exact maths question and, if you have started, your most recent working. I can then explain the terms and help you choose a next step without doing the whole problem for you.\n\nAre you stuck understanding the question, choosing a method, or carrying out a calculation?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "variable-general",
         "label": "Define unknown without needing an equation",
         "text": "An “unknown” is just a number you have not found yet. A letter such as x can stand in for that number. The letter lets you describe a relationship before you know the number.\n\nPlease paste your equation so we can identify what the letter represents in your question.",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "operations-general",
         "label": "Explain what operation and undo mean",
         "text": "An operation is simply a calculation, such as adding or multiplying. Undoing an operation means applying its opposite: subtraction undoes addition, and division undoes multiplication.\n\nShare the calculation you are looking at, and we can identify which operation is involved before choosing a next step.",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "balance-general",
         "label": "Explain what both sides of an equation means",
         "text": "An equation has an expression on each side of an equals sign. That sign says the expressions have equal values. If you apply the same operation to both sides, you can keep the equality true while simplifying the equation.\n\nCan you share your equation so we can point to its left and right sides?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       }
     ],
     "category": "Mathematics",
@@ -375,145 +303,109 @@
         "id": "algebra-start",
         "label": "Start a linear equation in plain language",
         "text": "Let’s unpack {equation} before trying to solve it. The letter {variable} stands for a number you are trying to find. {coefficient}{variable} means {coefficient} multiplied by that number.\n\nYour first aim is to simplify what happens to {variable}, while keeping the left and right sides equal. Focus first on the part that involves {operation} {offset}. What could undo that calculation?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "variable-meaning",
         "label": "Explain unknown, variable or the letter",
         "text": "“Unknown” just means a number we have not found yet. In {equation}, the letter {variable} is a placeholder for that number. It is not a special type of calculation.\n\nSolving the equation means finding a value for {variable} that makes the left side equal the right side. You do not need to guess the value yet. Can you point to the letter {variable} and tell me what is being done to it?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "variable-another-way",
         "label": "Explain the letter as an empty box",
         "text": "Think of {variable} as an empty box that will eventually hold a number. The equation {equation} describes what happens to the number in that box.\n\nThe same letter represents the same number throughout this equation. Our job is to work backwards through the calculations, one at a time. Which part feels unclear: the letter, the multiplication next to it, or the equals sign?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "operations-meaning",
         "label": "Explain operation and undo without jargon",
         "text": "An “operation” is just a calculation: adding, subtracting, multiplying or dividing. “Undo” means doing the opposite calculation. Adding is undone by subtracting; multiplying is undone by dividing.\n\nIn {equation}, separate the multiplication {coefficient}{variable} from the step of {operation} {offset}. Which of those two calculations would you tackle first?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "balance-meaning",
         "label": "Explain both sides and keeping an equation equal",
         "text": "The equals sign says the expression on the left and the expression on the right have the same value. For {equation}, think of them as the two sides of a balanced scale.\n\nIf you change just one side, you can destroy that equality. To keep it true, apply the same change to both sides. What would happen to a balanced scale if you removed weight from only one side?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "first-step-detail",
         "label": "Show the next operation without calculating the solution",
         "text": "For {equation}, start by undoing the step of {operation} {offset}. Its opposite is {reverse_operation} {offset}. Apply that change to both sides, not just the side with {variable}.\n\nLeave the arithmetic to yourself for now: write the same change under both sides. What do you think will cancel on the left?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "first-step-alternative",
         "label": "Explain the first step differently",
         "text": "Focus on the number {offset} next to the {sign_word} sign in {equation}. It is a separate part from {coefficient}{variable}.\n\nWe want to remove that separate part before dealing with the multiplication. The opposite of {operation} is {reverse_operation}. Try writing that operation on each side without evaluating it yet. Which part would disappear?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "coefficient-meaning",
         "label": "Explain a number written beside a letter",
         "text": "When a number is written directly beside a letter, it means multiplication. So {coefficient}{variable} means “{coefficient} times {variable}”; it does not mean a two-digit number.\n\nThat number is sometimes called the coefficient. Once any separate addition or subtraction has been removed, you would undo the multiplication with division. Which calculation would undo multiplying by {coefficient}?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "check-own-work",
         "label": "Help check reasoning without confirming the final answer",
         "text": "I can help you check your method without confirming a homework answer for you. Go back to {equation} and replace every {variable} with the value you found.\n\nCalculate the left and right sides separately. If they do not match, inspect the first step where you changed the equation. What did you do to each side in that step?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "smaller-step",
         "label": "Break the equation into a smaller thinking task",
         "text": "Let’s make the task smaller. Don’t try to solve {equation} yet. First identify only three things: the letter {variable}, the multiplication {coefficient}{variable}, and any separate addition or subtraction.\n\nWhich of those parts can you identify confidently, and which needs another explanation?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "missing-problem",
         "label": "Ask for a mathematical problem before choosing a method",
         "text": "Please share the exact maths question and, if you have started, your most recent working. I can then explain the terms and help you choose a next step without doing the whole problem for you.\n\nAre you stuck understanding the question, choosing a method, or carrying out a calculation?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "variable-general",
         "label": "Define unknown without needing an equation",
         "text": "An “unknown” is just a number you have not found yet. A letter such as x can stand in for that number. The letter lets you describe a relationship before you know the number.\n\nPlease paste your equation so we can identify what the letter represents in your question.",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "operations-general",
         "label": "Explain what operation and undo mean",
         "text": "An operation is simply a calculation, such as adding or multiplying. Undoing an operation means applying its opposite: subtraction undoes addition, and division undoes multiplication.\n\nShare the calculation you are looking at, and we can identify which operation is involved before choosing a next step.",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "balance-general",
         "label": "Explain what both sides of an equation means",
         "text": "An equation has an expression on each side of an equals sign. That sign says the expressions have equal values. If you apply the same operation to both sides, you can keep the equality true while simplifying the equation.\n\nCan you share your equation so we can point to its left and right sides?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       }
     ],
     "category": "Mathematics",
@@ -550,145 +442,109 @@
         "id": "algebra-start",
         "label": "Start a linear equation in plain language",
         "text": "Let’s unpack {equation} before trying to solve it. The letter {variable} stands for a number you are trying to find. {coefficient}{variable} means {coefficient} multiplied by that number.\n\nYour first aim is to simplify what happens to {variable}, while keeping the left and right sides equal. Focus first on the part that involves {operation} {offset}. What could undo that calculation?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "variable-meaning",
         "label": "Explain unknown, variable or the letter",
         "text": "“Unknown” just means a number we have not found yet. In {equation}, the letter {variable} is a placeholder for that number. It is not a special type of calculation.\n\nSolving the equation means finding a value for {variable} that makes the left side equal the right side. You do not need to guess the value yet. Can you point to the letter {variable} and tell me what is being done to it?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "variable-another-way",
         "label": "Explain the letter as an empty box",
         "text": "Think of {variable} as an empty box that will eventually hold a number. The equation {equation} describes what happens to the number in that box.\n\nThe same letter represents the same number throughout this equation. Our job is to work backwards through the calculations, one at a time. Which part feels unclear: the letter, the multiplication next to it, or the equals sign?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "operations-meaning",
         "label": "Explain operation and undo without jargon",
         "text": "An “operation” is just a calculation: adding, subtracting, multiplying or dividing. “Undo” means doing the opposite calculation. Adding is undone by subtracting; multiplying is undone by dividing.\n\nIn {equation}, separate the multiplication {coefficient}{variable} from the step of {operation} {offset}. Which of those two calculations would you tackle first?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "balance-meaning",
         "label": "Explain both sides and keeping an equation equal",
         "text": "The equals sign says the expression on the left and the expression on the right have the same value. For {equation}, think of them as the two sides of a balanced scale.\n\nIf you change just one side, you can destroy that equality. To keep it true, apply the same change to both sides. What would happen to a balanced scale if you removed weight from only one side?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "first-step-detail",
         "label": "Show the next operation without calculating the solution",
         "text": "For {equation}, start by undoing the step of {operation} {offset}. Its opposite is {reverse_operation} {offset}. Apply that change to both sides, not just the side with {variable}.\n\nLeave the arithmetic to yourself for now: write the same change under both sides. What do you think will cancel on the left?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "first-step-alternative",
         "label": "Explain the first step differently",
         "text": "Focus on the number {offset} next to the {sign_word} sign in {equation}. It is a separate part from {coefficient}{variable}.\n\nWe want to remove that separate part before dealing with the multiplication. The opposite of {operation} is {reverse_operation}. Try writing that operation on each side without evaluating it yet. Which part would disappear?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "coefficient-meaning",
         "label": "Explain a number written beside a letter",
         "text": "When a number is written directly beside a letter, it means multiplication. So {coefficient}{variable} means “{coefficient} times {variable}”; it does not mean a two-digit number.\n\nThat number is sometimes called the coefficient. Once any separate addition or subtraction has been removed, you would undo the multiplication with division. Which calculation would undo multiplying by {coefficient}?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "check-own-work",
         "label": "Help check reasoning without confirming the final answer",
         "text": "I can help you check your method without confirming a homework answer for you. Go back to {equation} and replace every {variable} with the value you found.\n\nCalculate the left and right sides separately. If they do not match, inspect the first step where you changed the equation. What did you do to each side in that step?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "smaller-step",
         "label": "Break the equation into a smaller thinking task",
         "text": "Let’s make the task smaller. Don’t try to solve {equation} yet. First identify only three things: the letter {variable}, the multiplication {coefficient}{variable}, and any separate addition or subtraction.\n\nWhich of those parts can you identify confidently, and which needs another explanation?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "missing-problem",
         "label": "Ask for a mathematical problem before choosing a method",
         "text": "Please share the exact maths question and, if you have started, your most recent working. I can then explain the terms and help you choose a next step without doing the whole problem for you.\n\nAre you stuck understanding the question, choosing a method, or carrying out a calculation?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "variable-general",
         "label": "Define unknown without needing an equation",
         "text": "An “unknown” is just a number you have not found yet. A letter such as x can stand in for that number. The letter lets you describe a relationship before you know the number.\n\nPlease paste your equation so we can identify what the letter represents in your question.",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "operations-general",
         "label": "Explain what operation and undo mean",
         "text": "An operation is simply a calculation, such as adding or multiplying. Undoing an operation means applying its opposite: subtraction undoes addition, and division undoes multiplication.\n\nShare the calculation you are looking at, and we can identify which operation is involved before choosing a next step.",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "balance-general",
         "label": "Explain what both sides of an equation means",
         "text": "An equation has an expression on each side of an equals sign. That sign says the expressions have equal values. If you apply the same operation to both sides, you can keep the equality true while simplifying the equation.\n\nCan you share your equation so we can point to its left and right sides?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       }
     ],
     "category": "Mathematics",
@@ -725,49 +581,37 @@
         "id": "data",
         "label": "Understand the data",
         "text": "What does one observation represent? List the variable types before choosing an analysis.",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "interpret",
         "label": "Question an interpretation",
         "text": "What does the evidence support, and what does it leave uncertain? Which assumptions would you need to check?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       }
     ],
     "category": "Statistics",
@@ -804,49 +648,37 @@
         "id": "data",
         "label": "Understand the data",
         "text": "What does one observation represent? List the variable types before choosing an analysis.",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "interpret",
         "label": "Question an interpretation",
         "text": "What does the evidence support, and what does it leave uncertain? Which assumptions would you need to check?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       }
     ],
     "category": "Statistics",
@@ -883,49 +715,37 @@
         "id": "data",
         "label": "Understand the data",
         "text": "What does one observation represent? List the variable types before choosing an analysis.",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "interpret",
         "label": "Question an interpretation",
         "text": "What does the evidence support, and what does it leave uncertain? Which assumptions would you need to check?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       }
     ],
     "category": "Statistics",
@@ -962,49 +782,37 @@
         "id": "data",
         "label": "Understand the data",
         "text": "What does one observation represent? List the variable types before choosing an analysis.",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "interpret",
         "label": "Question an interpretation",
         "text": "What does the evidence support, and what does it leave uncertain? Which assumptions would you need to check?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       }
     ],
     "category": "Statistics",
@@ -1041,49 +849,37 @@
         "id": "trace",
         "label": "Trace the problem",
         "text": "Describe what you expected and what happened instead. What is the smallest input that reproduces the difference?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "algorithm",
         "label": "Plan before coding",
         "text": "Write the inputs, outputs and the steps in plain language. Which step are you uncertain about?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       }
     ],
     "category": "Computer Science",
@@ -1120,49 +916,37 @@
         "id": "trace",
         "label": "Trace the problem",
         "text": "Describe what you expected and what happened instead. What is the smallest input that reproduces the difference?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "algorithm",
         "label": "Plan before coding",
         "text": "Write the inputs, outputs and the steps in plain language. Which step are you uncertain about?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       }
     ],
     "category": "Computer Science",
@@ -1199,49 +983,37 @@
         "id": "trace",
         "label": "Trace the problem",
         "text": "Describe what you expected and what happened instead. What is the smallest input that reproduces the difference?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "algorithm",
         "label": "Plan before coding",
         "text": "Write the inputs, outputs and the steps in plain language. Which step are you uncertain about?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       }
     ],
     "category": "Computer Science",
@@ -1278,49 +1050,37 @@
         "id": "trace",
         "label": "Trace the problem",
         "text": "Describe what you expected and what happened instead. What is the smallest input that reproduces the difference?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "algorithm",
         "label": "Plan before coding",
         "text": "Write the inputs, outputs and the steps in plain language. Which step are you uncertain about?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       }
     ],
     "category": "Computer Science",
@@ -1364,49 +1124,37 @@
         "id": "study-goal",
         "label": "Set a learning goal",
         "text": "What would you like to understand or organise today? Choose one small goal and describe where you are starting from.",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "next-step",
         "label": "Plan your next step",
         "text": "Break the task into a few small actions. Which one can you do first, and what would count as progress?",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       }
     ],
     "source_provider": "University of Canterbury",
@@ -1450,49 +1198,37 @@
         "id": "study-goal",
         "label": "Set a learning goal",
         "text": "What would you like to understand or organise today? Choose one small goal and describe where you are starting from.",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "next-step",
         "label": "Plan your next step",
         "text": "Break the task into a few small actions. Which one can you do first, and what would count as progress?",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       }
     ],
     "source_provider": "University of Canterbury",
@@ -1536,49 +1272,37 @@
         "id": "study-goal",
         "label": "Set a learning goal",
         "text": "What would you like to understand or organise today? Choose one small goal and describe where you are starting from.",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "next-step",
         "label": "Plan your next step",
         "text": "Break the task into a few small actions. Which one can you do first, and what would count as progress?",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       }
     ],
     "source_provider": "University of Canterbury",
@@ -1622,49 +1346,37 @@
         "id": "study-goal",
         "label": "Set a learning goal",
         "text": "What would you like to understand or organise today? Choose one small goal and describe where you are starting from.",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "next-step",
         "label": "Plan your next step",
         "text": "Break the task into a few small actions. Which one can you do first, and what would count as progress?",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       }
     ],
     "source_provider": "University of Canterbury",
@@ -1708,49 +1420,37 @@
         "id": "study-goal",
         "label": "Set a learning goal",
         "text": "What would you like to understand or organise today? Choose one small goal and describe where you are starting from.",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "next-step",
         "label": "Plan your next step",
         "text": "Break the task into a few small actions. Which one can you do first, and what would count as progress?",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       }
     ],
     "source_provider": "University of Canterbury",
@@ -1794,49 +1494,37 @@
         "id": "study-goal",
         "label": "Set a learning goal",
         "text": "What would you like to understand or organise today? Choose one small goal and describe where you are starting from.",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "next-step",
         "label": "Plan your next step",
         "text": "Break the task into a few small actions. Which one can you do first, and what would count as progress?",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       }
     ],
     "source_provider": "University of Canterbury",
@@ -1880,49 +1568,37 @@
         "id": "study-goal",
         "label": "Set a learning goal",
         "text": "What would you like to understand or organise today? Choose one small goal and describe where you are starting from.",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "next-step",
         "label": "Plan your next step",
         "text": "Break the task into a few small actions. Which one can you do first, and what would count as progress?",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       }
     ],
     "source_provider": "University of Canterbury",
@@ -1966,49 +1642,37 @@
         "id": "study-goal",
         "label": "Set a learning goal",
         "text": "What would you like to understand or organise today? Choose one small goal and describe where you are starting from.",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "next-step",
         "label": "Plan your next step",
         "text": "Break the task into a few small actions. Which one can you do first, and what would count as progress?",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       }
     ],
     "source_provider": "University of Canterbury",
@@ -2045,49 +1709,37 @@
         "id": "plan",
         "label": "Plan a report",
         "text": "Use blank headings: Context, Evidence, Discussion, Conclusion. Which heading would you start with, and why?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "evidence",
         "label": "Separate evidence and interpretation",
         "text": "Which observations did you record directly, and which statements are your interpretation? Try separating those before drafting.",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       }
     ],
     "category": "Biological Sciences",
@@ -2124,49 +1776,37 @@
         "id": "plan",
         "label": "Plan a report",
         "text": "Use blank headings: Context, Evidence, Discussion, Conclusion. Which heading would you start with, and why?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "evidence",
         "label": "Separate evidence and interpretation",
         "text": "Which observations did you record directly, and which statements are your interpretation? Try separating those before drafting.",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       }
     ],
     "category": "Biological Sciences",
@@ -2203,49 +1843,37 @@
         "id": "plan",
         "label": "Plan a report",
         "text": "Use blank headings: Context, Evidence, Discussion, Conclusion. Which heading would you start with, and why?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "evidence",
         "label": "Separate evidence and interpretation",
         "text": "Which observations did you record directly, and which statements are your interpretation? Try separating those before drafting.",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       }
     ],
     "category": "Biological Sciences",
@@ -2282,49 +1910,37 @@
         "id": "plan",
         "label": "Plan a report",
         "text": "Use blank headings: Context, Evidence, Discussion, Conclusion. Which heading would you start with, and why?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "evidence",
         "label": "Separate evidence and interpretation",
         "text": "Which observations did you record directly, and which statements are your interpretation? Try separating those before drafting.",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       }
     ],
     "category": "Biological Sciences",
@@ -2368,49 +1984,37 @@
         "id": "study-goal",
         "label": "Set a learning goal",
         "text": "What would you like to understand or organise today? Choose one small goal and describe where you are starting from.",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "next-step",
         "label": "Plan your next step",
         "text": "Break the task into a few small actions. Which one can you do first, and what would count as progress?",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       }
     ],
     "source_provider": "University of Canterbury",
@@ -2454,49 +2058,37 @@
         "id": "study-goal",
         "label": "Set a learning goal",
         "text": "What would you like to understand or organise today? Choose one small goal and describe where you are starting from.",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "next-step",
         "label": "Plan your next step",
         "text": "Break the task into a few small actions. Which one can you do first, and what would count as progress?",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       }
     ],
     "source_provider": "University of Canterbury",
@@ -2540,49 +2132,37 @@
         "id": "study-goal",
         "label": "Set a learning goal",
         "text": "What would you like to understand or organise today? Choose one small goal and describe where you are starting from.",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "next-step",
         "label": "Plan your next step",
         "text": "Break the task into a few small actions. Which one can you do first, and what would count as progress?",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       }
     ],
     "source_provider": "University of Canterbury",
@@ -2626,49 +2206,37 @@
         "id": "study-goal",
         "label": "Set a learning goal",
         "text": "What would you like to understand or organise today? Choose one small goal and describe where you are starting from.",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "next-step",
         "label": "Plan your next step",
         "text": "Break the task into a few small actions. Which one can you do first, and what would count as progress?",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       }
     ],
     "source_provider": "University of Canterbury",
@@ -2705,49 +2273,37 @@
         "id": "diagram",
         "label": "Start with a diagram",
         "text": "Sketch the system boundary and label known quantities and units. What assumptions are you making?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "check",
         "label": "Test your model",
         "text": "Which limiting case could you use to check your model? Describe what you expect physically before calculating.",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       }
     ],
     "category": "Engineering",
@@ -2784,49 +2340,37 @@
         "id": "diagram",
         "label": "Start with a diagram",
         "text": "Sketch the system boundary and label known quantities and units. What assumptions are you making?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "check",
         "label": "Test your model",
         "text": "Which limiting case could you use to check your model? Describe what you expect physically before calculating.",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       }
     ],
     "category": "Engineering",
@@ -2863,49 +2407,37 @@
         "id": "diagram",
         "label": "Start with a diagram",
         "text": "Sketch the system boundary and label known quantities and units. What assumptions are you making?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "check",
         "label": "Test your model",
         "text": "Which limiting case could you use to check your model? Describe what you expect physically before calculating.",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       }
     ],
     "category": "Engineering",
@@ -2942,49 +2474,37 @@
         "id": "diagram",
         "label": "Start with a diagram",
         "text": "Sketch the system boundary and label known quantities and units. What assumptions are you making?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "check",
         "label": "Test your model",
         "text": "Which limiting case could you use to check your model? Describe what you expect physically before calculating.",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       }
     ],
     "category": "Engineering",
@@ -3021,49 +2541,37 @@
         "id": "source",
         "label": "Interrogate a source",
         "text": "Who created the source, for whom, and for what purpose? Which of those might affect the account it gives?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "argument",
         "label": "Build your argument",
         "text": "Choose one claim in your own words. What evidence would support it, and what evidence might challenge it?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       }
     ],
     "category": "History",
@@ -3100,49 +2608,37 @@
         "id": "source",
         "label": "Interrogate a source",
         "text": "Who created the source, for whom, and for what purpose? Which of those might affect the account it gives?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "argument",
         "label": "Build your argument",
         "text": "Choose one claim in your own words. What evidence would support it, and what evidence might challenge it?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       }
     ],
     "category": "History",
@@ -3179,49 +2675,37 @@
         "id": "source",
         "label": "Interrogate a source",
         "text": "Who created the source, for whom, and for what purpose? Which of those might affect the account it gives?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "argument",
         "label": "Build your argument",
         "text": "Choose one claim in your own words. What evidence would support it, and what evidence might challenge it?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       }
     ],
     "category": "History",
@@ -3258,49 +2742,37 @@
         "id": "source",
         "label": "Interrogate a source",
         "text": "Who created the source, for whom, and for what purpose? Which of those might affect the account it gives?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "argument",
         "label": "Build your argument",
         "text": "Choose one claim in your own words. What evidence would support it, and what evidence might challenge it?",
-        "source_ids": [
-          "scaffold"
-        ]
+        "source_ids": ["scaffold"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       }
     ],
     "category": "History",
@@ -3344,49 +2816,37 @@
         "id": "study-goal",
         "label": "Set a learning goal",
         "text": "What would you like to understand or organise today? Choose one small goal and describe where you are starting from.",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "next-step",
         "label": "Plan your next step",
         "text": "Break the task into a few small actions. Which one can you do first, and what would count as progress?",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       }
     ],
     "source_provider": "University of Canterbury",
@@ -3430,49 +2890,37 @@
         "id": "study-goal",
         "label": "Set a learning goal",
         "text": "What would you like to understand or organise today? Choose one small goal and describe where you are starting from.",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "next-step",
         "label": "Plan your next step",
         "text": "Break the task into a few small actions. Which one can you do first, and what would count as progress?",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       }
     ],
     "source_provider": "University of Canterbury",
@@ -3516,49 +2964,37 @@
         "id": "study-goal",
         "label": "Set a learning goal",
         "text": "What would you like to understand or organise today? Choose one small goal and describe where you are starting from.",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "next-step",
         "label": "Plan your next step",
         "text": "Break the task into a few small actions. Which one can you do first, and what would count as progress?",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       }
     ],
     "source_provider": "University of Canterbury",
@@ -3602,49 +3038,37 @@
         "id": "study-goal",
         "label": "Set a learning goal",
         "text": "What would you like to understand or organise today? Choose one small goal and describe where you are starting from.",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "next-step",
         "label": "Plan your next step",
         "text": "Break the task into a few small actions. Which one can you do first, and what would count as progress?",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       }
     ],
     "source_provider": "University of Canterbury",
@@ -3688,49 +3112,37 @@
         "id": "study-goal",
         "label": "Set a learning goal",
         "text": "What would you like to understand or organise today? Choose one small goal and describe where you are starting from.",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "next-step",
         "label": "Plan your next step",
         "text": "Break the task into a few small actions. Which one can you do first, and what would count as progress?",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       }
     ],
     "source_provider": "University of Canterbury",
@@ -3774,49 +3186,37 @@
         "id": "study-goal",
         "label": "Set a learning goal",
         "text": "What would you like to understand or organise today? Choose one small goal and describe where you are starting from.",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "next-step",
         "label": "Plan your next step",
         "text": "Break the task into a few small actions. Which one can you do first, and what would count as progress?",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       }
     ],
     "source_provider": "University of Canterbury",
@@ -3860,49 +3260,37 @@
         "id": "study-goal",
         "label": "Set a learning goal",
         "text": "What would you like to understand or organise today? Choose one small goal and describe where you are starting from.",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "next-step",
         "label": "Plan your next step",
         "text": "Break the task into a few small actions. Which one can you do first, and what would count as progress?",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       }
     ],
     "source_provider": "University of Canterbury",
@@ -3946,49 +3334,37 @@
         "id": "study-goal",
         "label": "Set a learning goal",
         "text": "What would you like to understand or organise today? Choose one small goal and describe where you are starting from.",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "next-step",
         "label": "Plan your next step",
         "text": "Break the task into a few small actions. Which one can you do first, and what would count as progress?",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       }
     ],
     "source_provider": "University of Canterbury",
@@ -4032,49 +3408,37 @@
         "id": "study-goal",
         "label": "Set a learning goal",
         "text": "What would you like to understand or organise today? Choose one small goal and describe where you are starting from.",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "next-step",
         "label": "Plan your next step",
         "text": "Break the task into a few small actions. Which one can you do first, and what would count as progress?",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       }
     ],
     "source_provider": "University of Canterbury",
@@ -4118,49 +3482,37 @@
         "id": "study-goal",
         "label": "Set a learning goal",
         "text": "What would you like to understand or organise today? Choose one small goal and describe where you are starting from.",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "next-step",
         "label": "Plan your next step",
         "text": "Break the task into a few small actions. Which one can you do first, and what would count as progress?",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       }
     ],
     "source_provider": "University of Canterbury",
@@ -4204,49 +3556,37 @@
         "id": "study-goal",
         "label": "Set a learning goal",
         "text": "What would you like to understand or organise today? Choose one small goal and describe where you are starting from.",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "next-step",
         "label": "Plan your next step",
         "text": "Break the task into a few small actions. Which one can you do first, and what would count as progress?",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       }
     ],
     "source_provider": "University of Canterbury",
@@ -4290,49 +3630,37 @@
         "id": "study-goal",
         "label": "Set a learning goal",
         "text": "What would you like to understand or organise today? Choose one small goal and describe where you are starting from.",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "next-step",
         "label": "Plan your next step",
         "text": "Break the task into a few small actions. Which one can you do first, and what would count as progress?",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       }
     ],
     "source_provider": "University of Canterbury",
@@ -4370,49 +3698,37 @@
         "id": "study-goal",
         "label": "Set a learning goal",
         "text": "What would you like to understand or organise today? Choose one small goal and describe where you are starting from.",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "next-step",
         "label": "Plan your next step",
         "text": "Break the task into a few small actions. Which one can you do first, and what would count as progress?",
-        "source_ids": [
-          "general-guidance"
-        ]
+        "source_ids": ["general-guidance"]
       },
       {
         "id": "conversation-clarify",
         "label": "Respond to confusion by locating the unclear part",
         "text": "Let’s slow down. Which word or step in my last reply was unclear? You can quote it, and describe what you currently think it means.\n\nI will help you work through that part before moving on, rather than asking you to tackle the whole task at once.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-rephrase",
         "label": "Help when a previous explanation did not land",
         "text": "Let’s approach this from what you already understand. In your own words, what is the task asking you to do, and where does your understanding stop?\n\nA rough explanation is enough. That will help us choose a useful next step instead of repeating advice that did not help.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-repeat",
         "label": "Handle a repeated question without repeating the same hint",
         "text": "That explanation has not helped enough yet. Please point to the exact part of the question or my last reply that you want to unpack.\n\nDo you need a term explained, a reason for a step, or help deciding what to try next? We can focus on one of those.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       },
       {
         "id": "conversation-start",
         "label": "Greet and invite a real question",
         "text": "Hi! What are you working on or hoping to understand? You can share the question, an idea, or a step you have tried.\n\nTell me which part feels difficult and I will help you work through it without completing the work for you.",
-        "source_ids": [
-          "conversation-guide"
-        ]
+        "source_ids": ["conversation-guide"]
       }
     ],
     "category": "General prompts",

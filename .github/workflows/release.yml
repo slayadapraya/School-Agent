@@ -20,15 +20,20 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
       - name: Install test dependencies
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y poppler-utils
-          python3 -m pip install -r requirements.txt
+          python3 -m pip install -r requirements.txt -r requirements-dev.txt
+          npm ci --ignore-scripts
       - name: Run isolated tests and frontend checks
         env:
           SCHOOL_AGENT_STATE: ${{ runner.temp }}/school-agent-tests
         run: |
+          ./scripts/format.sh --check
           python3 -m unittest discover -s tests
           for file in app/static/*.js; do node --check "$file"; done
       - name: Publish versioned GitHub release

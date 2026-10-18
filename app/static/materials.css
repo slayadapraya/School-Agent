@@ -1,6 +1,136 @@
-.course-library-dialog{width:min(900px,calc(100vw - 30px));max-height:88dvh}
-.material-filter{display:flex;align-items:center;gap:12px;margin:18px 0;font-size:16px}
-.material-filter select,.material-form-row select,.material-reader-bar select{font:inherit;color:var(--text);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px;min-height:44px;max-width:100%}
-.material-filter select{flex:1;min-width:0}.teaching-file{padding:18px 0;border-bottom:1px solid var(--line)}.teaching-file b{font-size:18px;overflow-wrap:anywhere}.teaching-file small{display:block;margin:6px 0 12px}.material-actions{display:flex;flex-wrap:wrap;gap:8px}.material-actions a{text-decoration:none}
-.material-actions .secondary{font-size:14px;min-height:44px;padding:10px 14px}.teaching-file.is-archived{opacity:.7}.material-upload{border:1px solid var(--line);border-radius:10px;padding:16px;margin:18px 0}.material-upload summary{cursor:pointer;min-height:30px;font-size:17px}.material-upload .account-form{margin-top:18px}.material-upload .account-form input[type=file]{padding:12px;border:1px solid var(--line);border-radius:8px;width:100%;font-size:16px}.material-form-row{display:grid;grid-template-columns:1fr 1fr;gap:15px}.material-form-row label{min-width:0}.material-form-row select{display:block;width:100%;margin-top:6px}.material-passage{white-space:pre-wrap;font-size:18px;line-height:1.6;margin:18px 0 25px;overflow-wrap:anywhere}.material-reader-bar{display:flex;justify-content:space-between;align-items:end;gap:12px}.material-reader-bar label{font-size:16px}.material-reader-bar select{display:block;margin-top:7px}
-@media(max-width:750px){.material-form-row{grid-template-columns:1fr}.material-filter{display:block}.material-filter select{display:block;width:100%;margin-top:8px}.material-reader-bar{align-items:center;flex-wrap:wrap}.material-actions .secondary{font-size:16px;min-height:46px}.material-passage{font-size:18px}.material-upload summary{font-size:18px}}
+.course-library-dialog {
+  width: min(900px, calc(100vw - 30px));
+  max-height: 88dvh;
+}
+.material-filter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 18px 0;
+  font-size: 16px;
+}
+.material-filter select,
+.material-form-row select,
+.material-reader-bar select {
+  font: inherit;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px;
+  min-height: 44px;
+  max-width: 100%;
+}
+.material-filter select {
+  flex: 1;
+  min-width: 0;
+}
+.teaching-file {
+  padding: 18px 0;
+  border-bottom: 1px solid var(--line);
+}
+.teaching-file b {
+  font-size: 18px;
+  overflow-wrap: anywhere;
+}
+.teaching-file small {
+  display: block;
+  margin: 6px 0 12px;
+}
+.material-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.material-actions a {
+  text-decoration: none;
+}
+.material-actions .secondary {
+  font-size: 14px;
+  min-height: 44px;
+  padding: 10px 14px;
+}
+.teaching-file.is-archived {
+  opacity: 0.7;
+}
+.material-upload {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 16px;
+  margin: 18px 0;
+}
+.material-upload summary {
+  cursor: pointer;
+  min-height: 30px;
+  font-size: 17px;
+}
+.material-upload .account-form {
+  margin-top: 18px;
+}
+.material-upload .account-form input[type='file'] {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  width: 100%;
+  font-size: 16px;
+}
+.material-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+.material-form-row label {
+  min-width: 0;
+}
+.material-form-row select {
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+}
+.material-passage {
+  white-space: pre-wrap;
+  font-size: 18px;
+  line-height: 1.6;
+  margin: 18px 0 25px;
+  overflow-wrap: anywhere;
+}
+.material-reader-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 12px;
+}
+.material-reader-bar label {
+  font-size: 16px;
+}
+.material-reader-bar select {
+  display: block;
+  margin-top: 7px;
+}
+@media (max-width: 750px) {
+  .material-form-row {
+    grid-template-columns: 1fr;
+  }
+  .material-filter {
+    display: block;
+  }
+  .material-filter select {
+    display: block;
+    width: 100%;
+    margin-top: 8px;
+  }
+  .material-reader-bar {
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .material-actions .secondary {
+    font-size: 16px;
+    min-height: 46px;
+  }
+  .material-passage {
+    font-size: 18px;
+  }
+  .material-upload summary {
+    font-size: 18px;
+  }
+}

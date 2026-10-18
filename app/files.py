@@ -1,6 +1,13 @@
 """Conversation-owned documents, downloads and bounded text extraction."""
 
-import base64, io, json, secrets, subprocess, tempfile, time, zipfile
+import base64
+import io
+import json
+import secrets
+import subprocess
+import tempfile
+import time
+import zipfile
 from pathlib import Path
 from xml.etree import ElementTree
 
@@ -124,11 +131,15 @@ def get(s, h, user, path):
 
     body = row["body"]
     h.send_response(200)
-    h.common_headers()
+    # Keep office/text files as downloads; only PDF bytes may be framed by the viewer.
+    inline = "inline=1" in h.path and row["mime"] == "application/pdf"
+    h.common_headers(embedded=inline)
     h.send_header("Content-Type", row["mime"])
     h.send_header(
         "Content-Disposition",
-        "attachment; filename*=UTF-8''" + quote(row["name"], safe=""),
+        ("inline" if inline else "attachment")
+        + "; filename*=UTF-8''"
+        + quote(row["name"], safe=""),
     )
     h.send_header("Cache-Control", "no-store")
     h.send_header("Content-Length", str(len(body)))

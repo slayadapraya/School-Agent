@@ -1,0 +1,418 @@
+/* Shared Notes / Files pocket. Loaded last to replace the original notes rail layout. */
+:root {
+  --workspace-card-radius: 16px;
+  --workspace-tab-size: 46px;
+}
+.main {
+  position: relative;
+}
+.workspace-grid.with-workspace-panels {
+  display: flex;
+  align-items: flex-start;
+  max-width: 1500px;
+  padding-right: 52px;
+  gap: 0;
+}
+.with-workspace-panels > .conversation {
+  flex: 1 1 0;
+  width: auto;
+  min-width: 0;
+  max-width: 100%;
+}
+.workspace-panel-slot {
+  position: sticky;
+  top: 14px;
+  flex: 0 0 0;
+  width: 0;
+  height: min(740px, var(--notes-rail-height, calc(100dvh - 280px)));
+  min-height: 230px;
+  margin-top: 14px;
+  overflow: clip;
+  perspective: 1100px;
+}
+.workspace-panel-slot > .pocket-card {
+  position: absolute;
+  inset: 0 0 0 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  height: 100%;
+  min-height: 0;
+  max-height: none;
+  margin: 0;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--workspace-card-radius);
+  background: var(--panel);
+  box-shadow: 0 6px 20px #00000012;
+  overflow: hidden;
+}
+.pocket-card[hidden] {
+  display: none !important;
+}
+.pocket-card > header {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 36px;
+  padding-bottom: 12px;
+  color: var(--text);
+  font: 600 17px/1.3 var(--font-ui);
+}
+.pocket-card [data-workspace-close] {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--card);
+  font:
+    22px/1 Arial,
+    sans-serif;
+}
+.pocket-paper {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 0;
+  transform-origin: top center;
+  backface-visibility: hidden;
+}
+.pocket-paper #note-dock-content {
+  gap: 10px;
+}
+.pocket-card .note-rail-controls button {
+  min-height: 38px;
+  font-size: 14px;
+}
+.pocket-card .note-editor {
+  border-width: 2px;
+  border-radius: 12px;
+}
+.pocket-card .note-editor .note-title {
+  font-size: 16px;
+  padding: 12px;
+}
+.pocket-card .note-editor .note-body {
+  min-height: 44px;
+}
+.pocket-card .note-formatting button {
+  min-height: 30px;
+  min-width: 32px;
+}
+.pocket-card .note-editor > footer {
+  font-size: 12px;
+}
+.pocket-card .note-editor > footer button {
+  font-size: 12px;
+  min-height: 30px;
+}
+.pocket-card .note-picker-popover {
+  font-size: 14px;
+}
+
+/* Edge bookmarks expand left as a whole; text stays beside its icon, with no tooltip gap. */
+.workspace-bookmarks {
+  position: absolute;
+  z-index: 9;
+  top: 42%;
+  right: 0;
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+}
+.workspace-bookmark {
+  --bookmark-label-width: 44px;
+  display: grid;
+  grid-template-columns: 18px 0;
+  align-items: center;
+  justify-content: start;
+  column-gap: 0;
+  width: var(--workspace-tab-size);
+  height: 48px;
+  min-height: 48px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-right: 0;
+  border-radius: 10px 0 0 10px;
+  background: var(--card);
+  color: var(--text);
+  font: 500 18px/1 var(--font-ui);
+  pointer-events: auto;
+  overflow: hidden;
+  box-shadow: 0 3px 12px #00000015;
+  transition:
+    width 0.22s ease,
+    grid-template-columns 0.22s ease,
+    column-gap 0.22s ease,
+    background 0.15s ease;
+}
+.workspace-bookmark svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.workspace-bookmark .bookmark-label {
+  overflow: hidden;
+  white-space: nowrap;
+  text-align: left;
+}
+.workspace-bookmark[aria-expanded='true'] {
+  background: var(--soft);
+  border-color: var(--accent);
+}
+.workspace-bookmark[data-workspace-panel='files'] {
+  border-left-width: 3px;
+}
+@media (hover: hover) {
+  .workspace-bookmark:hover {
+    width: calc(46px + 8px + var(--bookmark-label-width));
+    grid-template-columns: 18px var(--bookmark-label-width);
+    column-gap: 8px;
+  }
+}
+.workspace-bookmark:focus-visible {
+  width: calc(46px + 8px + var(--bookmark-label-width));
+  grid-template-columns: 18px var(--bookmark-label-width);
+  column-gap: 8px;
+}
+.workspace-panel-scrim {
+  display: none;
+}
+
+/* File browser: bounded list above a flexible preview; originals always remain accessible. */
+.workspace-file-tabs {
+  display: flex;
+  gap: 6px;
+  flex: none;
+}
+.workspace-file-tabs button {
+  flex: 1;
+  padding: 9px 6px;
+  min-height: 40px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 14px;
+}
+.workspace-file-tabs [aria-selected='true'] {
+  border-color: var(--accent);
+  background: var(--soft);
+}
+.workspace-file-search {
+  font-size: 12px;
+  color: var(--muted);
+  flex: none;
+}
+.workspace-file-search input {
+  display: block;
+  width: 100%;
+  margin-top: 5px;
+  padding: 9px 10px;
+  min-height: 40px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  border-radius: 8px;
+  font-size: 15px;
+}
+.workspace-file-list {
+  flex: none;
+  max-height: 145px;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.workspace-file-list > button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 44px;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  text-align: left;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+.workspace-file-list > button[aria-pressed='true'] {
+  background: var(--soft);
+  border-color: var(--accent);
+}
+.workspace-file-list small {
+  display: block;
+}
+.file-kind {
+  flex: none;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  padding: 4px;
+  font: 600 10px/1.3 var(--font-ui);
+  color: var(--muted);
+}
+.workspace-file-preview {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+  gap: 9px;
+}
+.workspace-file-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: none;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+.workspace-file-heading > a {
+  color: var(--muted);
+  font-size: 12px;
+  align-self: flex-start;
+}
+.workspace-file-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  gap: 8px;
+}
+.workspace-file-content img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+.workspace-file-content iframe {
+  width: 100%;
+  height: 100%;
+  min-height: 180px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--card);
+}
+.workspace-file-content pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font: 14px/1.6 var(--font-ui);
+  margin: 0;
+  padding: 10px;
+  background: var(--card);
+  border-radius: 8px;
+}
+.workspace-page-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  flex: none;
+}
+.workspace-page-control select {
+  flex: 1;
+  min-width: 0;
+  min-height: 40px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--card);
+  padding: 6px;
+}
+.workspace-page-preview {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+/* Phones use an overlay rather than sacrificing the chat's reading width. */
+@media (max-width: 750px) {
+  .workspace-grid.with-workspace-panels {
+    padding-right: 44px;
+    width: 100%;
+  }
+  .workspace-panel-slot {
+    position: fixed;
+    z-index: 22;
+    inset: 12px 48px 12px auto;
+    width: min(370px, calc(100vw - 60px)) !important;
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    margin: 0;
+    pointer-events: none;
+  }
+  .workspace-panel-slot > .pocket-card {
+    inset: 0;
+    pointer-events: auto;
+    padding: 14px;
+  }
+  .workspace-bookmarks {
+    position: fixed;
+    z-index: 23;
+    top: 42%;
+  }
+  .workspace-bookmark {
+    width: 44px;
+    padding: 0 12px;
+  }
+  .workspace-panel-scrim:not([hidden]) {
+    display: block;
+    position: fixed;
+    z-index: 21;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: #0007;
+  }
+  .pocket-card > header {
+    font-size: 19px;
+  }
+  .pocket-card [data-workspace-close] {
+    width: 44px;
+    height: 44px;
+  }
+  .pocket-card .note-rail-controls button {
+    min-height: 44px;
+    font-size: 16px;
+  }
+  .pocket-card .note-formatting button {
+    min-width: 40px;
+    min-height: 40px;
+  }
+  .pocket-card .note-picker-popover {
+    font-size: 16px;
+  }
+  .pocket-card .note-picker-popover summary {
+    min-height: 44px;
+  }
+  .pocket-card .note-editor > footer button {
+    min-height: 40px;
+    font-size: 14px;
+  }
+  .workspace-file-tabs button,
+  .workspace-file-list > button {
+    min-height: 46px;
+    font-size: 16px;
+  }
+  .workspace-file-search input {
+    min-height: 44px;
+    font-size: 16px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .workspace-bookmark {
+    transition: none;
+  }
+}

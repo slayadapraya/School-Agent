@@ -1,0 +1,2 @@
+# Optional formatting tools; the application only needs requirements.txt.
+black==26.3.1

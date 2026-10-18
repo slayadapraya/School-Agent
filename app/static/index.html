@@ -1,1 +1,42 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,interactive-widget=resizes-content"><meta name="color-scheme" content="light dark"><title>School Agent</title><link rel="icon" href="/favicon.svg"><link rel="stylesheet" href="/vendor/xterm.css"><link rel="stylesheet" href="/style.css"><link rel="stylesheet" href="/terminal.css"><link rel="stylesheet" href="/notes.css"><link rel="stylesheet" href="/materials.css"><link rel="stylesheet" href="/admin-editors.css"><script defer src="/vendor/highlight.min.js"></script><script defer src="/app.js"></script><script defer src="/admin.js"></script><script defer src="/vendor/xterm.js"></script><script defer src="/vendor/addon-fit.js"></script><script defer src="/terminal.js"></script><script defer src="/preferences.js"></script><script defer src="/composer.js"></script><script defer src="/notes.js"></script><script defer src="/materials.js"></script><script defer src="/admin-editors.js"></script></head><body><div id="app"></div><dialog id="modal"><form method="dialog"><button class="icon close" aria-label="Close dialog">✕</button></form><div id="modal-content"></div></dialog><div id="toast" role="status"></div></body></html>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,interactive-widget=resizes-content"
+    />
+    <meta name="color-scheme" content="light dark" />
+    <title>School Agent</title>
+    <link rel="icon" href="/favicon.svg" />
+    <!-- Vendor assets stay unchanged; shared styles load before feature styles. -->
+    <link rel="stylesheet" href="/vendor/xterm.css" />
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="/terminal.css" />
+    <link rel="stylesheet" href="/notes.css" />
+    <link rel="stylesheet" href="/materials.css" />
+    <link rel="stylesheet" href="/admin-editors.css" />
+    <link rel="stylesheet" href="/workspace-panels.css" />
+    <!-- Scripts share globals: preserve this dependency order (see docs/EDITING.md). -->
+    <script defer src="/vendor/highlight.min.js"></script>
+    <script defer src="/app.js"></script>
+    <script defer src="/admin.js"></script>
+    <script defer src="/vendor/xterm.js"></script>
+    <script defer src="/vendor/addon-fit.js"></script>
+    <script defer src="/terminal.js"></script>
+    <script defer src="/preferences.js"></script>
+    <script defer src="/composer.js"></script>
+    <script defer src="/notes.js"></script>
+    <script defer src="/materials.js"></script>
+    <script defer src="/admin-editors.js"></script>
+    <script defer src="/workspace-panels.js"></script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <dialog id="modal">
+      <form method="dialog"><button class="icon close" aria-label="Close dialog">✕</button></form>
+      <div id="modal-content"></div>
+    </dialog>
+    <div id="toast" role="status"></div>
+  </body>
+</html>

@@ -1,0 +1,6 @@
+.local/
+app/static/vendor/
+node_modules/
+*.zip
+*.sqlite*
+VALIDATION*.json
