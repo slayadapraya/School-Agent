@@ -4,6 +4,57 @@ School Agent is a self-hosted AI workspace for students, teachers and administra
 
 **Current release:** [v0.2.1](https://github.com/slayadapraya/School-Agent/releases/tag/v0.2.1). This is a pilot application, with reviewed student tutoring and explicit role-based access.
 
+## Features at a glance
+
+| Feature                                   | What it provides                                                                                                        |
+| ----------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| **Subject-based tutoring**                | Personal conversations organised by subject, with explanations, course references and configurable learning boundaries. |
+| **Students, teachers and administrators** | Separate account roles, assigned teaching groups and server-checked access to records.                                  |
+| **Classes and subject assignment**        | Manage rosters, teaching relationships, subject categories and course access.                                           |
+| **Individual tutoring policies**          | Set installation defaults, class policies and per-person overrides from the admin panel.                                |
+| **Chat notes**                            | Editable notes beside a conversation, colour and formatting controls, autosave and movable note windows.                |
+| **Files and course sources**              | Upload study materials, share teaching files with classes and read supported documents beside the chat.                 |
+| **Activity and history**                  | Search and filter records within the signed-in account's authorised review scope.                                       |
+| **Local models**                          | Run downloaded models through LM Studio, with model access and prompt controls.                                         |
+| **Desktop and mobile layouts**            | Responsive chat, an accessible mobile drawer, alternative themes and resizable workspace panels.                        |
+| **Host administration**                   | Admin-only system monitoring, diagnostic logs and an embedded terminal in normal installations.                         |
+| **Isolated public demo**                  | Sample accounts, classes, conversations and notes without using the live installation's data.                           |
+
+## Workspace preview
+
+These images show the current development workspace using **synthetic demo accounts
+and conversations**. Hardware readings shown here are sample values. The latest
+versioned release may differ from the development interface.
+
+**Home screen** — recent conversations and the administrator's host overview.
+
+![School Agent home screen with synthetic demonstration readings](docs/screenshots/home.png)
+
+**Admin panel** — manage people and their account roles.
+
+![Administrator People panel with demo accounts](docs/screenshots/admin-people.png)
+
+**Chat and notes** — a subject conversation with its notes open beside it.
+
+![Physics tutoring conversation and a saved note, using demo content](docs/screenshots/chat-notes.png)
+
+<details>
+<summary><strong>More screenshots: classes, course files and appearance settings</strong></summary>
+
+**Classes and groups**
+
+![Class management with synthetic class rosters](docs/screenshots/admin-classes.png)
+
+**Course files**
+
+![Course files alongside a demo conversation](docs/screenshots/course-files.png)
+
+**Appearance and text size**
+
+![Theme and per-account text-size settings](docs/screenshots/appearance-settings.png)
+
+</details>
+
 ## Try the demo
 
 ```bash
