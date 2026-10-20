@@ -3,6 +3,7 @@
 import json
 import time
 from urllib.request import Request, urlopen
+from urllib.error import URLError
 from urllib.parse import urlsplit
 
 
@@ -25,8 +26,20 @@ def request(s, path, payload=None, timeout=5):
         data=json.dumps(payload).encode() if payload is not None else None,
         headers={"Content-Type": "application/json"},
     )
-    with urlopen(req, timeout=timeout) as r:
-        return json.loads(r.read(1000000))
+    try:
+        with urlopen(req, timeout=timeout) as r:
+            return json.loads(r.read(1000000))
+    except (URLError, OSError, TimeoutError) as error:
+        # Model discovery also runs before prepare()'s load handler. Translate
+        # connection failures here so every model route returns a useful 503.
+        raise s.APIError(
+            503, "LM Studio is unavailable. Start its local server and try again."
+        ) from error
+    except (json.JSONDecodeError, UnicodeDecodeError) as error:
+        raise s.APIError(
+            503,
+            "LM Studio returned an invalid response. Check its local server and try again.",
+        ) from error
 
 
 def main_key(s):

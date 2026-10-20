@@ -7,34 +7,36 @@ kept as supplied, with its licences.
 
 ## Where to make a change
 
-| Change                                                                     | Main files                                                                  |
-| -------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
-| Page shell, sidebar, chat messages and navigation                          | `app/static/app.js`                                                         |
-| Colours, typography, common layout, mobile navigation                      | `app/static/style.css`                                                      |
-| Notes/Files edge buttons, shared card layout, folding, mobile overlay      | `app/static/workspace-panels.js`, `app/static/workspace-panels.css`         |
-| Note editing, autosave, formatting, colours, floating windows              | `app/static/notes.js`, `app/static/notes.css`                               |
-| Send/Stop, attachment tools, input height, model picker                    | `app/static/composer.js`                                                    |
-| Class/account management, policies, assignment and monitoring              | `app/static/admin.js`                                                       |
-| Larger class/account editors and subject filters                           | `app/static/admin-editors.js`, `app/static/admin-editors.css`               |
-| Memories, prompt settings, personal categories, uploads, workspace restore | `app/static/preferences.js`                                                 |
-| Teaching-file upload/library and standalone passage readers                | `app/static/materials.js`, `app/static/materials.css`                       |
-| Shared floating-window focus and stacking                                  | `app/static/floating-windows.js`                                            |
-| Host terminal rendering and input                                          | `app/static/terminal.js`, `app/static/terminal.css`                         |
-| HTML entry point and exact script/style load order                         | `app/static/index.html`                                                     |
-| HTTP routes, authentication, database startup and chat orchestration       | `app/server.py`                                                             |
-| Note ownership, versioned saves, personal model context, staff review      | `app/notes.py`                                                              |
-| Personal file extraction, ownership checks, download/preview responses     | `app/files.py`                                                              |
-| Class-scoped teaching-file extraction, search and passage access           | `app/course_materials.py`                                                   |
-| Roles, classes, subjects and policy inheritance                            | `app/administration.py`, `app/oversight.py`                                 |
-| Student tutoring/context and output review                                 | `app/student_tutor.py`, `app/student_context.py`, `app/model_output.py`     |
-| Online retrieval and reference formatting                                  | `app/research.py`, `app/references.py`                                      |
-| Model loading, cancellation and host PTYs                                  | `app/model_manager.py`, `app/generation_control.py`, `app/host_terminal.py` |
-| Saved preferences, memories, chat recovery and categories                  | `app/preferences.py`, `app/chat_archive.py`, `app/personal_categories.py`   |
-| Hardware readings and application diagnostics                              | `app/hardware.py`, `app/error_logging.py`                                   |
-| Base model instructions and subject catalogues                             | `config/`                                                                   |
-| Isolated public demo and seed data                                         | `app/demo.py`, `scripts/start-demo.py`, `DEMO_LOGINS.txt`                   |
-| Startup, services, evaluations and releases                                | `scripts/`, `deploy/`, `.github/workflows/`                                 |
-| Isolated behaviour and access-control checks                               | `tests/`                                                                    |
+| Change                                                                     | Main files                                                                                            |
+| -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| Page shell, sidebar, chat messages and navigation                          | `app/static/app.js`                                                                                   |
+| Colours, typography, common layout, mobile navigation                      | `app/static/style.css`                                                                                |
+| Notes/Files edge buttons, shared card layout, folding, mobile overlay      | `app/static/workspace-panels.js`, `app/static/workspace-panels.css`                                   |
+| Note editing, autosave, formatting, colours, floating windows              | `app/static/notes.js`, `app/static/notes.css`                                                         |
+| Send/Stop, attachment tools, input height, model picker                    | `app/static/composer.js`                                                                              |
+| Class/account management, policies, assignment and monitoring              | `app/static/admin.js`                                                                                 |
+| Larger class/account editors and subject filters                           | `app/static/admin-editors.js`, `app/static/admin-editors.css`                                         |
+| Memories, prompt settings, personal categories, uploads, workspace restore | `app/static/preferences.js`                                                                           |
+| Teaching-file upload/library and standalone passage readers                | `app/static/materials.js`, `app/static/materials.css`                                                 |
+| Shared floating-window focus and stacking                                  | `app/static/floating-windows.js`                                                                      |
+| Host terminal rendering and input                                          | `app/static/terminal.js`, `app/static/terminal.css`                                                   |
+| HTML entry point and exact script/style load order                         | `app/static/index.html`                                                                               |
+| HTTP routes, authentication, database startup and chat orchestration       | `app/server.py`                                                                                       |
+| Note ownership, versioned saves, personal model context, staff review      | `app/notes.py`                                                                                        |
+| Generated files, editor, optional container execution                      | `app/artifacts.py`, `app/code_runner.py`, `app/static/artifact-editor.js`, `app/static/artifacts.css` |
+| Resizable desktop navigation                                               | `app/static/sidebar-resize.js`, `app/static/artifacts.css`                                            |
+| Personal file extraction, ownership checks, download/preview responses     | `app/files.py`                                                                                        |
+| Class-scoped teaching-file extraction, search and passage access           | `app/course_materials.py`                                                                             |
+| Roles, classes, subjects and policy inheritance                            | `app/administration.py`, `app/oversight.py`                                                           |
+| Student tutoring/context and output review                                 | `app/student_tutor.py`, `app/student_context.py`, `app/model_output.py`                               |
+| Online retrieval and reference formatting                                  | `app/research.py`, `app/references.py`                                                                |
+| Model loading, cancellation and host PTYs                                  | `app/model_manager.py`, `app/generation_control.py`, `app/host_terminal.py`                           |
+| Saved preferences, memories, chat recovery and categories                  | `app/preferences.py`, `app/chat_archive.py`, `app/personal_categories.py`                             |
+| Hardware readings and application diagnostics                              | `app/hardware.py`, `app/error_logging.py`                                                             |
+| Base model instructions and subject catalogues                             | `config/`                                                                                             |
+| Isolated public demo and seed data                                         | `app/demo.py`, `scripts/start-demo.py`, `DEMO_LOGINS.txt`                                             |
+| Startup, services, evaluations and releases                                | `scripts/`, `deploy/`, `.github/workflows/`                                                           |
+| Isolated behaviour and access-control checks                               | `tests/`                                                                                              |
 
 ## Styles and themes
 
@@ -141,3 +143,58 @@ Update `VERSION`, add short notes in `docs/releases/v<VERSION>.md`, run the chec
 push the reviewed source changes to `main`. The Actions workflow validates the source
 before publishing that version. Existing releases are left unchanged. Model weights,
 accounts, databases, logs and student uploads must never be included in a source release.
+
+Standalone social-turn handling lives in `app/conversation_intent.py`; current file-request detection lives in `app/artifacts.py`. Keep greetings outside the generation path.
+
+Generated-file implementation and resource limits are documented in [GENERATED-FILES.md](GENERATED-FILES.md).
+
+The readability scale is the final named section in `app/static/style.css`.
+`--interface-font-size`, `--navigation-font-size` and `--metadata-font-size` control
+the larger interface text. Theme font families and user-sized note bodies remain
+in their owning components. Workspace width preferences, divider input and joined
+edge tabs live in `workspace-panels.js` / `workspace-panels.css`.
+
+### Chat return-to-bottom control
+
+`app/static/composer.js` owns the outlined chevron and its scroll/resize tracking.
+It appears above the input when more than 80px of conversation remains below the
+viewport. Its click scrolls the chat to the end, using instant motion when the
+user prefers reduced motion. `style.css` contains the labelled Return to the
+latest message section: change its fade, icon or position there. The gradient
+passes pointer events through to the chat; the button keeps a 44px touch target.
+A passive listener and one ResizeObserver update it without polling or changing
+any saved chat content.
+
+### Text size and live reply activity
+
+Settings has separate account-owned **Page text** (85–140%) and **Chat text**
+(14–28px) controls. Page styles multiply text sizes by `--ui-text-scale`; chat
+bubbles and the input share `--chat-text-size`. The terminal's measured renderer
+and each note's explicit text-size choice keep their own controls. Account values
+are validated and stored through `/api/preferences/appearance`, loaded with
+bootstrap, and applied before rendering. Layout dimensions and SVG icons stay fixed.
+
+`generation_control.py` contains the fixed public activity phases. Pipeline code
+reports a phase only at the corresponding real operation. Elapsed time and stream
+arrival counts update within each phase without exposing the received contents.
+The panel follows new updates at the bottom, then releases the reader’s scroll
+position as soon as they scroll up; jumping to the end resumes follow. The browser polls its
+own `/api/chat/activity` twice per second while sending, stops polling when the
+request ends, and never requests model reasoning or logs. There is no extra model
+call. Activity is bounded, memory-only and requires true thread ownership; it is
+removed when the generation finishes. Edit the phase labels there and their
+presentation in the labelled sections of `composer.js` and `style.css`.
+
+The chat scrollbar keeps its normal gutter, with a transparent thumb at the latest
+message. Deliberate scrolling reveals it briefly; reading older messages keeps it
+visible. This shares the return-to-bottom control's scroll/resize observer.
+
+### Sequential reply presentation
+
+`animateLatestReply` in `app.js` reveals a reviewed reply in source order. Future
+paragraphs, code cards and inline code take no space until reached; a code card's
+footer waits for its code to finish. Sources, generated-file chips and route notes
+appear after the reply. A natural completion callback opens the generated-file
+editor only after the visible reply finishes. Cancellation and a new render clear
+pending presentation state without triggering that callback. Reduced-motion users
+receive the complete response immediately. Saved model output is unchanged.

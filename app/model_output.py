@@ -80,3 +80,29 @@ def readable_math(text):
         )
 
     return re.sub(r"\$([^$\n]{1,180})\$", unwrap, text)
+
+
+def clean_conversation(text):
+    """Clean prose without interpreting code escapes, JSON keys or maths in files.
+
+    Transport-envelope cleanup and Unicode maths predate downloadable artifacts.
+    Mask fenced code before those prose-only transformations, then restore bytes.
+    """
+    if not isinstance(text, str):
+        return ""
+    blocks = []
+
+    def protect(match):
+        blocks.append(match.group(0))
+        return f"SCHOOLFILEBLOCK{len(blocks) - 1}END"
+
+    masked = re.sub(
+        r"^(?P<fence>`{3,})[^\n`]*\n.*?^(?P=fence)[ \t]*$",
+        protect,
+        text,
+        flags=re.MULTILINE | re.DOTALL,
+    )
+    cleaned = readable_math(clean_overview(masked))
+    for index, block in enumerate(blocks):
+        cleaned = cleaned.replace(f"SCHOOLFILEBLOCK{index}END", block)
+    return cleaned

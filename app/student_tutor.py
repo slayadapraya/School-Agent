@@ -7,6 +7,7 @@ import math
 from fractions import Fraction
 from pathlib import Path
 from .guidance import LINEAR
+from . import generation_control
 
 ROOT = Path(__file__).resolve().parents[1]
 FOLLOWUP = re.compile(
@@ -175,6 +176,7 @@ def respond(course, message, history, action="chat", model_json=None, policy=Non
     from . import learning_context
 
     material_sources = course.get("_material_context", [])
+    generation_control.report("sources")
     sources = learning_context.sources(message, history)
     context = [
         {"id": x["id"], "title": x["title"], "text": x.get("text", "")[:1700]}
@@ -223,6 +225,7 @@ def respond(course, message, history, action="chat", model_json=None, policy=Non
     targets = expected_values(message, recent)
     interpretation = {}
     try:
+        generation_control.report("planning")
         plan = model_json(
             [
                 {
@@ -280,6 +283,7 @@ def respond(course, message, history, action="chat", model_json=None, policy=Non
                     }
                 )
             messages.append({"role": "user", "content": message})
+            generation_control.report("revising" if feedback else "drafting")
             candidate = model_json(messages, 700, text_only=True)
             text = (
                 candidate.get("reply", "") if isinstance(candidate, dict) else candidate
@@ -299,6 +303,7 @@ def respond(course, message, history, action="chat", model_json=None, policy=Non
             feedback = leak(text, targets)
             if feedback:
                 continue
+            generation_control.report("reviewing")
             verdict = model_json(
                 [
                     {
@@ -398,8 +403,6 @@ def respond(course, message, history, action="chat", model_json=None, policy=Non
             "I couldn’t produce a suitable tutoring reply just now. Try asking about one particular step or term, and I’ll help you work through it without supplying the final answer."
         ), {**meta, "route": "guidance_unavailable"}
     except Exception:
-        from . import generation_control
-
         if (
             generation_control.CURRENT.get()
             and generation_control.CURRENT.get().cancelled.is_set()

@@ -7,7 +7,7 @@
   align-items: center;
   gap: 12px;
   margin: 18px 0;
-  font-size: 16px;
+  font-size: calc(16px * var(--ui-text-scale, 1));
 }
 .material-filter select,
 .material-form-row select,
@@ -30,7 +30,7 @@
   border-bottom: 1px solid var(--line);
 }
 .teaching-file b {
-  font-size: 18px;
+  font-size: calc(18px * var(--ui-text-scale, 1));
   overflow-wrap: anywhere;
 }
 .teaching-file small {
@@ -46,7 +46,7 @@
   text-decoration: none;
 }
 .material-actions .secondary {
-  font-size: 14px;
+  font-size: calc(14px * var(--ui-text-scale, 1));
   min-height: 44px;
   padding: 10px 14px;
 }
@@ -62,7 +62,7 @@
 .material-upload summary {
   cursor: pointer;
   min-height: 30px;
-  font-size: 17px;
+  font-size: calc(17px * var(--ui-text-scale, 1));
 }
 .material-upload .account-form {
   margin-top: 18px;
@@ -72,7 +72,7 @@
   border: 1px solid var(--line);
   border-radius: 8px;
   width: 100%;
-  font-size: 16px;
+  font-size: calc(16px * var(--ui-text-scale, 1));
 }
 .material-form-row {
   display: grid;
@@ -89,7 +89,7 @@
 }
 .material-passage {
   white-space: pre-wrap;
-  font-size: 18px;
+  font-size: calc(18px * var(--ui-text-scale, 1));
   line-height: 1.6;
   margin: 18px 0 25px;
   overflow-wrap: anywhere;
@@ -101,7 +101,7 @@
   gap: 12px;
 }
 .material-reader-bar label {
-  font-size: 16px;
+  font-size: calc(16px * var(--ui-text-scale, 1));
 }
 .material-reader-bar select {
   display: block;
@@ -124,13 +124,13 @@
     flex-wrap: wrap;
   }
   .material-actions .secondary {
-    font-size: 16px;
+    font-size: calc(16px * var(--ui-text-scale, 1));
     min-height: 46px;
   }
   .material-passage {
-    font-size: 18px;
+    font-size: calc(18px * var(--ui-text-scale, 1));
   }
   .material-upload summary {
-    font-size: 18px;
+    font-size: calc(18px * var(--ui-text-scale, 1));
   }
 }

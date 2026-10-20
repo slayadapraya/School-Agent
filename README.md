@@ -2,7 +2,7 @@
 
 School Agent is a self-hosted AI workspace for students, teachers and administrators. It combines subject-based chat, shared teaching files, personal notes and class management in one browser interface. Replies run through locally downloaded models served by LM Studio; accounts and workspace data are stored in SQLite on the host.
 
-**Current release:** [v0.2.1](https://github.com/slayadapraya/School-Agent/releases/tag/v0.2.1). This is a pilot application, with reviewed student tutoring and explicit role-based access.
+**Current release:** [v0.3.0](https://github.com/slayadapraya/School-Agent/releases/tag/v0.3.0). This is a pilot application, with reviewed student tutoring and explicit role-based access.
 
 ## Features at a glance
 
@@ -18,13 +18,20 @@ School Agent is a self-hosted AI workspace for students, teachers and administra
 | **Local models**                          | Run downloaded models through LM Studio, with model access and prompt controls.                                         |
 | **Desktop and mobile layouts**            | Responsive chat, an accessible mobile drawer, alternative themes and resizable workspace panels.                        |
 | **Host administration**                   | Admin-only system monitoring, diagnostic logs and an embedded terminal in normal installations.                         |
+| **Generated files and code editor**       | Downloadable code/text artifacts, syntax-coloured editing, versioned saves and per-account generation permissions.      |
+| **Interactive website previews**          | HTML/CSS/JavaScript previews beneath chat code, sandboxed Files previews, and movable preview windows.                  |
+| **Compact navigation**                    | Collapsible icon rail, adjustable expanded width, quick labels and a fly-out of the account's recent chats.             |
+| **Account pictures**                      | Upload a profile picture, choose an icon or use initials; account changes preserve chat position and draft.             |
+| **Read-only student workspaces**          | Authorised staff review student chats and notes from Staff studio, under existing roster rules and logged access.       |
+| **Reading preferences**                   | Per-account page/chat text sizes, matching message fonts, a jump-to-latest control and quieter scrollbars.              |
+| **Live response activity**                | Actual generation phases and stream-arrival counters, cancellable requests and sequential reply presentation.           |
+| **Request checks**                        | Latest-correction guidance and checks/retries for explicitly excluded code dependencies.                                |
 | **Isolated public demo**                  | Sample accounts, classes, conversations and notes without using the live installation's data.                           |
 
 ## Workspace preview
 
-These images show the current development workspace using **synthetic demo accounts
-and conversations**. Hardware readings shown here are sample values. The latest
-versioned release may differ from the development interface.
+These images show the workspace using **synthetic demo accounts
+and conversations**. Hardware readings shown here are sample values. Some sample content and available controls depend on the signed-in role.
 
 <table>
 <tr>
@@ -93,7 +100,7 @@ Student tutoring is designed to teach concepts and guide the next step rather th
 - Search student activity, filter history and ask supported aggregate activity questions within the administrator's review scope.
 - Select downloaded models, set personal instructions for each model and manage available model access. Models load when a new conversation first sends a message.
 - Organise personal chats into custom categories with drag-and-drop ordering and recover deleted conversations.
-- Switch to **Teacher view**, which changes the authenticated session role and blocks admin-only APIs, or use the student tutor preview. These previews do not impersonate a named student's account.
+- Open **Staff studio → Student workspaces** to review accessible student chats and notes read-only. Staff stay signed in as themselves; the server applies roster and record permissions and logs each opened record. The old profile-menu role/view switches have been removed.
 - Inspect application diagnostics and live CPU, RAM, GPU/VRAM, temperature and GPU power readings where the host exposes sensors, with recent-history graphs.
 - Open an authenticated embedded host terminal. This is a shell on the server's operating system under its service account, not an SSH connection to another machine.
 
@@ -105,6 +112,42 @@ Student tutoring is designed to teach concepts and guide the next step rather th
 - Click or keyboard-focus an admin, terminal or floating note window to bring it to the front.
 - Subject conversations, recent chats, editable titles, personal files, account memories and permanent notes in the same workspace.
 - Staff research routes can retrieve online sources and return linked references. Requested reference lists default to APA 7 unless another style is requested. Research depends on network access, available sources and the applicable role/policy path; the reviewed student tutor is not an unrestricted research assistant.
+
+## Generated files
+
+Permitted users can request downloadable code or text files directly in chat.
+**Files → Generated** provides editing, saves, downloads, sandboxed HTML/CSS/JavaScript previews,
+and a wider editor. Administrators grant generation and optional execution access
+in each account's **Tools** tab. Student tutoring restrictions continue to apply.
+
+File bodies load on demand, with bounded file sizes and counts. Desktop navigation
+can also be resized by dragging its right edge; the selected width is saved in the
+browser. Model memory and loading settings are unchanged.
+
+Code execution is **off by default** and does not use the host terminal. The optional
+Python/JavaScript container adapter requires separate configuration and runtime
+validation. See [generated files](docs/GENERATED-FILES.md) for supported formats,
+permissions, limits, resource use and verification details.
+
+## Navigation, accounts and student review
+
+**Collapse sidebar** switches to a narrow icon rail; expanding restores the saved width.
+Hover over **Chats** for recent conversations, or click it to reopen the last conversation.
+The School Agent logo opens Home. Icon labels and the recent-chat fly-out appear after a
+short hover, and the sidebar preference is kept per account in the browser.
+
+The **Profile** pop-out has a separate clickable account card. Open it to edit your name
+or password, upload a profile picture, choose an icon or restore initials. Pictures are
+limited to 2 MB and re-encoded to a small 128 × 128 image without upload metadata.
+Changing a picture or saving account details preserves the chat scroll position, draft
+and open workspace. Password changes still sign out existing sessions.
+
+In compact mode, Course library and Staff studio move into the profile menu, with
+**Settings** at the bottom. **Staff studio → Student workspaces** provides an account
+selector, accessible chats and saved notes. It is a read-only review surface: it does
+not change the staff identity, create a student session or provide a student composer.
+Teachers retain their existing assignment/access boundaries; administrators can review
+student accounts. See [account and workspace controls](docs/ACCOUNT-WORKSPACES.md).
 
 ## Shared teaching files
 
@@ -196,7 +239,7 @@ Staff prompt edits are stored in runtime data and can override file defaults. Re
 
 ## Tests and evaluation
 
-The release snapshot passed **196 automated tests**, including file access, class isolation, retained page/slide locations, archived references, student output boundaries and workspace ownership. The release workflow reruns the suite, formatting checks and JavaScript syntax checks before publishing.
+The v0.3.0 release snapshot passed **244 automated tests**, including file access, class isolation, retained page/slide locations, archived references, student output boundaries and workspace ownership. The release workflow reruns the suite, formatting checks and JavaScript syntax checks before publishing.
 
 ```bash
 python3 -m unittest discover -s tests

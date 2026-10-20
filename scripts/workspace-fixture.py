@@ -58,15 +58,43 @@ def main():
             "initial_prompt": "",
             "private_model": False,
         }
+
+        def fixture_answer(course, message, history, *args, **kwargs):
+            if "activity-test" in message:
+                import time
+
+                for phase in ("planning", "drafting", "reviewing"):
+                    s.generation_control.report(phase)
+                    s.generation_control.model_started()
+                    for _ in range(6):
+                        s.generation_control.model_chunk()
+                        time.sleep(0.15)
+                    s.generation_control.model_finished()
+                return (
+                    "A wave carries energy while the material itself oscillates around its resting position.",
+                    {"mode": "guided", "route": "demo", "sources": []},
+                )
+            if "artifact-test" in message:
+                return (
+                    'Here are the requested files.\n\n```html filename=demo.html\n<link rel="stylesheet" href="demo.css"><h1>Artifact preview</h1><button onclick="document.getElementById(\'details\').hidden=false">Show details</button><section id="details" hidden>Another section</section><script>document.body.dataset.executed="yes";try { parent.document.body.dataset.previewEscaped="yes"; } catch (error) { document.body.dataset.isolated="yes"; }</script>\n```\n\n```python filename=hello.py\nprint("Hello from a file")\n```\n\n```css filename=demo.css\nh1 { color: rgb(25, 120, 80); }\n```',
+                    {
+                        "mode": "configured",
+                        "route": "configured_tutoring",
+                        "sources": [],
+                    },
+                )
+            return "A synthetic UI-test reply.", {
+                "mode": "guided",
+                "route": "configured_tutoring",
+                "sources": [],
+            }
+
         with (
             patch.object(s.model_manager, "prepare", return_value=model),
             patch.object(
                 s,
                 "answer",
-                return_value=(
-                    "A synthetic UI-test reply.",
-                    {"mode": "guided", "route": "configured_tutoring", "sources": []},
-                ),
+                side_effect=fixture_answer,
             ),
             patch.object(
                 s, "read_question", return_value="A synthetic image transcription."

@@ -16,7 +16,7 @@
   border-radius: 8px;
   background: var(--panel);
   color: var(--text);
-  font: 13px/1.4 var(--font-ui);
+  font: calc(13px * var(--ui-text-scale, 1)) / 1.4 var(--font-ui);
   white-space: nowrap;
 }
 .workspace-grid.with-notes {
@@ -51,7 +51,7 @@
   gap: 8px;
   align-items: center;
   justify-content: space-between;
-  font-size: 14px;
+  font-size: calc(14px * var(--ui-text-scale, 1));
   color: var(--text);
 }
 .notes-experimental {
@@ -59,7 +59,7 @@
   border: 1px solid var(--line);
   border-radius: 5px;
   padding: 2px 5px;
-  font: 10px/1.3 var(--font-ui);
+  font: calc(10px * var(--ui-text-scale, 1)) / 1.3 var(--font-ui);
   color: var(--muted);
 }
 .note-rail-controls {
@@ -70,7 +70,7 @@
   padding: 6px 9px;
   border: 1px solid var(--line);
   border-radius: 6px;
-  font-size: 12px;
+  font-size: calc(12px * var(--ui-text-scale, 1));
   color: var(--text);
   background: var(--card);
 }
@@ -82,7 +82,7 @@
   gap: 8px;
 }
 .note-rail-empty {
-  font-size: 13px;
+  font-size: calc(13px * var(--ui-text-scale, 1));
   line-height: 1.5;
   color: var(--muted);
 }
@@ -93,7 +93,7 @@
   border-radius: 6px;
   background: var(--card);
   color: var(--text);
-  font: 12px var(--font-ui);
+  font: calc(12px * var(--ui-text-scale, 1)) var(--font-ui);
 }
 .note-editor {
   display: flex;
@@ -121,7 +121,7 @@
   border-radius: 0;
   background: transparent;
   color: var(--note-ink);
-  font: 600 14px/1.4 var(--font-ui);
+  font: 600 calc(14px * var(--ui-text-scale, 1)) / 1.4 var(--font-ui);
 }
 .note-editor .note-body {
   display: block;
@@ -137,7 +137,7 @@
   overflow: auto;
   background: transparent;
   color: var(--note-ink);
-  font: 14px/1.55 var(--font-ui);
+  font: calc(14px * var(--ui-text-scale, 1)) / 1.55 var(--font-ui);
 }
 .note-editor .note-body::placeholder {
   color: var(--note-muted);
@@ -149,7 +149,7 @@
   flex: none;
   padding: 6px 8px;
   border-top: 1px solid var(--note-line);
-  font: 11px/1.4 var(--font-ui);
+  font: calc(11px * var(--ui-text-scale, 1)) / 1.4 var(--font-ui);
   color: var(--note-muted);
 }
 .note-editor > footer > span {
@@ -162,7 +162,7 @@
   padding: 4px 5px;
   border: 1px solid transparent;
   border-radius: 4px;
-  font: 11px/1.4 var(--font-ui);
+  font: calc(11px * var(--ui-text-scale, 1)) / 1.4 var(--font-ui);
 }
 .note-editor > footer button:hover {
   border-color: var(--note-line);
@@ -203,7 +203,7 @@
   user-select: none;
   background: #bed6ab;
   color: var(--note-ink);
-  font: 13px/1.3 var(--font-ui);
+  font: calc(13px * var(--ui-text-scale, 1)) / 1.3 var(--font-ui);
 }
 .note-window .terminal-window-bar > div {
   display: flex;
@@ -222,7 +222,7 @@
   border-radius: 4px;
   color: var(--note-ink);
   font:
-    18px/1 ui-sans-serif,
+    calc(18px * var(--ui-text-scale, 1)) / 1 ui-sans-serif,
     system-ui,
     sans-serif;
 }
@@ -242,7 +242,7 @@
   flex: none;
   padding: 6px 12px;
   border-bottom: 1px solid var(--note-line);
-  font: 11px/1.4 var(--font-ui);
+  font: calc(11px * var(--ui-text-scale, 1)) / 1.4 var(--font-ui);
   color: var(--note-muted);
   white-space: nowrap;
   overflow: hidden;
@@ -298,18 +298,18 @@
   min-width: 0;
 }
 .notes-library-row b {
-  font-size: 15px;
+  font-size: calc(15px * var(--ui-text-scale, 1));
   overflow-wrap: anywhere;
 }
 .notes-library-row small {
   display: block;
   color: var(--note-muted);
-  font-size: 11px;
+  font-size: calc(11px * var(--ui-text-scale, 1));
   line-height: 1.5;
   margin-top: 4px;
 }
 .notes-library-row p {
-  font-size: 13px;
+  font-size: calc(13px * var(--ui-text-scale, 1));
   margin: 6px 0 0;
   overflow-wrap: anywhere;
 }
@@ -320,14 +320,14 @@
   border-radius: 6px;
   padding: 7px 10px;
   color: var(--note-ink);
-  font-size: 12px;
+  font-size: calc(12px * var(--ui-text-scale, 1));
 }
 /* Smaller user messages retain a readable line length and tap target. */
 body .conversation .message.user {
   max-width: 78%;
   padding: 11px 16px;
   border-radius: 15px 15px 4px 15px;
-  font-size: 17px;
+  font-size: var(--chat-text-size, 19px);
   line-height: 1.45;
   margin-bottom: 20px;
 }
@@ -342,7 +342,7 @@ body .conversation .message.user {
 }
 @media (max-width: 750px) {
   .header-notes {
-    font-size: 12px;
+    font-size: calc(12px * var(--ui-text-scale, 1));
     padding: 6px 8px;
   }
   .note-window {
@@ -350,12 +350,12 @@ body .conversation .message.user {
     height: 330px;
   }
   .note-editor .note-body {
-    font-size: 16px;
+    font-size: var(--chat-text-size, 19px);
   }
   body .conversation .message.user {
     max-width: 90%;
     padding: 10px 13px;
-    font-size: 16px;
+    font-size: var(--chat-text-size, 19px);
   }
   .notes-library-row {
     padding: 10px;
@@ -415,7 +415,7 @@ body .conversation .message.user {
   align-items: center;
   gap: 5px;
   margin-left: auto;
-  font: 10px var(--font-ui);
+  font: calc(10px * var(--ui-text-scale, 1)) var(--font-ui);
   color: var(--note-ink);
 }
 .note-colours input[type='color'] {
@@ -541,7 +541,7 @@ body .conversation .message.user {
   padding: 0;
   margin: 0;
   line-height: 1;
-  font-size: 18px;
+  font-size: calc(18px * var(--ui-text-scale, 1));
   font-family: Arial, sans-serif;
   transform: none;
 }
@@ -600,7 +600,7 @@ body .conversation .message.user {
   border-radius: 4px;
   color: var(--note-ink);
   font:
-    13px/1 Arial,
+    calc(13px * var(--ui-text-scale, 1)) / 1 Arial,
     sans-serif;
 }
 .note-formatting button:hover {
@@ -611,7 +611,7 @@ body .conversation .message.user {
   padding: 0 4px;
 }
 .note-editor .note-body {
-  font-size: var(--note-font-size, 14px);
+  font-size: var(--note-font-size, calc(14px * var(--ui-text-scale, 1)));
   white-space: pre-wrap;
   overflow-wrap: anywhere;
   outline: none;
@@ -682,7 +682,7 @@ body .conversation .message.user {
   border-left: 6px solid var(--accent);
 }
 .staff-note-record > span {
-  font-size: 13px;
+  font-size: calc(13px * var(--ui-text-scale, 1));
   line-height: 1.4;
   overflow-wrap: anywhere;
 }
@@ -693,7 +693,7 @@ body .conversation .message.user {
 }
 .staff-note-preview > div {
   white-space: pre-wrap;
-  font-size: var(--note-font-size, 14px);
+  font-size: var(--note-font-size, calc(14px * var(--ui-text-scale, 1)));
   line-height: 1.5;
   overflow-wrap: anywhere;
 }
@@ -711,7 +711,7 @@ body .conversation .message.user {
   min-width: 30px;
   padding: 4px;
   font:
-    20px/1 Arial,
+    calc(20px * var(--ui-text-scale, 1)) / 1 Arial,
     sans-serif;
   margin-left: auto;
 }
@@ -755,7 +755,7 @@ body .conversation .message.user {
 .note-picker-popover {
   position: relative;
   flex: none;
-  font: 12px/1.4 var(--font-ui);
+  font: calc(12px * var(--ui-text-scale, 1)) / 1.4 var(--font-ui);
   color: var(--text);
 }
 .note-picker-popover > summary {

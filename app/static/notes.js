@@ -183,7 +183,7 @@ function editorHTML(n) {
 }
 function notesDockHTML() {
   if (!notesEnabled()) return '';
-  return '<aside class="chat-notes-rail"><header><b>Chat notes</b></header><div class="note-rail-controls"><button type="button" data-note-create="1">＋ New note</button><button type="button" data-notes-library="1">All notes</button><button type="button" data-workspace-close="1" aria-label="Minimise notes" title="Minimise notes">−</button></div><div id="note-dock-content"><p class="note-rail-empty">Open or create a note for this chat.</p></div></aside>';
+  return '<aside class="chat-notes-rail"><header><b>Chat notes</b><button type="button" data-workspace-close="1" aria-label="Minimise notes" title="Minimise notes">−</button></header><div class="note-rail-controls"><button type="button" data-note-create="1">＋ New note</button><button type="button" data-notes-library="1">All notes</button></div><div id="note-dock-content"><p class="note-rail-empty">Open or create a note for this chat.</p></div></aside>';
 }
 async function refreshNoteDock() {
   if (active?.draft && notesEnabled()) {

@@ -1,0 +1,437 @@
+/* Generated files use the existing right pocket. The selected editor owns one
+ * highlighted text layer and one native text area, with identical geometry. */
+.workspace-files.editing-artifact:not(.artifact-browser-open) .workspace-file-search,
+.workspace-files.editing-artifact:not(.artifact-browser-open) .workspace-file-list {
+  display: none;
+}
+.workspace-file-preview.generated-preview {
+  overflow: hidden;
+  gap: 10px;
+}
+.generated-preview [hidden] {
+  display: none !important;
+}
+.artifact-heading {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.artifact-heading b,
+.artifact-heading a,
+.artifact-actions button,
+.artifact-view-tabs button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.artifact-heading b {
+  min-width: 0;
+}
+.artifact-heading b span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.generated-preview svg {
+  flex: none;
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.generated-preview .artifact-heading a {
+  flex: none;
+  font-size: calc(14px * var(--ui-text-scale, 1));
+  color: var(--text);
+  min-height: 38px;
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+.artifact-actions,
+.artifact-view-tabs {
+  display: flex;
+  flex: none;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+.artifact-actions button,
+.artifact-view-tabs button {
+  min-height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--card);
+  padding: 7px 10px;
+  font-size: calc(14px * var(--ui-text-scale, 1));
+}
+.artifact-actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.artifact-view-tabs {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 10px;
+}
+.artifact-view-tabs [aria-selected='true'] {
+  border-color: var(--accent);
+  background: var(--soft);
+}
+.artifact-status {
+  flex: none;
+  display: block;
+  color: var(--muted);
+  font-size: calc(12px * var(--ui-text-scale, 1));
+}
+.artifact-code-editor {
+  position: relative;
+  flex: 1;
+  min-height: 120px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: var(--bg);
+  overflow: hidden;
+  color: var(--text);
+}
+/* Keep these metrics identical: changing either alone misaligns the text caret. */
+.workspace-files .artifact-code-editor > .artifact-source,
+.workspace-files .artifact-code-editor > .artifact-highlight {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  margin: 0;
+  padding: 14px;
+  border: 0;
+  border-radius: 0;
+  font:
+    calc(14px * var(--ui-text-scale, 1)) / 1.6 ui-monospace,
+    SFMono-Regular,
+    Consolas,
+    monospace;
+  font-variant-ligatures: none;
+  letter-spacing: normal;
+  tab-size: 2;
+  white-space: pre;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+.workspace-files .artifact-code-editor > .artifact-source {
+  z-index: 1;
+  background: transparent;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  caret-color: var(--text);
+  resize: none;
+  overflow: auto;
+  outline-offset: -2px;
+}
+.artifact-source::selection {
+  background: #729f824d;
+}
+.workspace-files .artifact-code-editor > .artifact-highlight {
+  pointer-events: none;
+  overflow: hidden;
+}
+.artifact-highlight code {
+  display: block;
+  font: inherit;
+  white-space: inherit;
+  color: inherit;
+  padding: 0;
+  background: transparent;
+}
+.artifact-result {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 120px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  overflow: hidden;
+  background: white;
+}
+.artifact-browser-bar {
+  display: flex;
+  align-items: center;
+  flex: none;
+  gap: 8px;
+  padding: 9px 12px;
+  background: var(--card);
+  color: var(--text);
+  border-bottom: 1px solid var(--line);
+  font-size: calc(13px * var(--ui-text-scale, 1));
+}
+.artifact-browser-bar small {
+  margin-left: auto;
+  color: var(--muted);
+  font-size: calc(11px * var(--ui-text-scale, 1));
+}
+.artifact-result iframe {
+  flex: 1;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  border: 0;
+  background: white;
+}
+.artifact-console {
+  flex: 1;
+  min-height: 120px;
+  overflow: auto;
+}
+.artifact-console pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+/* The left edge remains a touch drawer on phones. Resizing applies on desktop. */
+.sidebar-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.sidebar-heading .brand {
+  flex: 1;
+  min-width: 0;
+}
+.sidebar-heading .brand span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.sidebar-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.sidebar .new-thread,
+.sidebar .recent-home,
+.sidebar [data-action='settings'] {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.sidebar .new-thread {
+  justify-content: flex-start;
+}
+.sidebar-collapse {
+  display: none;
+}
+.sidebar-resize {
+  display: none;
+}
+@media (min-width: 751px) {
+  body .shell {
+    grid-template-columns: var(--navigation-width, 270px) minmax(0, 1fr);
+  }
+  body .shell.navigation-animating {
+    transition: grid-template-columns 0.2s cubic-bezier(0.22, 0.72, 0.22, 1);
+  }
+  body .shell.navigation-opening {
+    transition-duration: 0.18s;
+  }
+  /* Reveal whole labels after the rail opens, rather than reflowing visible text
+   * through every intermediate width. The chat still expands continuously. */
+  .sidebar > :not(.sidebar-heading, .sidebar-resize),
+  .sidebar-heading .brand span {
+    transition: opacity 0.08s ease;
+  }
+  :is(.navigation-opening, .navigation-closing) .sidebar > :not(.sidebar-heading, .sidebar-resize),
+  :is(.navigation-opening, .navigation-closing) .sidebar-heading .brand span {
+    opacity: 0;
+    pointer-events: none;
+    transition: none;
+  }
+  body.resizing-navigation .shell {
+    transition: none;
+  }
+  .sidebar-collapse {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 32px;
+    height: 36px;
+    border-radius: 8px;
+    color: var(--muted);
+  }
+  .sidebar-collapse:hover {
+    color: var(--text);
+    background: var(--soft);
+  }
+  body .shell.navigation-compact {
+    grid-template-columns: 56px minmax(0, 1fr);
+  }
+  body .navigation-compact .sidebar {
+    --profile-edge-space: 10px;
+    padding: 12px 10px var(--profile-edge-space);
+  }
+  .navigation-compact .sidebar-heading {
+    flex-direction: column;
+    width: 36px;
+    gap: 4px;
+    margin-bottom: 4px;
+  }
+  .navigation-compact .sidebar-heading .brand {
+    padding: 0;
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    width: 36px;
+    height: 36px;
+    min-height: 36px;
+  }
+  .navigation-compact .sidebar .brand-logo {
+    width: 20px;
+    height: 20px;
+  }
+  .navigation-compact .sidebar-collapse svg {
+    transform: rotate(180deg);
+  }
+  .navigation-compact .sidebar :is(.brand span, .institution, .sidebar-resize),
+  .navigation-compact .sidebar > .new-thread .sidebar-button-label,
+  .navigation-compact .recent-home .sidebar-button-label,
+  .navigation-compact .sidebar nav > :not(.recent-chats-heading),
+  .navigation-compact .recent-chats-heading > :not(.recent-home),
+  .navigation-compact .side-bottom > :not([data-action='settings'], .profile-area),
+  .navigation-compact .profile-trigger > :not(.avatar) {
+    display: none;
+  }
+  .navigation-compact .sidebar nav {
+    margin-top: 0;
+    overflow: visible;
+  }
+  .navigation-compact .recent-chats-heading {
+    margin: 0;
+    width: 36px;
+  }
+  .navigation-compact .recent-home {
+    flex: 0 0 36px;
+  }
+  .navigation-compact .sidebar :is(.new-thread, .recent-home, .profile-trigger) {
+    width: 36px;
+    height: 36px;
+    min-height: 36px;
+    padding: 0;
+    margin: 0 0 4px;
+    justify-content: center;
+    border-radius: 10px;
+  }
+  .navigation-compact .sidebar .profile-trigger {
+    border-radius: 50%;
+  }
+  .navigation-compact .sidebar .profile-trigger {
+    margin-bottom: 0;
+  }
+  .navigation-compact .profile-trigger .avatar {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    flex-shrink: 0;
+  }
+  .navigation-compact .sidebar .side-bottom {
+    padding-top: var(--profile-edge-space);
+  }
+  .navigation-compact .sidebar .new-thread {
+    background: transparent;
+    color: var(--text);
+    border: 0;
+  }
+  .navigation-compact .sidebar .rail-active {
+    background: var(--text);
+    color: var(--panel);
+  }
+  .navigation-compact .sidebar .profile-trigger.rail-active {
+    background: transparent;
+    color: var(--text);
+  }
+  .navigation-compact .sidebar .new-thread:hover,
+  .navigation-compact .sidebar .new-thread:focus-visible {
+    background: var(--accent);
+    color: #fffef2;
+    border-color: var(--accent);
+  }
+  .navigation-compact .profile-popup {
+    left: 40px;
+    right: auto;
+    bottom: 0;
+    width: 230px;
+  }
+  body .sidebar {
+    position: relative;
+    width: auto;
+    min-width: 0;
+  }
+  .sidebar-resize {
+    display: block;
+    position: absolute;
+    inset: 0 -5px 0 auto;
+    width: 10px;
+    cursor: col-resize;
+    touch-action: none;
+    z-index: 20;
+  }
+  .sidebar-resize:hover,
+  .sidebar-resize:focus-visible {
+    background: var(--accent);
+    opacity: 0.65;
+    outline: none;
+  }
+  body.resizing-navigation {
+    cursor: col-resize;
+    user-select: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body .shell.navigation-animating {
+    transition: none;
+  }
+}
+
+@media (max-width: 1050px) {
+  .artifact-actions button,
+  .artifact-view-tabs button {
+    min-height: 44px;
+    font-size: calc(16px * var(--ui-text-scale, 1));
+  }
+  .workspace-files .artifact-code-editor > .artifact-source,
+  .workspace-files .artifact-code-editor > .artifact-highlight {
+    font-size: calc(16px * var(--ui-text-scale, 1));
+  }
+  .artifact-browser-bar small {
+    display: none;
+  }
+  .generated-preview .artifact-heading a {
+    min-height: 44px;
+  }
+}
+
+/* Keep the file-heading download action compact; the tooltip supplies its name. */
+.generated-preview .artifact-heading .artifact-download-icon {
+  width: 40px;
+  height: 40px;
+  min-height: 40px;
+  padding: 9px;
+  justify-content: center;
+  text-decoration: none;
+}
+.artifact-download-icon:hover {
+  background: var(--soft);
+}
+@media (max-width: 750px) {
+  .generated-preview .artifact-heading .artifact-download-icon {
+    width: 44px;
+    height: 44px;
+  }
+}

@@ -7,3 +7,5 @@ VALIDATION*.json
 
 # Isolated demonstration runtime data
 .demo/
+
+.local-test-artifacts/

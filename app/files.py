@@ -118,12 +118,16 @@ def upload(s, h, user, data):
 
 def get(s, h, user, path):
     fid = path.rsplit("/", 1)[-1]
+    preview = "?preview" in h.path
+    columns = "thread_id,name,text,mime" if preview else "thread_id,name,mime,body"
     with s.connect() as con:
-        row = con.execute("SELECT * FROM documents WHERE id=?", (fid,)).fetchone()
+        row = con.execute(
+            f"SELECT {columns} FROM documents WHERE id=?", (fid,)
+        ).fetchone()
     if not row:
         raise s.APIError(404, "File not found")
     h.owned_thread(row["thread_id"], user)
-    if "?preview" in h.path:
+    if preview:
         return h.respond(
             200, {"name": row["name"], "text": row["text"], "mime": row["mime"]}
         )

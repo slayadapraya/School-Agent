@@ -26,8 +26,76 @@ def init(con):
     con.executescript(
         """CREATE TABLE IF NOT EXISTS prompt_overrides(name TEXT PRIMARY KEY,text TEXT NOT NULL,updated REAL NOT NULL,actor INTEGER NOT NULL);
     CREATE TABLE IF NOT EXISTS tutor_memories(id TEXT PRIMARY KEY,user_id INTEGER NOT NULL,text TEXT NOT NULL,category TEXT NOT NULL,created REAL NOT NULL,updated REAL NOT NULL);
+    CREATE TABLE IF NOT EXISTS appearance_preferences(user_id INTEGER PRIMARY KEY,ui_scale INTEGER NOT NULL DEFAULT 100,chat_size INTEGER NOT NULL DEFAULT 19);
+    CREATE TABLE IF NOT EXISTS avatar_preferences(user_id INTEGER PRIMARY KEY,image TEXT NOT NULL DEFAULT '',icon TEXT NOT NULL DEFAULT '');
     CREATE TABLE IF NOT EXISTS memory_preferences(user_id INTEGER PRIMARY KEY,enabled INTEGER NOT NULL DEFAULT 1);"""
     )
+
+
+def avatar(s, user):
+    with s.connect() as con:
+        row = con.execute(
+            "SELECT image,icon FROM avatar_preferences WHERE user_id=?", (user["id"],)
+        ).fetchone()
+    return dict(row) if row else {"image": "", "icon": ""}
+
+
+def save_avatar(s, user, data):
+    """Store a small, re-encoded account image; discard metadata and active formats."""
+    import base64
+    import io
+    import warnings
+    from PIL import Image, ImageOps
+
+    image, icon = data.get("image", ""), data.get("icon", "")
+    if (
+        icon not in ("", "🌱", "🌻", "🐱", "🦉", "🚀", "⭐")
+        or not isinstance(image, str)
+        or len(image) > 2800000
+        or image
+        and icon
+    ):
+        raise s.APIError(
+            400, "Choose a profile icon or a JPEG, PNG or WebP image under 2 MB"
+        )
+    if image:
+        try:
+            header, encoded = image.split(",", 1)
+            if header not in (
+                "data:image/png;base64",
+                "data:image/jpeg;base64",
+                "data:image/webp;base64",
+            ):
+                raise ValueError()
+            raw = base64.b64decode(encoded, validate=True)
+            if len(raw) > 2 * 1024 * 1024:
+                raise ValueError()
+            with warnings.catch_warnings():
+                warnings.simplefilter("error", Image.DecompressionBombWarning)
+                with Image.open(io.BytesIO(raw)) as source:
+                    if (
+                        source.format not in ("PNG", "JPEG", "WEBP")
+                        or source.width * source.height > 16000000
+                    ):
+                        raise ValueError()
+                    picture = ImageOps.fit(
+                        ImageOps.exif_transpose(source).convert("RGB"), (128, 128)
+                    )
+                    output = io.BytesIO()
+                    picture.save(output, "JPEG", quality=85)
+            image = (
+                "data:image/jpeg;base64," + base64.b64encode(output.getvalue()).decode()
+            )
+        except Exception as exc:
+            raise s.APIError(
+                400, "Choose a valid JPEG, PNG or WebP image under 2 MB"
+            ) from exc
+    with s.connect() as con:
+        con.execute(
+            "INSERT OR REPLACE INTO avatar_preferences VALUES(?,?,?)",
+            (user["id"], image, icon),
+        )
+    return avatar(s, user)
 
 
 def prompt(s, name):
@@ -182,3 +250,29 @@ def profile(s, user):
         budget -= len(text)
         result.append({"category": m["category"], "text": text})
     return result
+
+
+def appearance(s, user):
+    with s.connect() as con:
+        row = con.execute(
+            "SELECT ui_scale,chat_size FROM appearance_preferences WHERE user_id=?",
+            (user["id"],),
+        ).fetchone()
+    return dict(row) if row else {"ui_scale": 100, "chat_size": 19}
+
+
+def save_appearance(s, user, data):
+    scale, chat = data.get("ui_scale"), data.get("chat_size")
+    if (
+        type(scale) is not int
+        or scale not in range(85, 141, 5)
+        or type(chat) is not int
+        or not 14 <= chat <= 28
+    ):
+        raise s.APIError(400, "Choose page text 85–140% and chat text 14–28px")
+    with s.connect() as con:
+        con.execute(
+            "INSERT OR REPLACE INTO appearance_preferences(user_id,ui_scale,chat_size) VALUES(?,?,?)",
+            (user["id"], scale, chat),
+        )
+    return appearance(s, user)

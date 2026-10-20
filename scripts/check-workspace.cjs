@@ -73,7 +73,7 @@ async function settled(page, name) {
     const page = await signIn(context, test);
     const errors = [];
     page.on('pageerror', (error) => errors.push(error.message));
-    await page.getByRole('button', { name: 'New thread ＋', exact: true }).click();
+    await page.getByRole('button', { name: 'New thread', exact: true }).click();
     await page.waitForSelector('#note-dock-content .note-editor');
     const input = page.getByRole('textbox', { name: 'Ask School Agent', exact: true });
     const send = page.locator('.composer-send');

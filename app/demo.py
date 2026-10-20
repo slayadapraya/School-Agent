@@ -224,6 +224,7 @@ def run(port=8140, directory=None):
         **s.settings(),
         "institution": "School Agent · Demo",
         "public_listener_enabled": False,
+        "code_execution_enabled": False,
         "model_key": "demo-responder",
         "model": "demo-responder",
     }

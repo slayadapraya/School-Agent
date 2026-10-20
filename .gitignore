@@ -10,3 +10,6 @@ node_modules/
 
 # Isolated demonstration runtime data
 .demo/
+
+# Screenshots from isolated UI checks (never production data).
+.local-test-artifacts/

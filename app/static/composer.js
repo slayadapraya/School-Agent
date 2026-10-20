@@ -29,7 +29,7 @@ composer = function () {
     (state.user.role === 'admin' || state.user.permissions?.web_research !== false);
   const code = codeToolAvailable(),
     running = busy || !!replyAnimation;
-  return `<div class="composer-wrap"><form id="chat-form" class="composer modern-composer"><div class="attachment-tray">${stagedImages.map((f, i) => `<span class="attachment-chip">▧ ${esc(f.name)}<button type="button" data-staged-image="${i}" aria-label="Remove ${esc(f.name)}">×</button></span>`).join('')}${(pendingImages[active?.id] || []).map((a) => `<span class="attachment-chip">▧ ${esc(a.name)}<button type="button" data-remove-image="${esc(a.id)}" aria-label="Remove ${esc(a.name)}">×</button></span>`).join('')}</div><input type="file" id="image-upload" accept="image/jpeg,image/png,image/webp,.pdf,.docx,.txt,.md,.csv,.json" multiple hidden><textarea rows="1" aria-label="Ask School Agent" id="message" maxlength="4000" placeholder="Type here…"></textarea><div class="composer-footer"><div class="composer-tool-group">${uploads ? '<button type="button" class="tool" data-action="attach" aria-label="Attach files">＋ File / photo</button>' : ''}${research ? '<button type="button" class="tool" data-action="research">⌕ Research</button>' : ''}<button type="button" class="tool" data-action="sources">▧ Course sources</button><button type="button" class="tool ${code ? 'is-unlocked' : 'is-locked'}" data-code-assist="1" aria-disabled="${!code}" title="${code ? 'Code help' : 'A teacher must grant access to a coding model'}">${toolLock(!code)}Code</button><button type="button" class="tool is-locked" data-image-assist="1" aria-disabled="true" title="No image generation service is connected">${toolLock(true)}Image</button></div><div class="composer-right-controls"><button type="button" data-input-model="1" class="input-model-selector" aria-label="Choose chat model" aria-haspopup="menu" aria-expanded="false">${esc(windowModelLabel || 'Choose model')}${adminTutorFilters ? ' · Student filters' : ''} ▾</button><button type="${running ? 'button' : 'submit'}" class="send composer-send ${running ? 'is-running' : ''}" aria-label="${running ? 'Stop response' : 'Send message'}" ${running ? 'data-stop-response="1"' : ''} ${!running && (uploadBusy || creatingThread) ? 'disabled' : ''}>${composerControlIcon(running)}</button></div></div></form><p class="disclosure">Saved to this conversation · Authorised staff can review</p></div>`;
+  return `<div class="composer-wrap"><div class="chat-end-control" hidden><button type="button" class="chat-jump-bottom" aria-label="Jump to latest message" title="Jump to latest message"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 8.5 7 7 7-7"/></svg></button></div><form id="chat-form" class="composer modern-composer"><div class="attachment-tray">${stagedImages.map((f, i) => `<span class="attachment-chip">▧ ${esc(f.name)}<button type="button" data-staged-image="${i}" aria-label="Remove ${esc(f.name)}">×</button></span>`).join('')}${(pendingImages[active?.id] || []).map((a) => `<span class="attachment-chip">▧ ${esc(a.name)}<button type="button" data-remove-image="${esc(a.id)}" aria-label="Remove ${esc(a.name)}">×</button></span>`).join('')}</div><input type="file" id="image-upload" accept="image/jpeg,image/png,image/webp,.pdf,.docx,.txt,.md,.csv,.json" multiple hidden><textarea rows="1" aria-label="Ask School Agent" id="message" maxlength="4000" placeholder="Type here…"></textarea><div class="composer-footer"><div class="composer-tool-group">${uploads ? '<button type="button" class="tool" data-action="attach" aria-label="Attach files">＋ File / photo</button>' : ''}${!studentView && (state.user.role === 'admin' || state.user.permissions?.generate_files) ? '<button type="button" class="tool" data-create-file="1">▤ Create file</button>' : ''}${research ? '<button type="button" class="tool" data-action="research">⌕ Research</button>' : ''}<button type="button" class="tool" data-action="sources">▧ Course sources</button><button type="button" class="tool ${code ? 'is-unlocked' : 'is-locked'}" data-code-assist="1" aria-disabled="${!code}" title="${code ? 'Code help' : 'A teacher must grant access to a coding model'}">${toolLock(!code)}Code</button><button type="button" class="tool is-locked" data-image-assist="1" aria-disabled="true" title="No image generation service is connected">${toolLock(true)}Image</button></div><div class="composer-right-controls"><button type="button" data-input-model="1" class="input-model-selector" aria-label="Choose chat model" aria-haspopup="menu" aria-expanded="false">${esc(windowModelLabel || 'Choose model')}${adminTutorFilters ? ' · Student filters' : ''} ▾</button><button type="${running ? 'button' : 'submit'}" class="send composer-send ${running ? 'is-running' : ''}" aria-label="${running ? 'Stop response' : 'Send message'}" ${running ? 'data-stop-response="1"' : ''} ${!running && (uploadBusy || creatingThread) ? 'disabled' : ''}>${composerControlIcon(running)}</button></div></div></form><p class="disclosure">Saved to this conversation · Authorised staff can review</p></div>`;
 };
 function updateSendControl() {
   const button = document.querySelector('.composer-send');
@@ -219,6 +219,12 @@ document.addEventListener(
       if (checkbox) b.dataset.studentFilters = String(checkbox.checked);
       setTimeout(closeModelPopover, 0);
     }
+    if (b?.dataset.createFile) {
+      const input = $('#message');
+      input.value = input.value || 'Create a downloadable file that ';
+      input.focus();
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+    }
     if (b?.dataset.codeAssist) {
       if (!codeToolAvailable())
         toast('Code help is locked. Ask your teacher for access to a coding model.');
@@ -260,6 +266,7 @@ window.addEventListener('resize', resizeComposerInput);
 const renderBeforeInputSizing = render;
 render = function () {
   const result = renderBeforeInputSizing();
+  watchChatEnd();
   requestAnimationFrame(resizeComposerInput);
   return result;
 };
@@ -282,3 +289,169 @@ document.addEventListener(
   },
   true,
 );
+
+// A single passive scroll listener and size observer keep this affordance in sync
+// with replies, panel resizing and the keyboard, without polling or stealing scroll.
+let chatEndFrame = null;
+const chatEndObserver = new ResizeObserver(scheduleChatEndUpdate);
+function scheduleChatEndUpdate() {
+  if (chatEndFrame !== null) return;
+  chatEndFrame = requestAnimationFrame(() => {
+    chatEndFrame = null;
+    const area = document.getElementById('content');
+    const control = document.querySelector('.chat-end-control');
+    if (!control || !area) return;
+    const composer = document.getElementById('chat-form');
+    if (composer) {
+      const box = composer.getBoundingClientRect();
+      const parent = control.parentElement.getBoundingClientRect();
+      control.style.setProperty(
+        '--chat-jump-center',
+        `${box.left + box.width / 2 - parent.left}px`,
+      );
+    }
+
+    const away =
+      !!area.querySelector('.conversation .message') &&
+      area.scrollHeight - area.clientHeight - area.scrollTop > 80;
+    control.hidden = !away;
+    area.classList.toggle('chat-away-from-bottom', away);
+  });
+}
+function watchChatEnd() {
+  chatEndObserver.disconnect();
+  const area = document.getElementById('content');
+  const conversation = area?.querySelector('.conversation');
+  if (area && conversation) {
+    chatEndObserver.observe(area);
+    chatEndObserver.observe(conversation);
+  }
+  scheduleChatEndUpdate();
+}
+document.addEventListener(
+  'scroll',
+  (event) => {
+    if (event.target.id === 'content') scheduleChatEndUpdate();
+  },
+  { capture: true, passive: true },
+);
+document.addEventListener('click', (event) => {
+  if (!event.target.closest('.chat-jump-bottom')) return;
+  const area = document.getElementById('content');
+  area?.scrollTo({
+    top: area.scrollHeight,
+    behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+  });
+});
+watchChatEnd();
+
+// Reserve the scrollbar's geometry, but reveal its thumb only during deliberate
+// scrolling or while the reader is above the latest messages.
+let chatScrollbarTimer;
+function revealChatScrollbar(event) {
+  const area = document.getElementById('content');
+  if (!area?.querySelector('.conversation')) return;
+  if (event.type === 'keydown') {
+    if (
+      !['PageUp', 'PageDown', 'Home', 'End', 'ArrowUp', 'ArrowDown'].includes(event.key) ||
+      event.target.closest('textarea,input,[contenteditable="true"]')
+    )
+      return;
+  } else if (!area.contains(event.target)) return;
+  area.classList.add('chat-is-scrolling');
+  clearTimeout(chatScrollbarTimer);
+  chatScrollbarTimer = setTimeout(() => area.classList.remove('chat-is-scrolling'), 900);
+}
+for (const type of ['wheel', 'touchmove', 'pointerdown'])
+  document.addEventListener(type, revealChatScrollbar, { capture: true, passive: true });
+document.addEventListener('keydown', revealChatScrollbar);
+
+// Poll only during this send. Fixed public phase summaries come from real server
+// milestones, never from raw model reasoning, prompts, logs or an extra model call.
+let replyActivitySession = null;
+function stopReplyActivity() {
+  if (!replyActivitySession) return;
+  clearTimeout(replyActivitySession.timer);
+  replyActivitySession.controller?.abort();
+  replyActivitySession.cleanup?.();
+  replyActivitySession = null;
+}
+function startReplyActivity(threadId, owner) {
+  stopReplyActivity();
+  const area = document.getElementById('content');
+  const session = { threadId, owner, timer: null, controller: null, follow: true };
+  const oldAnchor = area?.style.overflowAnchor;
+  if (area) area.style.overflowAnchor = 'none';
+  const readPosition = () => {
+    if (area && area.scrollHeight - area.clientHeight - area.scrollTop <= 4) session.follow = true;
+  };
+  const userScroll = (event) => {
+    if (event.type === 'keydown') {
+      if (
+        event.target.closest('input,textarea,[contenteditable="true"]') ||
+        !['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End'].includes(event.key)
+      )
+        return;
+    }
+    session.follow = false;
+    // Browser scrolling happens after wheel/touch/key dispatch.
+    requestAnimationFrame(readPosition);
+  };
+  for (const type of ['wheel', 'touchmove', 'pointerdown'])
+    area?.addEventListener(type, userScroll, { passive: true });
+  area?.addEventListener('scroll', readPosition, { passive: true });
+  document.addEventListener('keydown', userScroll);
+  session.cleanup = () => {
+    for (const type of ['wheel', 'touchmove', 'pointerdown'])
+      area?.removeEventListener(type, userScroll);
+    area?.removeEventListener('scroll', readPosition);
+    document.removeEventListener('keydown', userScroll);
+    if (area) area.style.overflowAnchor = oldAnchor || '';
+  };
+  replyActivitySession = session;
+  const poll = async () => {
+    if (
+      replyActivitySession !== session ||
+      !busy ||
+      active?.id !== threadId ||
+      state.user?.id !== owner
+    )
+      return;
+    session.controller = new AbortController();
+    try {
+      const response = await fetch('/api/chat/activity?thread_id=' + encodeURIComponent(threadId), {
+        signal: session.controller.signal,
+      });
+      if (!response.ok) return;
+      const data = await response.json();
+      if (replyActivitySession !== session || !busy || active?.id !== threadId) return;
+      const root = document.querySelector('.reply-activity');
+      const steps = data.steps || [];
+      const current = steps.at(-1);
+      if (root && current) {
+        const previousTop = area?.scrollTop || 0;
+        root.querySelector('[data-activity-current]').textContent = current.label;
+        root.querySelector('[data-activity-detail]').textContent = current.detail;
+        const list = root.querySelector('[data-activity-steps]');
+        const previous = steps.slice(0, -1);
+        const signature = previous.map((step) => step.phase).join(',');
+        if (list.dataset.signature !== signature) {
+          list.innerHTML = previous.map((step) => `<li>${esc(step.label)}</li>`).join('');
+          list.dataset.signature = signature;
+        }
+        list.hidden = previous.length === 0;
+        const live = root.querySelector('[data-activity-live]');
+        const seconds = Math.floor((data.elapsed_ms || 0) / 1000);
+        const updates = data.stream_updates || 0;
+        live.textContent = `${seconds}s · ${data.model_active ? (data.request_updates ? 'Receiving model output' : 'Waiting for model output') : 'Processing request'}${updates ? ` · ${updates} updates received` : ''}`;
+        if (session.follow) scrollChat();
+        else if (area) area.scrollTop = previousTop;
+      }
+    } catch (error) {
+      /* Reply delivery remains independent of progress updates. */
+    } finally {
+      if (replyActivitySession === session && busy) session.timer = setTimeout(poll, 500);
+    }
+  };
+  session.timer = setTimeout(poll, 200);
+}

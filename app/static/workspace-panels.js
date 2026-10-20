@@ -6,7 +6,7 @@
  * Keep the card DOM across chat renders so caret, iframe and scroll state survive.
  */
 const workspacePanels = (() => {
-  const mobile = matchMedia('(max-width: 750px)');
+  const mobile = matchMedia('(max-width: 1050px)');
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
   const icons = {
     notes:
@@ -25,10 +25,27 @@ const workspacePanels = (() => {
   let fileTab = 'chat';
   let fileQuery = '';
   let teachingFiles = [];
+  let generatedFiles = [];
+  let generatedRequest = 0;
   let selection = null;
   let previewRequest = 0;
   let courseRequest = 0;
   let lastTrigger = null;
+  let editorExpanded = false;
+  let previewOpened = false;
+  let fileWidths = { compact: null, expanded: null };
+  let cancelResize = () => {};
+  let measuredMain = null;
+  let measuredWidth = 0;
+  const layoutObserver = new ResizeObserver(() => {
+    if (!measuredMain?.isConnected || !slot?.isConnected) return;
+    const width = measuredMain.clientWidth;
+    if (width !== measuredWidth) {
+      measuredWidth = width;
+      settle();
+    }
+    syncGeometry();
+  });
 
   const contextKey = () =>
     state.user && screen === 'chat' && active ? `${state.user.id}:${active.id}` : null;
@@ -39,6 +56,7 @@ const workspacePanels = (() => {
       <div class="pocket-paper files-paper">
         <div class="workspace-file-tabs" role="tablist" aria-label="File collection">
           <button type="button" role="tab" data-file-tab="chat" aria-selected="true">Chat files</button>
+          <button type="button" role="tab" data-file-tab="generated" aria-selected="false">Generated</button>
           <button type="button" role="tab" data-file-tab="course" aria-selected="false">Course files</button>
         </div>
         <label class="workspace-file-search">Find a file<input type="search" data-file-search placeholder="Search files…"></label>
@@ -50,6 +68,7 @@ const workspacePanels = (() => {
 
   /** Called before the main renderer replaces #app. Floating notes stay in body. */
   function preserve() {
+    cancelResize();
     captureNoteEditors();
     if (slot?.isConnected) slot.remove();
   }
@@ -62,6 +81,7 @@ const workspacePanels = (() => {
     });
     if (owner !== state.user?.id) {
       owner = state.user?.id;
+      fileWidths = readFileWidths();
       context = null;
       wanted = mobile.matches ? null : 'notes';
     }
@@ -70,6 +90,9 @@ const workspacePanels = (() => {
       previewRequest++;
       courseRequest++;
       slot?.remove();
+      layoutObserver.disconnect();
+      measuredMain = null;
+      document.querySelector('.main')?.classList.remove('workspace-has-panels');
       slot = null;
       cards = {};
       context = null;
@@ -90,6 +113,8 @@ const workspacePanels = (() => {
       fileTab = 'chat';
       fileQuery = '';
       teachingFiles = [];
+      generatedFiles = [];
+      generatedRequest++;
       slot = document.createElement('div');
       slot.className = 'workspace-panel-slot';
       const rail =
@@ -107,16 +132,30 @@ const workspacePanels = (() => {
       cards = { notes: rail, files: slot.querySelector('.workspace-files') };
       cards.notes.id = 'workspace-notes';
       cards.files.id = 'workspace-files';
+      addResizeHandle();
     } else if (freshNotes && freshNotes !== cards.notes) {
       freshNotes.remove();
     }
     grid.classList.remove('with-notes', 'without-notes');
     grid.classList.add('with-workspace-panels');
-    grid.append(slot);
+    // The panel belongs to the viewport workspace, not the centred chat scroller.
+    const main = document.querySelector('.main');
+    main.classList.add('workspace-has-panels', 'workspace-restoring');
+    main.append(slot);
+    if (main !== measuredMain) {
+      layoutObserver.disconnect();
+      measuredMain = main;
+      measuredWidth = main.clientWidth;
+      layoutObserver.observe(main);
+      layoutObserver.observe(document.getElementById('content'));
+    }
     addBookmarks();
     settle();
     refreshNoteDock();
     refreshFiles();
+    // Restore a render synchronously; reserve-space motion is for user actions.
+    main.getBoundingClientRect();
+    requestAnimationFrame(() => main.classList.remove('workspace-restoring'));
   }
 
   function addBookmarks() {
@@ -145,10 +184,159 @@ const workspacePanels = (() => {
     });
   }
 
+  // Widths are small, per-account browser-tab session settings, written after a
+  // completed drag or keyboard adjustment. Resizing never reloads the preview.
+  function readFileWidths() {
+    try {
+      const saved = JSON.parse(sessionStorage.getItem(`school-file-panel-width:${owner}`) || '{}');
+      previewOpened = saved.previewOpened === true;
+      return Object.fromEntries(
+        ['compact', 'expanded'].map((mode) => [
+          mode,
+          Number.isFinite(saved[mode]) && saved[mode] >= 320 ? saved[mode] : null,
+        ]),
+      );
+    } catch (_) {
+      previewOpened = false;
+      return { compact: null, expanded: null };
+    }
+  }
+
+  function fileBounds() {
+    const width = document.querySelector('.main')?.clientWidth || 1000;
+    return { min: 320, max: Math.max(320, width - 350) };
+  }
+
+  function clampFileWidth(width) {
+    const bounds = fileBounds();
+    return Math.round(Math.max(bounds.min, Math.min(bounds.max, width)));
+  }
+
   function panelWidth() {
     if (mobile.matches) return 0;
-    const width = document.querySelector('.workspace-grid')?.clientWidth || 800;
-    return Math.min(370, Math.max(280, width * 0.43));
+    const width = document.querySelector('.main')?.clientWidth || 1000;
+    if (wanted === 'files') {
+      const preferred = fileWidths[editorExpanded ? 'expanded' : 'compact'];
+      const fallback = editorExpanded
+        ? Math.min(1200, width * 0.66)
+        : Math.min(480, Math.max(320, width * 0.4));
+      return clampFileWidth(preferred ?? fallback);
+    }
+    return Math.min(370, Math.max(300, width * 0.4));
+  }
+
+  function rememberFileWidth() {
+    try {
+      sessionStorage.setItem(
+        `school-file-panel-width:${owner}`,
+        JSON.stringify({ ...fileWidths, previewOpened }),
+      );
+    } catch (_) {
+      /* Browser storage can be unavailable; resizing still works. */
+    }
+  }
+
+  function addResizeHandle() {
+    const handle = document.createElement('div');
+    handle.className = 'workspace-panel-resize';
+    handle.tabIndex = 0;
+    handle.setAttribute('role', 'separator');
+    handle.setAttribute('aria-label', 'Resize file panel');
+    handle.setAttribute('aria-orientation', 'vertical');
+    handle.title = 'Drag to resize · Double-click to reset';
+    slot.append(handle);
+
+    const adjust = (width) => {
+      fileWidths[editorExpanded ? 'expanded' : 'compact'] = clampFileWidth(width);
+      setSlot(true);
+      updateResizeHandle();
+    };
+    const reset = () => {
+      fileWidths[editorExpanded ? 'expanded' : 'compact'] = null;
+      setSlot(true);
+      updateResizeHandle();
+      rememberFileWidth();
+    };
+    handle.addEventListener('pointerdown', (event) => {
+      if (event.button !== 0 || mobile.matches || wanted !== 'files') return;
+      event.preventDefault();
+      settle();
+      handle.setPointerCapture(event.pointerId);
+      const start = event.clientX,
+        width = panelWidth(),
+        key = context;
+      let last = start,
+        frame = 0,
+        finished = false;
+      document.body.classList.add('resizing-workspace');
+      const move = (next) => {
+        last = next.clientX;
+        cancelAnimationFrame(frame);
+        frame = requestAnimationFrame(() => adjust(width + start - last));
+      };
+      const finish = () => {
+        if (finished) return;
+        finished = true;
+        cancelAnimationFrame(frame);
+        if (context === key && wanted === 'files') {
+          adjust(width + start - last);
+          rememberFileWidth();
+        }
+        document.body.classList.remove('resizing-workspace');
+        handle.removeEventListener('pointermove', move);
+        handle.removeEventListener('pointerup', finish);
+        handle.removeEventListener('pointercancel', finish);
+        handle.removeEventListener('lostpointercapture', finish);
+        if (handle.hasPointerCapture(event.pointerId))
+          handle.releasePointerCapture(event.pointerId);
+        cancelResize = () => {};
+      };
+      cancelResize = finish;
+      handle.addEventListener('pointermove', move);
+      handle.addEventListener('pointerup', finish);
+      handle.addEventListener('pointercancel', finish);
+      handle.addEventListener('lostpointercapture', finish);
+    });
+    handle.addEventListener('keydown', (event) => {
+      if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+      event.preventDefault();
+      if (event.key === 'Home') return reset();
+      adjust(
+        event.key === 'End'
+          ? fileBounds().max
+          : panelWidth() + (event.key === 'ArrowLeft' ? 10 : -10),
+      );
+      rememberFileWidth();
+    });
+    handle.addEventListener('dblclick', reset);
+  }
+
+  function updateResizeHandle() {
+    const handle = slot?.querySelector('.workspace-panel-resize');
+    if (!handle) return;
+    handle.hidden = mobile.matches || wanted !== 'files';
+    const bounds = fileBounds();
+    handle.setAttribute('aria-valuemin', String(bounds.min));
+    handle.setAttribute('aria-valuemax', String(bounds.max));
+    handle.setAttribute('aria-valuenow', String(Math.round(panelWidth())));
+  }
+
+  function syncGeometry() {
+    const main = document.querySelector('.main');
+    const content = document.getElementById('content');
+    if (!main || !content) return;
+    main.style.setProperty('--workspace-panel-top', `${content.offsetTop + 10}px`);
+    // Match the composer's width to the actual scrollable chat column, including
+    // browsers that reserve space for a vertical scrollbar.
+    main.style.setProperty(
+      '--workspace-scrollbar-width',
+      `${content.offsetWidth - content.clientWidth}px`,
+    );
+  }
+
+  function reserveSpace(size) {
+    document.querySelector('.main')?.style.setProperty('--workspace-panel-width', `${size}px`);
+    syncGeometry();
   }
 
   function setSlot(open) {
@@ -156,12 +344,14 @@ const workspacePanels = (() => {
     const size = open ? panelWidth() : 0;
     slot.style.width = `${size}px`;
     slot.style.flexBasis = `${size}px`;
+    reserveSpace(size);
   }
 
   function updateControls() {
     document.querySelectorAll('[data-workspace-panel]').forEach((button) => {
       button.setAttribute('aria-expanded', String(button.dataset.workspacePanel === wanted));
     });
+    document.querySelector('.main')?.classList.toggle('workspace-in-motion', running);
     const overlay = mobile.matches && !!wanted;
     const scrim = document.querySelector('.workspace-panel-scrim');
     if (scrim) scrim.hidden = !overlay;
@@ -169,6 +359,7 @@ const workspacePanels = (() => {
     for (const el of document.querySelectorAll('.conversation,.composer-wrap')) el.inert = overlay;
     document.querySelector('.main')?.classList.toggle('workspace-overlay-open', overlay);
     if (slot) slot.dataset.panel = wanted || 'closed';
+    updateResizeHandle();
   }
 
   function clearMotion(node) {
@@ -219,13 +410,14 @@ const workspacePanels = (() => {
   async function resizeSlot(open) {
     const from = slot.getBoundingClientRect().width;
     const to = open ? panelWidth() : 0;
+    reserveSpace(to);
     await tween(
       slot,
       [
         { width: `${from}px`, flexBasis: `${from}px` },
         { width: `${to}px`, flexBasis: `${to}px` },
       ],
-      280,
+      210,
     );
   }
 
@@ -233,6 +425,7 @@ const workspacePanels = (() => {
   async function transition() {
     if (running || !slot) return;
     running = true;
+    updateControls();
     const turn = epoch;
     try {
       while (current !== wanted && turn === epoch) {
@@ -246,7 +439,7 @@ const workspacePanels = (() => {
               { transform: 'rotateX(0deg)', opacity: '1' },
               { transform: 'rotateX(-86deg) scaleY(.18)', opacity: '.25' },
             ],
-            180,
+            135,
           );
           if (turn !== epoch) return;
           await Promise.all([
@@ -256,7 +449,7 @@ const workspacePanels = (() => {
                 { transform: 'translateX(0)', opacity: '1' },
                 { transform: 'translateX(112%) rotate(2deg) scale(.98)', opacity: '0' },
               ],
-              190,
+              145,
             ),
             !wanted ? resizeSlot(false) : Promise.resolve(),
           ]);
@@ -284,7 +477,7 @@ const workspacePanels = (() => {
                 { transform: 'translateX(112%)', opacity: '0' },
                 { transform: 'translateX(0)', opacity: '1' },
               ],
-              240,
+              180,
             ),
           ]);
           if (turn !== epoch) return;
@@ -294,7 +487,7 @@ const workspacePanels = (() => {
               { transform: 'rotateX(-86deg) scaleY(.18)', opacity: '.25' },
               { transform: 'rotateX(0deg)', opacity: '1' },
             ],
-            210,
+            160,
           );
           if (turn !== epoch) return;
           clearMotion(card);
@@ -309,7 +502,10 @@ const workspacePanels = (() => {
         if (!current && lastTrigger?.isConnected) lastTrigger.focus({ preventScroll: true });
       }
     } finally {
-      if (turn === epoch) running = false;
+      if (turn === epoch) {
+        running = false;
+        updateControls();
+      }
     }
   }
 
@@ -337,7 +533,12 @@ const workspacePanels = (() => {
   function renderFileList() {
     const root = cards.files;
     if (!root) return;
-    const list = fileTab === 'course' ? teachingFiles : allChatFiles();
+    const list =
+      fileTab === 'course'
+        ? teachingFiles
+        : fileTab === 'generated'
+          ? generatedFiles
+          : allChatFiles();
     const visible = list.filter((f) =>
       `${f.name} ${f.course_id || ''}`.toLowerCase().includes(fileQuery.toLowerCase()),
     );
@@ -350,10 +551,10 @@ const workspacePanels = (() => {
       visible
         .map(
           (f) =>
-            `<button type="button" data-workspace-file="${esc(f.id || f.url)}" aria-pressed="${selection?.url === f.url}"><span class="file-kind">${f.mime === 'application/pdf' || /\.pdf$/i.test(f.name) ? 'PDF' : f.document || f.course_id ? 'DOC' : 'IMG'}</span><span>${esc(f.name)}${f.course_id ? `<small>${esc(f.course_id)}</small>` : ''}</span></button>`,
+            `<button type="button" data-workspace-file="${esc(f.id || f.url)}" aria-pressed="${selection?.url === f.url}"><span class="file-kind">${f.generated ? 'CODE' : f.mime === 'application/pdf' || /\.pdf$/i.test(f.name) ? 'PDF' : f.document || f.course_id ? 'DOC' : 'IMG'}</span><span>${esc(f.name)}${f.course_id ? `<small>${esc(f.course_id)}</small>` : ''}</span></button>`,
         )
         .join('') ||
-      `<p class="muted">${fileQuery ? 'No matching files.' : fileTab === 'course' ? 'No teaching files shared for this subject.' : 'Attach a file to this chat to see it here.'}</p>`;
+      `<p class="muted">${fileQuery ? 'No matching files.' : fileTab === 'course' ? 'No teaching files shared for this subject.' : fileTab === 'generated' ? 'Ask School Agent to create a file. Generated files will appear here.' : 'Attach a file to this chat to see it here.'}</p>`;
   }
 
   async function loadCourseFiles() {
@@ -375,6 +576,25 @@ const workspacePanels = (() => {
     if (!cards.files || !context) return;
     renderFileList();
     if (fileTab === 'course') loadCourseFiles();
+    if (fileTab === 'generated' && typeof artifactEditor !== 'undefined') {
+      const key = context,
+        turn = ++generatedRequest;
+      artifactEditor
+        .list()
+        .then((files) => {
+          if (key !== context || turn !== generatedRequest) return;
+          generatedFiles = [
+            ...new Map(
+              [...files, ...messages.flatMap((m) => m.meta?.artifacts || [])].map((f) => [f.id, f]),
+            ).values(),
+          ];
+          renderFileList();
+        })
+        .catch((error) => {
+          if (key === context && turn === generatedRequest)
+            cards.files.querySelector('.workspace-file-list').textContent = error.message;
+        });
+    }
   }
 
   function safeFileURL(url) {
@@ -385,13 +605,16 @@ const workspacePanels = (() => {
   }
 
   async function openFile(file, page = 1) {
+    if (typeof artifactEditor !== 'undefined' && !artifactEditor.leaveFile()) return;
     if (!safeFileURL(file.url)) throw Error('This file cannot be previewed here.');
     show('files');
     const request = ++previewRequest;
     const key = context;
     selection = { ...file, page };
     renderFileList();
+    cards.files.classList.remove('editing-artifact', 'artifact-browser-open');
     const preview = cards.files.querySelector('.workspace-file-preview');
+    preview.classList.remove('generated-preview');
     preview.innerHTML = `<div class="workspace-file-heading"><b>${esc(file.name)}</b><a href="${esc(file.url)}" target="_blank" rel="noopener">Open original ↗</a></div><div class="workspace-file-content" role="status">Loading preview…</div>`;
     const content = preview.querySelector('.workspace-file-content');
     try {
@@ -454,12 +677,21 @@ const workspacePanels = (() => {
         show(null);
       } else if (button.dataset.fileTab) {
         fileTab = button.dataset.fileTab;
+        // Collection tabs remain visible while editing. Selecting one reveals
+        // its browser instead of leaving the selected list hidden behind Preview.
+        cards.files.classList.add('artifact-browser-open');
+        cards.files.querySelector('[data-artifact-browse]')?.setAttribute('aria-expanded', 'true');
         refreshFiles();
       } else if (button.dataset.workspaceFile) {
-        const file = (fileTab === 'course' ? teachingFiles : allChatFiles()).find(
-          (f) => (f.id || f.url) === button.dataset.workspaceFile,
-        );
-        if (file) await openFile(file);
+        const file = (
+          fileTab === 'course'
+            ? teachingFiles
+            : fileTab === 'generated'
+              ? generatedFiles
+              : allChatFiles()
+        ).find((f) => (f.id || f.url) === button.dataset.workspaceFile);
+        if (file?.generated) await artifactEditor.open(file.id);
+        else if (file) await openFile(file);
       }
     } catch (error) {
       toast(error.message);
@@ -479,7 +711,7 @@ const workspacePanels = (() => {
     if (event.key === 'Tab' && mobile.matches) {
       const focusable = [
         ...document.querySelectorAll(
-          '.pocket-card:not([hidden]) button,.pocket-card:not([hidden]) input,.pocket-card:not([hidden]) select,.pocket-card:not([hidden]) a,.pocket-card:not([hidden]) [contenteditable],.workspace-bookmark',
+          '.pocket-card:not([hidden]) button,.pocket-card:not([hidden]) input,.pocket-card:not([hidden]) select,.pocket-card:not([hidden]) a,.pocket-card:not([hidden]) [contenteditable],.pocket-card:not([hidden]) textarea,.workspace-bookmark',
         ),
       ].filter((el) => !el.disabled && el.getClientRects().length && !el.closest('[inert]'));
       const first = focusable[0],
@@ -509,7 +741,47 @@ const workspacePanels = (() => {
     attributeFilter: ['class'],
   });
 
-  return { mount, preserve, show, refreshFiles, openFile, openTeachingFile };
+  function setEditorWide(expanded) {
+    editorExpanded = expanded;
+    if (wanted) resizeSlot(true);
+  }
+  function openPreview() {
+    if (!previewOpened) {
+      fileWidths.expanded = null;
+      previewOpened = true;
+      rememberFileWidth();
+    }
+    setEditorWide(true);
+  }
+  function clearSession() {
+    cancelResize();
+    try {
+      sessionStorage.removeItem(`school-file-panel-width:${owner}`);
+    } catch (_) {
+      /* Optional browser storage. */
+    }
+    fileWidths = { compact: null, expanded: null };
+    previewOpened = false;
+    editorExpanded = false;
+  }
+  function generatedTab(file) {
+    if (file) selection = file;
+    cards.files?.classList.add('editing-artifact');
+    fileTab = 'generated';
+    refreshFiles();
+  }
+  return {
+    mount,
+    preserve,
+    show,
+    refreshFiles,
+    openFile,
+    openTeachingFile,
+    generatedTab,
+    setEditorWide,
+    openPreview,
+    clearSession,
+  };
 })();
 
 // Keep existing attachment and source-chip actions as entry points into the pocket.

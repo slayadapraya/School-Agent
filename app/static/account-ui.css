@@ -1,0 +1,255 @@
+/* Account pop-out: independent account card, navigation, then Settings/Sign out. */
+.sidebar .profile-popup {
+  width: 260px;
+  max-width: calc(100vw - 80px);
+  padding: 7px;
+  border-radius: 16px;
+}
+.sidebar .profile-popup .profile-account-card {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 10px 14px;
+  border-radius: 0;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 6px;
+  background: transparent;
+  text-align: left;
+  width: 100%;
+}
+.profile-account-card > span:nth-child(2) {
+  flex: 1;
+  min-width: 0;
+}
+.profile-account-card strong,
+.profile-account-card small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.profile-account-card small {
+  font-size: calc(12px * var(--ui-text-scale, 1));
+  color: var(--muted);
+  margin-top: 3px;
+}
+.sidebar .profile-popup .avatar {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+}
+.sidebar .profile-shortcuts:empty {
+  display: none;
+}
+.sidebar .profile-shortcuts {
+  padding: 5px 0;
+}
+.sidebar .profile-footer {
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px solid var(--line);
+}
+.sidebar .profile-popup [data-sidebar-shortcut] {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  width: 100%;
+  min-height: 42px;
+  padding: 9px 10px;
+  margin: 0;
+  border-radius: 8px;
+  font-size: calc(15px * var(--ui-text-scale, 1));
+}
+.sidebar .profile-popup .sidebar-button-label {
+  display: inline;
+}
+.sidebar .profile-popup .sidebar-icon {
+  width: 18px;
+  height: 18px;
+}
+.account-picture {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 16px;
+}
+.account-picture .avatar {
+  width: 72px;
+  height: 72px;
+  font-size: calc(30px * var(--ui-text-scale, 1));
+}
+.picture-upload {
+  display: inline-flex;
+  cursor: pointer;
+}
+.avatar-choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 10px 0;
+}
+.avatar-choices button {
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+.avatar-choices button:hover {
+  background: var(--soft);
+}
+@media (min-width: 751px) {
+  .navigation-compact .sidebar .profile-account-card .avatar {
+    display: grid;
+  }
+}
+/* Staff review stays independent of the live chat and editable note workspace. */
+.review-student {
+  display: block;
+  max-width: 100%;
+  margin: 8px 0 18px;
+}
+.student-review-layout {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+.student-review-list {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px;
+  max-height: 65vh;
+  overflow: auto;
+}
+.student-review-list button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 10px;
+  border-radius: 8px;
+}
+.student-review-list button:hover {
+  background: var(--soft);
+}
+.student-review-list small {
+  display: block;
+  color: var(--muted);
+}
+.student-review-detail {
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+.student-review-message {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+  overflow-wrap: anywhere;
+}
+.student-review-message .code-block {
+  max-width: 100%;
+}
+.student-review-note {
+  padding: 20px;
+  color: #203527;
+  border-radius: 12px;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 750px) {
+  .student-review-layout {
+    grid-template-columns: 1fr;
+  }
+  .student-review-list {
+    max-height: 240px;
+  }
+}
+/* Compact navigation help is fixed beside the rail and never changes chat size. */
+.navigation-hover-card {
+  position: fixed;
+  z-index: 800;
+  padding: 9px 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--card);
+  color: var(--text);
+  box-shadow: 0 10px 28px #0004;
+  animation: navigation-help-in 0.1s ease;
+  font-size: calc(15px * var(--ui-text-scale, 1));
+}
+.navigation-tooltip {
+  pointer-events: none;
+}
+.navigation-chat-flyout {
+  width: 300px;
+  max-width: calc(100vw - 80px);
+  padding: 10px;
+}
+.navigation-chat-flyout header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 8px 10px;
+}
+.navigation-chat-flyout header button {
+  width: 30px;
+  height: 30px;
+  color: var(--text);
+  font-size: calc(22px * var(--ui-text-scale, 1));
+  border-radius: 7px;
+}
+.navigation-flyout-threads {
+  max-height: min(60vh, 520px);
+  overflow: auto;
+}
+.navigation-flyout-threads button,
+.navigation-all-chats {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  color: var(--text);
+  text-align: left;
+}
+.navigation-flyout-threads span {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.navigation-flyout-threads small {
+  display: block;
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: calc(12px * var(--ui-text-scale, 1));
+}
+.navigation-chat-flyout button:hover,
+.navigation-flyout-threads .selected {
+  background: var(--soft);
+}
+.navigation-all-chats {
+  margin-top: 5px;
+  border-top: 1px solid var(--line);
+}
+@keyframes navigation-help-in {
+  from {
+    opacity: 0;
+    transform: translateX(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .navigation-hover-card {
+    animation: none;
+  }
+}

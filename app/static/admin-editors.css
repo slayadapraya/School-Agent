@@ -4,7 +4,7 @@ body dialog.admin-editor-dialog {
   max-height: 92dvh;
   overflow: hidden;
   padding: 26px;
-  font-size: 18px;
+  font-size: calc(18px * var(--ui-text-scale, 1));
 }
 .admin-editor-dialog h2 {
   margin-bottom: 18px;
@@ -68,7 +68,7 @@ body dialog.admin-editor-dialog {
   padding: 0 8px;
 }
 body .admin-editor-dialog :is(input:not([type='checkbox']), select, textarea) {
-  font-size: 18px;
+  font-size: calc(18px * var(--ui-text-scale, 1));
   min-height: 50px;
 }
 .editor-section-body input[type='checkbox'],
@@ -96,7 +96,7 @@ body .admin-editor-dialog :is(input:not([type='checkbox']), select, textarea) {
   background: var(--card);
 }
 .editor-save-bar > p {
-  font-size: 14px;
+  font-size: calc(14px * var(--ui-text-scale, 1));
   flex-basis: 100%;
   margin: 0;
 }
@@ -111,7 +111,7 @@ body .admin-editor-dialog :is(input:not([type='checkbox']), select, textarea) {
 }
 .editor-save-bar button {
   min-height: 48px;
-  font-size: 17px;
+  font-size: calc(17px * var(--ui-text-scale, 1));
   padding: 12px 20px;
 }
 .grouped-subject-picker {
@@ -131,7 +131,7 @@ body .admin-editor-dialog :is(input:not([type='checkbox']), select, textarea) {
   display: flex;
   flex-direction: column;
   gap: 7px;
-  font-size: 16px;
+  font-size: calc(16px * var(--ui-text-scale, 1));
 }
 .subject-search-row :is(input, select),
 .people-picker-controls :is(input, select) {
@@ -151,12 +151,12 @@ body .admin-editor-dialog :is(input:not([type='checkbox']), select, textarea) {
   margin-bottom: 14px;
 }
 .category-tag {
-  font-size: 15px;
+  font-size: calc(15px * var(--ui-text-scale, 1));
   padding: 9px 13px;
   min-height: 44px;
 }
 .subject-picker-summary {
-  font-size: 14px;
+  font-size: calc(14px * var(--ui-text-scale, 1));
   color: var(--muted);
   margin: 12px 0;
 }
@@ -174,7 +174,7 @@ body .subject-choice-row {
   border: 1px solid var(--line);
   border-radius: 10px;
   background: var(--bg);
-  font-size: 18px;
+  font-size: calc(18px * var(--ui-text-scale, 1));
   margin: 0;
   cursor: pointer;
 }
@@ -184,7 +184,7 @@ body .subject-choice-row {
 }
 .subject-choice-row small {
   display: block;
-  font-size: 14px;
+  font-size: calc(14px * var(--ui-text-scale, 1));
   font-weight: 400;
   line-height: 1.5;
   margin-top: 3px;
@@ -223,7 +223,7 @@ body .subject-choice-row[hidden],
   .category-tag {
     white-space: nowrap;
     flex-shrink: 0;
-    font-size: 16px;
+    font-size: calc(16px * var(--ui-text-scale, 1));
   }
   .subject-picker-results {
     grid-template-columns: 1fr;

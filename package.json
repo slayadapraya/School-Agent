@@ -1,9 +1,10 @@
 {
   "name": "school-agent-development",
   "private": true,
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Optional formatting and browser-check tools; no frontend build required.",
   "scripts": {
+    "check:artifacts": "node scripts/check-artifacts.cjs",
     "check:workspace": "node scripts/check-workspace.cjs",
     "format": "./scripts/format.sh",
     "format:check": "./scripts/format.sh --check"

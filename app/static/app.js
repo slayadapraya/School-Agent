@@ -16,20 +16,76 @@ function stopReplyAnimation() {
   replyAnimation = null;
   if (typeof updateSendControl === 'function') updateSendControl();
 }
-function animateLatestReply(followOverride) {
+function animateLatestReply(followOverride, onComplete) {
   stopReplyAnimation();
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    onComplete?.();
+    return;
+  }
   const replies = [...document.querySelectorAll('.conversation .message.assistant .message-copy')];
   const element = replies.at(-1);
-  if (!element) return;
+  if (!element) {
+    onComplete?.();
+    return;
+  }
   const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
   const nodes = [];
   let node;
   while ((node = walker.nextNode())) {
-    if (!node.parentElement.closest('.code-toolbar')) nodes.push({ node, text: node.textContent });
+    if (!node.parentElement.closest('.code-toolbar,.code-footer,.inline-code-preview'))
+      nodes.push({ node, text: node.textContent });
   }
   const length = nodes.reduce((n, item) => n + item.text.length, 0);
-  if (!length) return;
+  if (!length) {
+    onComplete?.();
+    return;
+  }
+  // Hide the structure too, not just its text: later code toolbars, paragraph
+  // margins and file/source controls must not jump ahead of the visible prefix.
+  const sections = [...element.children].map((node) => ({
+    node,
+    start: null,
+    end: 0,
+    footer: node.querySelector('.code-footer'),
+  }));
+  const sectionMap = new Map(sections.map((section) => [section.node, section]));
+  const inlineSections = [...element.querySelectorAll('.inline-code')].map((node) => ({
+    node,
+    start: null,
+    end: 0,
+  }));
+  const inlineMap = new Map(inlineSections.map((section) => [section.node, section]));
+  let offset = 0;
+  for (const item of nodes) {
+    let parent = item.node.parentElement;
+    while (parent && parent.parentElement !== element) parent = parent.parentElement;
+    const section = sectionMap.get(parent);
+    if (section) {
+      section.start ??= offset;
+      section.end = offset + item.text.length;
+    }
+    const inline = inlineMap.get(item.node.parentElement.closest('.inline-code'));
+    if (inline) {
+      inline.start ??= offset;
+      inline.end = offset + item.text.length;
+    }
+    offset += item.text.length;
+  }
+  sections.push(...inlineSections);
+  const pending = [];
+  for (const section of sections) {
+    section.start ??= length;
+    section.node.toggleAttribute('data-reply-pending', section.start > 0);
+    pending.push(section.node);
+    if (section.footer) {
+      section.footer.setAttribute('data-reply-pending', '');
+      pending.push(section.footer);
+    }
+  }
+  for (let sibling = element.nextElementSibling; sibling; sibling = sibling.nextElementSibling) {
+    sibling.setAttribute('data-reply-pending', '');
+    pending.push(sibling);
+  }
   const content = document.getElementById('content');
   let follow = followOverride ?? conversationNearBottom();
   const release = () => {
@@ -47,6 +103,9 @@ function animateLatestReply(followOverride) {
   if (content) content.style.overflowAnchor = 'none';
   for (const item of nodes) item.node.textContent = '';
   element.classList.add('reply-typing');
+  const caret = document.createElement('span');
+  caret.className = 'reply-caret';
+  caret.setAttribute('aria-hidden', 'true');
   const animation = {
     element,
     nodes,
@@ -59,6 +118,8 @@ function animateLatestReply(followOverride) {
   replyAnimation = animation;
   if (typeof updateSendControl === 'function') updateSendControl();
   animation.cleanup = () => {
+    caret.remove();
+    for (const node of pending) node.removeAttribute('data-reply-pending');
     content?.removeEventListener('wheel', release);
     content?.removeEventListener('touchstart', release);
     content?.removeEventListener('pointerdown', release);
@@ -74,14 +135,26 @@ function animateLatestReply(followOverride) {
     // Follow only until the user scrolls, touches, or grabs the scrollbar.
     let available = Math.min(length, Math.floor(((now - animation.start) * rate) / 1000));
     animation.revealed = Math.min(length, Math.floor(((now - animation.start) * rate) / 1000));
+    let caretNode = nodes[0].node;
     for (const item of nodes) {
       const count = Math.min(item.text.length, available);
-      item.node.textContent = item.text.slice(0, count);
+      const visible = item.text.slice(0, count);
+      if (item.node.textContent !== visible) item.node.textContent = visible;
+      if (count > 0) caretNode = item.node;
       available -= count;
     }
+    for (const section of sections) {
+      section.node.toggleAttribute(
+        'data-reply-pending',
+        section.start > 0 && animation.revealed <= section.start,
+      );
+      section.footer?.toggleAttribute('data-reply-pending', animation.revealed < section.end);
+    }
+    caretNode.after(caret);
     if (follow && content) scrollChat();
     if (((now - animation.start) * rate) / 1000 >= length) {
       stopReplyAnimation();
+      onComplete?.();
       return;
     }
     animation.frame = requestAnimationFrame(draw);
@@ -272,6 +345,36 @@ async function bootstrap() {
 // -----------------------------------------------------------------------------
 // Sidebar and home screen
 // -----------------------------------------------------------------------------
+// Even if an optional feature script fails, an admin's navigation stays scoped
+// to personal chats. Subject navigation is for the teaching/student workspace.
+function personalChatsFallback() {
+  return (
+    '<div class="eyebrow sidebar-subject-label">Your chats</div>' +
+    recentThreads()
+      .map(
+        (thread) =>
+          `<button class="sidebar-recent-row" data-thread="${esc(thread.id)}">${esc(thread.title)}</button>`,
+      )
+      .join('')
+  );
+}
+function accountAvatarHTML() {
+  const avatar = state.avatar || {};
+  const content = avatar.image
+    ? `<img src="${esc(avatar.image)}" alt="Profile picture">`
+    : esc(avatar.icon || state.user.name.slice(0, 2).toUpperCase());
+  return `<span class="avatar">${content}</span>`;
+}
+// Account edits do not rebuild the workspace: preserve chat scroll, draft,
+// streaming state and open Notes/Files while updating the visible identity.
+function refreshAccountIdentity() {
+  for (const node of document.querySelectorAll(
+    '.profile-trigger .avatar,.profile-account-card .avatar',
+  ))
+    node.outerHTML = accountAvatarHTML();
+  for (const node of document.querySelectorAll('.profile-name b,.profile-account-card strong'))
+    node.textContent = state.user.name;
+}
 function side() {
   return `<aside class="sidebar" id="site-navigation" aria-label="Chat navigation"><button class="icon sidebar-close" data-action="close-menu" aria-label="Close navigation">✕</button><button class="brand" data-action="home" aria-label="School Agent home"><img class="brand-logo" src="/favicon.svg" alt="" width="48" height="48"><span>School Agent</span></button><div class="institution">${studentView ? 'Student view · preview' : state.user.role === 'admin' ? 'Administrative view' : state.user.role === 'teacher' ? 'Teacher view' : 'Student view'}</div><button class="primary new-thread" data-action="new">New thread <span>＋</span></button><nav><div class="recent-chats-heading"><button class="nav-link recent-home" data-action="home">▤ &nbsp; Recent chats</button><button type="button" data-toggle-recent="1" aria-label="Toggle recent chats" aria-expanded="${!recentChatsHidden()}">${recentChatsHidden() ? '▸' : '▾'}</button></div><div class="sidebar-recent" ${recentChatsHidden() ? 'hidden' : ''}>${recentThreads()
     .slice(0, 3)
@@ -281,7 +384,7 @@ function side() {
     )
     .join(
       '',
-    )}</div>${state.user.role === 'admin' && !studentView && typeof adminPersonalNavigation === 'function' ? adminPersonalNavigation() : '<div class="eyebrow sidebar-subject-label">Subjects</div>' + subjectNavigation()}</nav><div class="side-bottom"><button class="nav-link" data-action="sources">▧ &nbsp; Course library</button>${!studentView && (state.user.role === 'admin' || state.user.role === 'teacher' || state.user.permissions?.review_records || state.user.permissions?.manage_courses) ? '<button class="nav-link" data-action="staff">⊞ &nbsp; Staff studio</button>' : ''}<button class="nav-link" data-action="settings">⚙ &nbsp; Settings</button><div class="profile-area"><div id="profile-popup" class="profile-popup" role="menu" hidden>${state.user.role !== 'student' && (state.user.role !== 'admin' || state.model_selection?.selected === state.model_selection?.main) ? `<button role="menuitem" data-action="student-view">${studentView ? '↩ Return to staff view' : '♙ Student view'}</button>` : ''}<button role="menuitem" data-action="account-settings">⚙ Account settings</button>${(state.user.account_role || state.user.role) === 'admin' ? `<button role="menuitem" data-account-view="${state.user.role === 'teacher' ? 'admin' : 'teacher'}">${state.user.role === 'teacher' ? '↩ Return to admin view' : '♙ Show teacher view'}</button>` : ''}<div class="profile-divider"></div><button role="menuitem" class="logout-item" data-action="logout">↪ Log out</button></div><button class="person profile-trigger" data-action="profile" aria-expanded="false" aria-controls="profile-popup"><span class="avatar">${esc(state.user.name.slice(0, 2).toUpperCase())}</span><span class="profile-name"><b>${esc(state.user.name)}</b><small>${studentView ? 'Student view · preview' : esc(state.user.role) + ' account'}</small></span><span aria-hidden="true">⌃</span></button></div></div></aside>`;
+    )}</div>${state.user.role === 'admin' && !studentView ? (typeof adminPersonalNavigation === 'function' ? adminPersonalNavigation() : personalChatsFallback()) : '<div class="eyebrow sidebar-subject-label">Subjects</div>' + subjectNavigation()}</nav><div class="side-bottom"><button class="nav-link" data-action="sources">▧ &nbsp; Course library</button>${!studentView && (state.user.role === 'admin' || state.user.role === 'teacher' || state.user.permissions?.review_records || state.user.permissions?.manage_courses) ? '<button class="nav-link" data-action="staff">⊞ &nbsp; Staff studio</button>' : ''}<button class="nav-link" data-action="settings">⚙ &nbsp; Settings</button><div class="profile-area"><div id="profile-popup" class="profile-popup" role="menu" hidden><button class="profile-account-card" role="menuitem" data-action="account-settings" aria-label="Account settings">${accountAvatarHTML()}<span><strong>${esc(state.user.name)}</strong><small>@${esc(state.user.username)} · ${esc(state.user.role)}</small></span><span aria-hidden="true">›</span></button><div class="profile-shortcuts"></div><div class="profile-footer"><button role="menuitem" class="logout-item" data-action="logout">↪ Log out</button></div></div><button class="person profile-trigger" data-action="profile" aria-expanded="false" aria-controls="profile-popup">${accountAvatarHTML()}<span class="profile-name"><b>${esc(state.user.name)}</b><small>${studentView ? 'Student view · preview' : esc(state.user.role) + ' account'}</small></span><span aria-hidden="true">⌃</span></button></div></div></aside>`;
 }
 function recentThreads() {
   return [...state.threads].sort((a, b) => (b.updated || b.created) - (a.updated || a.created));
@@ -296,8 +399,10 @@ function quickYears(category) {
     .join('');
 }
 function home() {
-  if (state.user.role === 'admin' && !studentView && typeof adminPersonalHome === 'function')
-    return adminPersonalHome();
+  if (state.user.role === 'admin' && !studentView)
+    return typeof adminPersonalHome === 'function'
+      ? adminPersonalHome()
+      : `<div class="welcome">${personalChatsFallback()}</div>`;
   const categories = subjectCategories();
   if (!categories.includes(quickCategory)) quickCategory = categories[0] || '';
   return `<div class="welcome"><section class="recent-chats"><div class="section-label"><h3>Recent chats</h3><small>${state.threads.length} conversations</small></div>${
@@ -344,12 +449,17 @@ function agentAvatar(thinking = false) {
   return `<span class="agent-avatar ${thinking ? 'is-thinking' : ''}" aria-hidden="true"><svg viewBox="0 0 36 40" focusable="false"><g class="agent-figure"><path class="agent-shirt" d="M7 36v-3a11 11 0 0 1 22 0v3c-6 2-16 2-22 0Z"/><circle class="agent-head" cx="18" cy="14" r="8"/><g class="agent-eyes"><circle cx="15" cy="14" r="1"/><circle cx="21" cy="14" r="1"/></g></g></svg></span>`;
 }
 // Escape ordinary text and render fenced code with a local, offline highlighter.
-function replyTextHTML(text) {
+// Actions use the already-authorised message source; no extra server files or jobs.
+function codeActionHTML(action, label, path) {
+  return `<button type="button" class="code-action" data-${action}-code="1" aria-label="${label}"><svg viewBox="0 0 24 24" aria-hidden="true">${path}</svg><span class="code-action-label">${label}</span></button>`;
+}
+function replyTextHTML(text, message = null) {
   const value = String(text ?? '').trim();
   const fence = /```([^\n`]*)\n([\s\S]*?)(?:```|$)/g;
   let html = '',
     offset = 0,
-    match;
+    match,
+    blockIndex = 0;
   const prose = (value) =>
     value
       .split(/\n\s*\n/)
@@ -375,7 +485,47 @@ function replyTextHTML(text) {
             : hljs.highlightAuto(code).value;
       }
     } catch (e) {}
-    html += `<section class="code-block"><div class="code-toolbar"><span>${esc(language || 'code')}</span><button type="button" data-copy-code="1">Copy code</button></div><pre tabindex="0"><code>${highlighted}</code></pre></section>`;
+    const extensions = {
+      python: 'py',
+      py: 'py',
+      javascript: 'js',
+      js: 'js',
+      typescript: 'ts',
+      ts: 'ts',
+      html: 'html',
+      css: 'css',
+      svg: 'svg',
+      json: 'json',
+      csv: 'csv',
+      markdown: 'md',
+      md: 'md',
+      bash: 'sh',
+      sh: 'sh',
+      sql: 'sql',
+      java: 'java',
+      c: 'c',
+      cpp: 'cpp',
+      yaml: 'yaml',
+      yml: 'yml',
+      xml: 'xml',
+      r: 'r',
+    };
+    const headerName = match[1].match(/(?:filename|file)=["']?([^\s"']+)/)?.[1];
+    const name = (headerName || `code.${extensions[language] || 'txt'}`)
+      .replace(/.*[\/\\]/, '')
+      .replace(/[^a-zA-Z0-9_.-]/g, '_')
+      .slice(0, 100);
+    const permitted =
+      state?.user?.role === 'admin' || state?.user?.permissions?.generate_files === true;
+    const complete = match[0].endsWith('```');
+    const exportable = permitted && complete && new TextEncoder().encode(code).length <= 131072;
+    const preview =
+      exportable && message?.id && active?.id && ['html', 'css', 'svg'].includes(language);
+    const previewURL = preview
+      ? `/api/code-preview/${encodeURIComponent(active.id)}/${encodeURIComponent(message.id)}/${blockIndex}`
+      : '';
+    blockIndex++;
+    html += `<section class="code-block" data-code-name="${esc(name)}" data-code-language="${esc(language)}" data-code-preview-url="${esc(previewURL)}"><div class="code-toolbar"><span>${esc(language || 'code')}</span><div class="code-actions">${codeActionHTML('copy', 'Copy', '<rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V3H3v13h5"/>')}${exportable ? codeActionHTML('download', 'Download', '<path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/>') : ''}</div></div><pre tabindex="0"><code>${highlighted}</code></pre>${preview ? `<footer class="code-footer">${codeActionHTML('preview', 'Preview', '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18m-14-3h1m3 0h1"/>')}</footer>` : ''}</section>`;
     offset = fence.lastIndex;
   }
   return html + prose(value.slice(offset));
@@ -384,11 +534,11 @@ function messageHTML(m) {
   if (m.role === 'user')
     return `<div class="message user">${esc(m.content)}${(m.meta?.attachments || []).map((a) => `<button class="message-image" data-view-file="${esc(a.url)}" data-file-name="${esc(a.name)}" data-document="${a.document ? 1 : 0}">${a.document ? '▤' : `<img src="${esc(a.url)}" alt="${esc(a.name)}">`}<span>${esc(a.name)}</span></button>`).join('')}</div>`;
   const meta = m.meta || {};
-  return `<div class="message assistant">${agentAvatar()}<div class="message-body"><div class="message-name">School Agent</div><div class="message-copy">${meta.references ? referenceHTML(meta) : replyTextHTML(meta.route === 'research' ? m.content.split('\n\nSources:\n')[0].trim() : m.content)}</div>${(meta.records || []).map((r) => `<button class="source-chip" data-record="${esc(r.id)}">${esc(r.student)} · ${esc(r.title)} ↗</button>`).join('')}${meta.disclaimer ? `<small class="research-disclaimer">${esc(meta.disclaimer)}</small>` : ''}${(meta.sources || []).map((s) => (/^material-[a-f0-9]{32}$/.test(s.id || '') ? `<button class="source-chip" data-course-passage="${esc(s.id.slice(9))}">[${(meta.sources || []).indexOf(s) + 1}] ${esc(s.title)} · ${esc(s.page_label || s.locator)} ↗</button>` : s.url && /^https:\/\//i.test(s.url) ? `<a class="source-chip" href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">[${(meta.sources || []).indexOf(s) + 1}] ${esc(s.title)} ↗</a>` : `<button class="source-chip" data-source="${esc(s.id)}">▧ ${esc(s.title)} ↗</button>`)).join('')}<small class="route-note">${meta.stopped ? 'Stopped · ' : ''}${meta.image_used ? 'Image read · ' : ''}${meta.route === 'demo' ? 'Demo · sample reply' : meta.route === 'teaching_gap' ? 'Specific teaching material needed' : meta.route === 'concept_guidance' ? 'Concept explanation' : meta.route === 'student_guidance' ? 'Guided tutoring · response checked' : meta.route === 'guidance_unavailable' ? 'Tutoring response unavailable' : meta.route === 'activity_analytics' ? 'Activity analytics · saved records' : meta.route === 'access_denied' ? 'Access restricted' : meta.route === 'research_overview' ? 'Research overview' : meta.route === 'planning' ? 'Planning guidance · no local figures assumed' : meta.route === 'research' ? (meta.references ? 'References · ' + meta.reference_style : 'Live research · source excerpt') : meta.route === 'generation_error' ? 'Response unavailable' : meta.route === 'configured_tutoring' ? 'Learning assistant' : meta.route === 'experimental_checked' ? 'Experimental response · checked, not guaranteed' : meta.route === 'fallback' ? 'General reflection prompt · no generated answer displayed' : meta.route === 'layout' ? 'Blank planning scaffold' : 'Approved course hint'}</small></div></div>`;
+  return `<div class="message assistant">${agentAvatar()}<div class="message-body"><div class="message-name">School Agent</div><div class="message-copy">${meta.references ? referenceHTML(meta) : replyTextHTML(meta.route === 'research' ? m.content.split('\n\nSources:\n')[0].trim() : m.content, m)}</div>${(meta.records || []).map((r) => `<button class="source-chip" data-record="${esc(r.id)}">${esc(r.student)} · ${esc(r.title)} ↗</button>`).join('')}${(meta.artifacts || []).map((f) => `<button class="source-chip" data-generated-file="${esc(f.id)}">▤ ${esc(f.name)}</button>`).join('')}${meta.disclaimer ? `<small class="research-disclaimer">${esc(meta.disclaimer)}</small>` : ''}${(meta.sources || []).map((s) => (/^material-[a-f0-9]{32}$/.test(s.id || '') ? `<button class="source-chip" data-course-passage="${esc(s.id.slice(9))}">[${(meta.sources || []).indexOf(s) + 1}] ${esc(s.title)} · ${esc(s.page_label || s.locator)} ↗</button>` : s.url && /^https:\/\//i.test(s.url) ? `<a class="source-chip" href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">[${(meta.sources || []).indexOf(s) + 1}] ${esc(s.title)} ↗</a>` : `<button class="source-chip" data-source="${esc(s.id)}">▧ ${esc(s.title)} ↗</button>`)).join('')}<small class="route-note">${meta.stopped ? 'Stopped · ' : ''}${meta.image_used ? 'Image read · ' : ''}${meta.route === 'social' ? 'School Agent' : meta.route === 'demo' ? 'Demo · sample reply' : meta.route === 'teaching_gap' ? 'Specific teaching material needed' : meta.route === 'concept_guidance' ? 'Concept explanation' : meta.route === 'student_guidance' ? 'Guided tutoring · response checked' : meta.route === 'guidance_unavailable' ? 'Tutoring response unavailable' : meta.route === 'activity_analytics' ? 'Activity analytics · saved records' : meta.route === 'access_denied' ? 'Access restricted' : meta.route === 'research_overview' ? 'Research overview' : meta.route === 'planning' ? 'Planning guidance · no local figures assumed' : meta.route === 'research' ? (meta.references ? 'References · ' + meta.reference_style : 'Live research · source excerpt') : meta.route === 'generation_error' ? 'Response unavailable' : meta.route === 'configured_tutoring' ? 'Learning assistant' : meta.route === 'experimental_checked' ? 'Experimental response · checked, not guaranteed' : meta.route === 'fallback' ? 'General reflection prompt · no generated answer displayed' : meta.route === 'layout' ? 'Blank planning scaffold' : 'Approved course hint'}</small></div></div>`;
 }
 function chat() {
   const c = course();
-  return `<div class="workspace-grid"><section class="conversation" aria-live="polite">${messages.length ? messages.map(messageHTML).join('') : `<div class="empty-start"><span class="course-symbol">✦</span><span class="eyebrow">${c.id === 'GENERAL' ? 'General prompts' : esc(c.id)}</span><h1>New conversation</h1><p>Ask a question or attach a photo of your work.</p><div class="chips"><button data-starter="${esc(c.starter)}">${esc(c.starter)} ↗</button></div><div class="notice">${!studentView && c.policy?.staff_unrestricted ? 'Administrator assistant · your own conversations are unrestricted.' : studentView || c.policy?.student_guidance ? 'Context-aware tutoring: explanations and hints, without completed task answers.' : c.policy?.approved_only ? 'Tutoring uses approved hints. Factual research can retrieve source quotations and article links.' : !c.policy?.approved_only ? 'Ask questions, explore ideas and get clear explanations.' : c.mode === 'strict' ? 'Tutoring uses approved hints.' : 'Experimental mode generates new guidance. It can make mistakes or reveal answers despite review.'}</div></div>`}${busy ? `<div class="loading">${agentAvatar(true)}<span>Thinking through your question…</span></div>` : ''}</section>${typeof notesDockHTML === 'function' ? notesDockHTML() : ''}</div>`;
+  return `<div class="workspace-grid"><section class="conversation" aria-live="polite">${messages.length ? messages.map(messageHTML).join('') : `<div class="empty-start"><span class="course-symbol">✦</span><span class="eyebrow">${c.id === 'GENERAL' ? 'General prompts' : esc(c.id)}</span><h1>New conversation</h1><p>Ask a question or attach a photo of your work.</p><div class="chips"><button data-starter="${esc(c.starter)}">${esc(c.starter)} ↗</button></div><div class="notice">${!studentView && c.policy?.staff_unrestricted ? 'Administrator assistant · your own conversations are unrestricted.' : studentView || c.policy?.student_guidance ? 'Context-aware tutoring: explanations and hints, without completed task answers.' : c.policy?.approved_only ? 'Tutoring uses approved hints. Factual research can retrieve source quotations and article links.' : !c.policy?.approved_only ? 'Ask questions, explore ideas and get clear explanations.' : c.mode === 'strict' ? 'Tutoring uses approved hints.' : 'Experimental mode generates new guidance. It can make mistakes or reveal answers despite review.'}</div></div>`}${busy ? `<div class="loading">${agentAvatar(true)}<div class="reply-activity"><div class="activity-title"><span data-activity-current>Reading your question</span><span class="thinking-dots" aria-hidden="true"><i></i><i></i><i></i></span></div><p data-activity-detail>Using your latest message and this chat’s context.</p><small class="activity-live" data-activity-live role="status">Starting…</small><ol class="activity-steps" data-activity-steps hidden></ol></div></div>` : ''}</section>${typeof notesDockHTML === 'function' ? notesDockHTML() : ''}</div>`;
 }
 function composer() {
   const canUpload =
@@ -550,6 +700,7 @@ async function send(text, action = 'chat') {
   const sentMessage = { role: 'user', content: text, meta: { attachments: images } };
   messages.push(sentMessage);
   render();
+  startReplyActivity(threadId, owner);
   scrollChat('latest-user');
   requestAnimationFrame(() => {
     if (busy) scrollChat('latest-user');
@@ -589,14 +740,29 @@ async function send(text, action = 'chat') {
     }
     toast(e.message);
   } finally {
+    stopReplyActivity();
     const previous = $('#content');
     const top = previous?.scrollTop || 0;
     const follow = conversationNearBottom();
     busy = false;
     render();
     if ($('#content')) $('#content').scrollTop = top;
-    if (receivedReply) animateLatestReply(follow);
-    else if (follow) scrollChat();
+    if (receivedReply) {
+      const latest = messages.at(-1);
+      const file = latest?.meta?.artifacts?.[0];
+      animateLatestReply(follow, () => {
+        if (
+          file &&
+          typeof artifactEditor !== 'undefined' &&
+          active?.id === threadId &&
+          state.user?.id === owner &&
+          screen === 'chat' &&
+          messages.at(-1) === latest &&
+          !latest.meta?.stopped
+        )
+          artifactEditor.open(file.id).catch((error) => toast(error.message));
+      });
+    } else if (follow) scrollChat();
     if ($('#message')) {
       $('#message').focus({ preventScroll: true });
       if (!submitted) $('#message').value = draft;
@@ -818,7 +984,7 @@ async function accountForm(id) {
   };
   modal(
     u ? 'Manage ' + u.name : 'Create an account',
-    `<form id="account-form" class="account-form"><div class="form-grid"><label>Display name<input id="account-name" required maxlength="120" value="${esc(u?.name || '')}" autocomplete="off"></label><label>Username<input id="account-username" required maxlength="64" pattern="[a-zA-Z0-9_.-]+" value="${esc(u?.username || '')}" autocomplete="off"></label><label>Role<select id="account-role">${['student', 'teacher', 'admin'].map((r) => `<option value="${r}" ${u?.role === r ? 'selected' : ''}>${r === 'admin' ? 'Administrator' : r === 'teacher' ? 'Teacher' : 'Student'}</option>`).join('')}</select></label><label>${u ? 'Reset password' : 'Initial password'}<input id="account-password" type="password" maxlength="256" ${u ? '' : 'required'} autocomplete="new-password" placeholder="${u ? 'Leave blank to keep current password' : 'Set a password'}"></label></div><label class="check-row"><input type="checkbox" id="account-enabled" ${!u || u.enabled ? 'checked' : ''}> Account enabled</label><fieldset><legend>Course access</legend><div class="course-checks">${adminData.courses.map((c) => `<label class="check-row"><input type="checkbox" name="account-course" value="${esc(c.id)}" ${perms.courses.includes(c.id) ? 'checked' : ''}>${esc(c.id)} · ${esc(c.name)}</label>`).join('')}</div></fieldset><fieldset><legend>Student tools</legend><label class="check-row"><input type="checkbox" id="account-images" ${perms.upload_images !== false ? 'checked' : ''}> Upload photos and paper images</label><label class="check-row"><input type="checkbox" id="account-research" ${perms.web_research !== false ? 'checked' : ''}> Research public sources online</label></fieldset><fieldset><legend>Staff permissions</legend><label class="check-row"><input type="checkbox" id="account-review" ${perms.review_records ? 'checked' : ''}> Review records for assigned courses</label><label class="check-row"><input type="checkbox" id="account-edit" ${perms.manage_courses ? 'checked' : ''}> Edit rules, sources and hints for assigned courses</label><small>Student accounts have no staff permissions. Administrators have full access.</small></fieldset><p id="account-error" class="error" role="alert"></p><div class="staff-controls"><button class="primary" type="submit">${u ? 'Save changes' : 'Create account'}</button>${u ? `<button class="secondary" type="button" data-account-history="${u.id}">View account history</button>` : ''}${u ? '<button class="secondary" type="button" id="revoke-sessions">Sign out all sessions</button>' : ''}</div></form>`,
+    `<form id="account-form" class="account-form"><div class="form-grid"><label>Display name<input id="account-name" required maxlength="120" value="${esc(u?.name || '')}" autocomplete="off"></label><label>Username<input id="account-username" required maxlength="64" pattern="[a-zA-Z0-9_.-]+" value="${esc(u?.username || '')}" autocomplete="off"></label><label>Role<select id="account-role">${['student', 'teacher', 'admin'].map((r) => `<option value="${r}" ${u?.role === r ? 'selected' : ''}>${r === 'admin' ? 'Administrator' : r === 'teacher' ? 'Teacher' : 'Student'}</option>`).join('')}</select></label><label>${u ? 'Reset password' : 'Initial password'}<input id="account-password" type="password" maxlength="256" ${u ? '' : 'required'} autocomplete="new-password" placeholder="${u ? 'Leave blank to keep current password' : 'Set a password'}"></label></div><label class="check-row"><input type="checkbox" id="account-enabled" ${!u || u.enabled ? 'checked' : ''}> Account enabled</label><fieldset><legend>Course access</legend><div class="course-checks">${adminData.courses.map((c) => `<label class="check-row"><input type="checkbox" name="account-course" value="${esc(c.id)}" ${perms.courses.includes(c.id) ? 'checked' : ''}>${esc(c.id)} · ${esc(c.name)}</label>`).join('')}</div></fieldset><fieldset><legend>Student tools</legend><label class="check-row"><input type="checkbox" id="account-generate-files" ${perms.generate_files ? 'checked' : ''}> Generate and edit downloadable files</label><label class="check-row"><input type="checkbox" id="account-run-code" ${perms.run_code ? 'checked' : ''}> Run Python / JavaScript in the optional container runner</label><label class="check-row"><input type="checkbox" id="account-images" ${perms.upload_images !== false ? 'checked' : ''}> Upload photos and paper images</label><label class="check-row"><input type="checkbox" id="account-research" ${perms.web_research !== false ? 'checked' : ''}> Research public sources online</label></fieldset><fieldset><legend>Staff permissions</legend><label class="check-row"><input type="checkbox" id="account-review" ${perms.review_records ? 'checked' : ''}> Review records for assigned courses</label><label class="check-row"><input type="checkbox" id="account-edit" ${perms.manage_courses ? 'checked' : ''}> Edit rules, sources and hints for assigned courses</label><small>Student accounts have no staff permissions. Administrators have full access.</small></fieldset><p id="account-error" class="error" role="alert"></p><div class="staff-controls"><button class="primary" type="submit">${u ? 'Save changes' : 'Create account'}</button>${u ? `<button class="secondary" type="button" data-account-history="${u.id}">View account history</button>` : ''}${u ? '<button class="secondary" type="button" id="revoke-sessions">Sign out all sessions</button>' : ''}</div></form>`,
   );
   const accountForm = $('#account-form');
   const policySection = document.createElement('fieldset');
@@ -856,6 +1022,8 @@ async function accountForm(id) {
         tutoring_policy: readPolicy(accountForm, 'account-policy'),
         web_research: $('#account-research').checked,
         upload_images: $('#account-images').checked,
+        generate_files: $('#account-generate-files').checked,
+        run_code: $('#account-run-code').checked,
         courses: Array.from(document.querySelectorAll('[name="account-course"]:checked')).map(
           (el) => el.value,
         ),
@@ -968,6 +1136,17 @@ document.addEventListener('click', async (e) => {
       case 'account-settings':
         accountSettings();
         break;
+      case 'chats': {
+        if (busy) break;
+        let saved;
+        try {
+          saved = localStorage.getItem('school-last-chat:' + state.user.id);
+        } catch (_) {}
+        const thread = state.threads.find((t) => t.id === saved) || recentThreads()[0];
+        if (thread) await openThread(thread.id);
+        else newThreadDialog();
+        break;
+      }
       case 'home':
         if (busy) break;
         navOpen = false;
@@ -1029,6 +1208,7 @@ document.addEventListener('click', async (e) => {
       case 'logout':
         if (busy) break;
         await api('/api/logout', {});
+        if (typeof workspacePanels !== 'undefined') workspacePanels.clearSession();
         active = null;
         messages = [];
         login();
@@ -1061,7 +1241,10 @@ document.addEventListener('click', async (e) => {
     toast(e.message);
   }
 });
-bootstrap();
+// Deferred feature scripts register before DOMContentLoaded. Waiting prevents
+// the first authenticated render from briefly falling back to the subject UI.
+if (document.readyState === 'complete') bootstrap();
+else document.addEventListener('DOMContentLoaded', bootstrap, { once: true });
 
 // -----------------------------------------------------------------------------
 // Profile menu and account settings
@@ -1090,7 +1273,13 @@ function accountSettings() {
       const value = await api('/api/account', Object.fromEntries(new FormData(e.target)));
       $('#modal').close();
       if (value.sign_in_again) login();
-      else await bootstrap();
+      else {
+        const owner = state.user.id;
+        const updated = await api('/api/bootstrap');
+        if (state.user?.id !== owner) return;
+        state = updated;
+        refreshAccountIdentity();
+      }
     } catch (err) {
       $('#self-error').textContent = err.message;
     }

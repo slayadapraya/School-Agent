@@ -259,7 +259,7 @@ async function pollMonitor() {
 
 // Shared staff tools: the server supplies a role-scoped roster and query results.
 let staffRoster = null,
-  staffTab = 'assign',
+  staffTab = 'students',
   activityResults = null;
 function courseChoices(courses, checked = [], name = 'assigned-course') {
   return [...new Set(courses.map((c) => c.category || c.name))]
@@ -304,8 +304,9 @@ loadStaff = async function () {
     staffRoster = await api('/api/staff/students');
     const el = $('#staff-body');
     if (!el) return;
-    el.innerHTML = `<div class="admin-tabs"><button data-staff-tab="assign" aria-selected="${staffTab === 'assign'}">Students & subjects</button><button data-staff-tab="materials" aria-selected="${staffTab === 'materials'}">Teaching files</button><button data-staff-tab="student-notes" aria-selected="${staffTab === 'student-notes'}">Student notes</button><button data-staff-tab="activity" aria-selected="${staffTab === 'activity'}">Activity & history</button>${state.user.role === 'admin' || state.user.permissions?.manage_courses ? '<button data-action="edit-courses">Course material</button>' : ''}</div><div id="staff-panel"></div>`;
-    if (staffTab === 'assign') renderAssignments($('#staff-panel'));
+    el.innerHTML = `<div class="admin-tabs"><button data-staff-tab="students" aria-selected="${staffTab === 'students'}">Student workspaces</button><button data-staff-tab="assign" aria-selected="${staffTab === 'assign'}">Students & subjects</button><button data-staff-tab="materials" aria-selected="${staffTab === 'materials'}">Teaching files</button><button data-staff-tab="student-notes" aria-selected="${staffTab === 'student-notes'}">Student notes</button><button data-staff-tab="activity" aria-selected="${staffTab === 'activity'}">Activity & history</button>${state.user.role === 'admin' || state.user.permissions?.manage_courses ? '<button data-action="edit-courses">Course material</button>' : ''}</div><div id="staff-panel"></div>`;
+    if (staffTab === 'students') await renderStudentWorkspaces($('#staff-panel'));
+    else if (staffTab === 'assign') renderAssignments($('#staff-panel'));
     else if (staffTab === 'materials') await renderMaterialsWorkspace($('#staff-panel'));
     else if (staffTab === 'student-notes') await renderStudentNotes($('#staff-panel'));
     else renderActivity($('#staff-panel'));

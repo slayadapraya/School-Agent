@@ -557,9 +557,14 @@ document.addEventListener('click', async (e) => {
   try {
     stopReplyAnimation();
     await navigator.clipboard.writeText(b.closest('.code-block').querySelector('code').textContent);
-    b.textContent = 'Copied';
+    const label = b.querySelector('.code-action-label');
+    label.textContent = 'Copied';
+    b.setAttribute('aria-label', 'Copied');
     setTimeout(() => {
-      if (b.isConnected) b.textContent = 'Copy code';
+      if (b.isConnected) {
+        label.textContent = 'Copy';
+        b.setAttribute('aria-label', 'Copy');
+      }
     }, 1600);
   } catch (err) {
     toast('Clipboard unavailable. Select the code to copy it.');
@@ -1228,3 +1233,185 @@ function updateHomeGraphs(card, data, owner) {
       Math.max(100, ...homeGraphPoints.flatMap((p) => [p.cpuTemp || 0, p.gpuTemp || 0])),
     );
 }
+
+// One floating website at a time: reuse the existing window stack/drag behaviour
+// and move its iframe rather than creating a second running copy of the page.
+let codePreviewWindow = null;
+function closeCodePreviewWindow() {
+  codePreviewWindow?.remove();
+  codePreviewWindow = null;
+}
+function popOutCodePreview(block) {
+  const frame = block.querySelector('.inline-code-preview');
+  if (!frame) return;
+  closeCodePreviewWindow();
+  const win = document.createElement('section');
+  win.className = 'terminal-window code-preview-window';
+  win.dataset.owner = state.user.id;
+  win.setAttribute('aria-label', 'Floating website preview');
+  win.innerHTML = `<header class="terminal-window-bar"><span>Website preview · ${esc(block.dataset.codeName)}</span><div><button type="button" data-minimise-code-preview aria-label="Minimise website preview">−</button><button type="button" data-close-code-preview aria-label="Close website preview">×</button></div></header>`;
+  // Moving a browsing context can reload it; only one iframe remains mounted.
+  win.append(frame);
+  document.body.append(win);
+  codePreviewWindow = win;
+  makeTerminalDraggable(win);
+  focusFloatingWindow(win);
+  const minimise = win.querySelector('[data-minimise-code-preview]');
+  minimise.onclick = () => {
+    const collapsed = win.classList.toggle('is-minimised');
+    minimise.textContent = collapsed ? '□' : '−';
+    minimise.setAttribute(
+      'aria-label',
+      collapsed ? 'Restore website preview' : 'Minimise website preview',
+    );
+  };
+  win.querySelector('[data-close-code-preview]').onclick = closeCodePreviewWindow;
+  block.querySelector('[data-popout-code]')?.remove();
+  const toggle = block.querySelector('[data-preview-code]');
+  toggle.querySelector('.code-action-label').textContent = 'Preview';
+  toggle.setAttribute('aria-label', 'Preview');
+  toggle.setAttribute('aria-pressed', 'false');
+}
+new MutationObserver(() => {
+  if (
+    codePreviewWindow &&
+    (!document.querySelector('.shell') ||
+      codePreviewWindow.dataset.owner !== String(state.user?.id))
+  )
+    closeCodePreviewWindow();
+}).observe(document.getElementById('app'), { childList: true });
+
+// Inline previews use an ownership-checked response with a dedicated style policy.
+// Keep source and its controls in place: inserting below the footer avoids moving
+// the focused button and lets the reader open a preview without a chat scroll jump.
+// Release the iframe when it is hidden.
+document.addEventListener('click', (event) => {
+  const button = event.target.closest(
+    '[data-download-code],[data-preview-code],[data-popout-code]',
+  );
+  if (!button) return;
+  stopReplyAnimation();
+  const block = button.closest('.code-block');
+  if (button.hasAttribute('data-download-code')) {
+    const source = block.querySelector('pre code').textContent;
+    const url = URL.createObjectURL(new Blob([source], { type: 'text/plain;charset=utf-8' }));
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = block.dataset.codeName || 'code.txt';
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    return;
+  }
+  const previewURL = block.dataset.codePreviewUrl;
+  if (!previewURL?.startsWith('/api/code-preview/')) return;
+  if (button.hasAttribute('data-popout-code')) {
+    popOutCodePreview(block);
+    return;
+  }
+  const existing = block.querySelector('.inline-code-preview');
+  const showing = !existing;
+  if (existing) {
+    existing.remove();
+    block.querySelector('[data-popout-code]')?.remove();
+  } else {
+    const floatingFrame = codePreviewWindow?.querySelector('iframe');
+    const frame =
+      floatingFrame?.getAttribute('src') === previewURL
+        ? floatingFrame
+        : document.createElement('iframe');
+    if (frame === floatingFrame) {
+      frame.remove();
+      closeCodePreviewWindow();
+    }
+    frame.className = 'inline-code-preview';
+    frame.title = 'Code block website preview';
+    frame.setAttribute('sandbox', 'allow-scripts');
+    frame.referrerPolicy = 'no-referrer';
+    frame.src = previewURL;
+    block.querySelector('.code-footer').after(frame);
+    button.insertAdjacentHTML(
+      'beforebegin',
+      codeActionHTML(
+        'popout',
+        'Pop out preview',
+        '<path d="M14 3h7v7m0-7L11 13M10 3H3v18h18v-7"/>',
+      ),
+    );
+  }
+  button.querySelector('.code-action-label').textContent = showing ? 'Hide preview' : 'Preview';
+  button.setAttribute('aria-label', showing ? 'Hide preview' : 'Preview');
+  button.setAttribute('aria-pressed', String(showing));
+});
+
+// Account-owned text preferences: page typography and chat reading size are
+// independent. Apply before rendering to avoid a flash of another user's scale.
+function applyTextAppearance(value = {}) {
+  const scale = Math.max(85, Math.min(140, Number(value.ui_scale) || 100));
+  const size = Math.max(14, Math.min(28, Number(value.chat_size) || 19));
+  document.documentElement.style.setProperty('--ui-text-scale', scale / 100);
+  document.body.style.setProperty('--chat-text-size', size + 'px');
+}
+const renderBeforeTextAppearance = render;
+render = function () {
+  applyTextAppearance(state.appearance);
+  return renderBeforeTextAppearance();
+};
+const settingsBeforeTextAppearance = settingsModal;
+settingsModal = async function () {
+  await settingsBeforeTextAppearance();
+  const value = state.appearance || { ui_scale: 100, chat_size: 19 };
+  const small =
+    '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 18 5-12 5 12M6 14h6m5-2h5"/></svg>';
+  const large =
+    '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 18 5-12 5 12M5 14h6m7-5v8m-4-4h8"/></svg>';
+  const row = (key, label, min, max, step, unit) =>
+    `<div class="text-size-row"><label for="text-size-${key}">${label}</label><div class="text-size-controls"><button type="button" data-text-step="${key}" data-direction="-1" aria-label="Decrease ${label.toLowerCase()}" title="Decrease ${label.toLowerCase()}">${small}</button><input type="range" id="text-size-${key}" data-text-size="${key}" min="${min}" max="${max}" step="${step}" value="${value[key]}" aria-label="${label}"><button type="button" data-text-step="${key}" data-direction="1" aria-label="Increase ${label.toLowerCase()}" title="Increase ${label.toLowerCase()}">${large}</button><output for="text-size-${key}">${value[key]}${unit}</output></div></div>`;
+  const section = `<section class="source-block text-size-settings"><h3>Text size</h3>${row('ui_scale', 'Page text', 85, 140, 5, '%')}${row('chat_size', 'Chat text', 14, 28, 1, 'px')}<button type="button" data-text-reset aria-label="Reset text sizes" title="Reset text sizes"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4v6h6M4 10a8 8 0 1 1 0 5"/></svg></button><small data-text-size-status role="status">Saved for your account</small></section>`;
+  document.querySelector('#modal-content .source-block')?.insertAdjacentHTML('afterend', section);
+};
+let saveTextSizeTimer;
+async function saveTextSizes() {
+  const owner = state.user?.id;
+  const root = document.querySelector('.text-size-settings');
+  if (!root) return;
+  const value = Object.fromEntries(
+    [...root.querySelectorAll('[data-text-size]')].map((input) => [
+      input.dataset.textSize,
+      Number(input.value),
+    ]),
+  );
+  state.appearance = value;
+  applyTextAppearance(value);
+  root.querySelectorAll('[data-text-size]').forEach((input) => {
+    input.nextElementSibling.nextElementSibling.textContent =
+      input.value + (input.dataset.textSize === 'ui_scale' ? '%' : 'px');
+  });
+  const status = root.querySelector('[data-text-size-status]');
+  status.textContent = 'Saving…';
+  clearTimeout(saveTextSizeTimer);
+  saveTextSizeTimer = setTimeout(async () => {
+    if (state.user?.id !== owner) return;
+    try {
+      await api('/api/preferences/appearance', value);
+      if (status.isConnected) status.textContent = 'Saved for your account';
+    } catch (error) {
+      if (status.isConnected) status.textContent = 'Could not save. Adjust again to retry.';
+    }
+  }, 300);
+}
+document.addEventListener('input', (event) => {
+  if (event.target.matches('[data-text-size]')) saveTextSizes();
+});
+document.addEventListener('click', (event) => {
+  const step = event.target.closest('[data-text-step]');
+  const reset = event.target.closest('[data-text-reset]');
+  if (step) {
+    const input = document.querySelector(`[data-text-size="${step.dataset.textStep}"]`);
+    input.value = Number(input.value) + Number(step.dataset.direction) * Number(input.step);
+    saveTextSizes();
+  } else if (reset) {
+    document.querySelector('[data-text-size="ui_scale"]').value = 100;
+    document.querySelector('[data-text-size="chat_size"]').value = 19;
+    saveTextSizes();
+  }
+});

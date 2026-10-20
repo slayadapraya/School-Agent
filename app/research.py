@@ -4,6 +4,7 @@ Only fixed public API hosts are contacted. User-supplied URLs are never fetched.
 Search results are untrusted and cannot change tutoring policy or execute tools.
 """
 
+from . import generation_control
 from .model_output import clean_overview, parse_overview
 import concurrent.futures
 import html
@@ -412,6 +413,7 @@ def overview(question, evidence, history, model_json, review_output=True):
             "sources": evidence,
         }
         try:
+            generation_control.report("drafting")
             candidate = model_json(
                 [
                     {
@@ -440,6 +442,8 @@ def overview(question, evidence, history, model_json, review_output=True):
             return None
         if re.search(r"https?://|www\.|```|<\||\b[a-z]\s*=\s*-?\d", answer, re.I):
             return None
+        if review_output:
+            generation_control.report("reviewing")
         verdict = (
             model_json(
                 [
@@ -473,6 +477,7 @@ def respond(
     history=None,
     review_output=True,
 ):
+    generation_control.report("sources")
     retrieved, failed = retrieve(query, articles)
     # Recheck here as well: adapters and future providers cannot bypass relevance.
     sources = [s for s in retrieved if relevant(s, query)]
