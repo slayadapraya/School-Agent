@@ -26,34 +26,20 @@ These images show the current development workspace using **synthetic demo accou
 and conversations**. Hardware readings shown here are sample values. The latest
 versioned release may differ from the development interface.
 
-**Home screen** — recent conversations and the administrator's host overview.
-
-![School Agent home screen with synthetic demonstration readings](docs/screenshots/home.png)
-
-**Admin panel** — manage people and their account roles.
-
-![Administrator People panel with demo accounts](docs/screenshots/admin-people.png)
-
-**Chat and notes** — a subject conversation with its notes open beside it.
-
-![Physics tutoring conversation and a saved note, using demo content](docs/screenshots/chat-notes.png)
-
-<details>
-<summary><strong>More screenshots: classes, course files and appearance settings</strong></summary>
-
-**Classes and groups**
-
-![Class management with synthetic class rosters](docs/screenshots/admin-classes.png)
-
-**Course files**
-
-![Course files alongside a demo conversation](docs/screenshots/course-files.png)
-
-**Appearance and text size**
-
-![Theme and per-account text-size settings](docs/screenshots/appearance-settings.png)
-
-</details>
+<table>
+<tr>
+<td width="50%"><strong>Home screen</strong><br>Recent conversations and the administrator's host overview.<br><img src="docs/screenshots/home.png" alt="School Agent home screen with synthetic demonstration readings" width="100%"></td>
+<td width="50%"><strong>Admin panel</strong><br>Manage people and their account roles.<br><img src="docs/screenshots/admin-people.png" alt="Administrator People panel with demo accounts" width="100%"></td>
+</tr>
+<tr>
+<td width="50%"><strong>Chat and notes</strong><br>A subject conversation with its notes open beside it.<br><img src="docs/screenshots/chat-notes.png" alt="Physics tutoring conversation and a saved note, using demo content" width="100%"></td>
+<td width="50%"><strong>Classes and groups</strong><br>Manage subjects, class rosters and learning policies.<br><img src="docs/screenshots/admin-classes.png" alt="Class management with synthetic class rosters" width="100%"></td>
+</tr>
+<tr>
+<td width="50%"><strong>Course files</strong><br>Course material alongside a demo conversation.<br><img src="docs/screenshots/course-files.png" alt="Course files alongside a demo conversation" width="100%"></td>
+<td width="50%"><strong>Appearance and text size</strong><br>Theme and per-account reading preferences.<br><img src="docs/screenshots/appearance-settings.png" alt="Theme and per-account text-size settings" width="100%"></td>
+</tr>
+</table>
 
 ## Try the demo
 

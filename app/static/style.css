@@ -4367,6 +4367,31 @@ body[data-admin-hover] .admin-window .admin-tabs button:hover {
   margin-left: auto;
   flex-wrap: nowrap;
 }
+/* Keep desktop send controls beside the tools, even with long demo/model names.
+ * A narrow chat scrolls its tool strip instead of pushing Send onto another row. */
+@media (min-width: 751px) {
+  .composer-footer {
+    flex-wrap: nowrap;
+  }
+  .composer-tool-group {
+    flex: 1 1 auto;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+  .composer-tool-group > .tool {
+    flex: 0 0 auto;
+  }
+  .composer-right-controls {
+    flex: 0 1 auto;
+    max-width: 45%;
+  }
+  .modern-composer .input-model-selector {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
 .modern-composer .tool,
 .modern-composer .input-model-selector {
   display: inline-flex;
